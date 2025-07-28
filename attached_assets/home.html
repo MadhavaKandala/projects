@@ -7,9 +7,17 @@
   <link rel="stylesheet" href="home.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Animated background particles -->
+  <div class="background-particles">
+    <div class="particle particle-1"></div>
+    <div class="particle particle-2"></div>
+    <div class="particle particle-3"></div>
+    <div class="particle particle-4"></div>
+  </div>
+
   <header class="top-navbar">
     <div class="navbar-left">
       <div class="logo">
@@ -18,90 +26,144 @@
       </div>
     </div>
     <nav class="navbar-middle">
-      <a href="#" class="nav-link">Features</a>
-      <a href="#" class="nav-link">Demo</a>
-      <a href="#" class="nav-link">Pricing</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#demo" class="nav-link">Demo</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
     </nav>
     <div class="navbar-right">
       <a href="#" class="sign-in">Sign in</a>
-      <a href="#" class="try-free">Try Free</a>
+      <a href="personal.html" class="try-free">Try Free</a>
     </div>
   </header>
 
   <main>
     <section class="hero">
-      <h1 class="hero-title">The Only To-Do App That <br> Actually Helps You Start</h1>
-      <p class="hero-desc">Other apps watch you drown in to-dos. Task Crown throws you a lifeline with AI-powered Stuck Mode™, seamless team collaboration, and intelligent task suggestions.</p>
-      <div class="hero-cta">
-        <a href="personal.html" class="try-free">Try Free</a>
-        <a href="#" class="cta-btn secondary">&#9654; Watch Demo</a>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-icon">🚀</span>
+          <span class="badge-text">AI-Powered Productivity</span>
+        </div>
+        <h1 class="hero-title">The Only To-Do App That <br> Actually Helps You Start</h1>
+        <p class="hero-desc">Other apps watch you drown in to-dos. Task Crown throws you a lifeline with AI-powered Stuck Mode™, seamless team collaboration, and intelligent task suggestions.</p>
+        <div class="hero-cta">
+          <a href="personal.html" class="cta-btn primary large">
+            <span>Try Free</span>
+            <span class="btn-arrow">→</span>
+          </a>
+          <a href="#demo" class="cta-btn secondary">
+            <span class="play-icon">▶</span>
+            <span>Watch Demo</span>
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">10K+</span>
+            <span class="stat-label">Active Users</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">95%</span>
+            <span class="stat-label">Success Rate</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">AI Support</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="features">
-      <h2>Revolutionary Features</h2>
+    <section id="features" class="features">
+      <div class="section-header">
+        <h2>Revolutionary Features</h2>
+        <p class="section-subtitle">Built for real productivity, not just task management</p>
+      </div>
       <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon yellow">&#9889;</div>
+        <div class="feature-card" data-aos="fade-up">
+          <div class="feature-icon yellow">⚡</div>
           <div class="feature-title">Stuck Mode<sup>™</sup> AI</div>
-          <div class="feature-desc">When you’re overwhelmed, get instant micro-tasks like “Drink water” or “Write 1 sentence” to break through mental blocks.</div>
+          <div class="feature-desc">When you're overwhelmed, get instant micro-tasks like "Drink water" or "Write 1 sentence" to break through mental blocks.</div>
+          <div class="feature-badge">AI-Powered</div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon coral">&#128100;</div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-icon coral">👥</div>
           <div class="feature-title">Silent SOS Button</div>
           <div class="feature-desc">Private alerts to your manager when you need help. Reduces awkwardness and builds better team support.</div>
+          <div class="feature-badge">Team Safety</div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon green">&#128345;</div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-icon green">⏰</div>
           <div class="feature-title">Focus Timer</div>
           <div class="feature-desc">Pomodoro timer with intelligent break suggestions. Stay productive without burning out.</div>
+          <div class="feature-badge">Smart Breaks</div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon blue">&#127908;</div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-icon blue">🎤</div>
           <div class="feature-title">Voice Quick-Add</div>
-          <div class="feature-desc">Say “Add buy milk” and it’s instantly added to your list. Hands-free task management.</div>
+          <div class="feature-desc">Say "Add buy milk" and it's instantly added to your list. Hands-free task management.</div>
+          <div class="feature-badge">Voice AI</div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon purple">&#128200;</div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="feature-icon purple">📊</div>
           <div class="feature-title">Workload Heatmap</div>
-          <div class="feature-desc">Visual overview of team capacity. See who’s overloaded and redistribute tasks intelligently.</div>
+          <div class="feature-desc">Visual overview of team capacity. See who's overloaded and redistribute tasks intelligently.</div>
+          <div class="feature-badge">Analytics</div>
         </div>
-        <div class="feature-card">
-          <div class="feature-icon teal">&#128197;</div>
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+          <div class="feature-icon teal">📅</div>
           <div class="feature-title">Smart Calendar Sync</div>
           <div class="feature-desc">Auto-block time for high-priority tasks. Your calendar becomes your productivity ally.</div>
+          <div class="feature-badge">Auto-Sync</div>
         </div>
       </div>
     </section>
 
     <section class="why-section">
-      <h2>Why Task Crown?</h2>
+      <div class="section-header">
+        <h2>Why Task Crown?</h2>
+        <p class="section-subtitle">The difference between managing tasks and actually completing them</p>
+      </div>
       <div class="why-grid">
-        <div class="why-card">
+        <div class="why-card" data-aos="fade-right">
+          <div class="why-icon yellow">🎯</div>
           <div class="why-title yellow">Stuck Mode<sup>™</sup> AI</div>
           <div class="why-desc">The only to-do app that actively unblocks you when overwhelmed</div>
         </div>
-        <div class="why-card">
+        <div class="why-card" data-aos="fade-up">
+          <div class="why-icon coral">🤝</div>
           <div class="why-title coral">No-Blame Teamwork</div>
           <div class="why-desc">SOS alerts reduce awkwardness and build psychological safety</div>
         </div>
-        <div class="why-card">
+        <div class="why-card" data-aos="fade-left">
+          <div class="why-icon green">🔄</div>
           <div class="why-title green">Hybrid Focus</div>
           <div class="why-desc">Personal and team tasks in one place with 1-click context switching</div>
         </div>
       </div>
     </section>
 
-    <section class="demo-action">
-      <h2>See It In Action</h2>
+    <section id="demo" class="demo-action">
+      <div class="section-header">
+        <h2>See It In Action</h2>
+        <p class="section-subtitle">Experience the future of productivity</p>
+      </div>
       <div class="demo-box">
-        <div class="demo-icon">&#9654;</div>
-        <div class="demo-desc">Interactive Demo Coming Soon<br><span class="demo-sub">Try Stuck Mode with sample tasks</span></div>
+        <div class="demo-content">
+          <div class="demo-icon">▶</div>
+          <div class="demo-desc">Interactive Demo Coming Soon<br><span class="demo-sub">Try Stuck Mode with sample tasks</span></div>
+          <div class="demo-features">
+            <span class="demo-feature">🎯 AI Suggestions</span>
+            <span class="demo-feature">⏱️ Focus Timer</span>
+            <span class="demo-feature">👥 Team View</span>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="compare-section">
-      <h2>How We Compare</h2>
+      <div class="section-header">
+        <h2>How We Compare</h2>
+        <p class="section-subtitle">See why Task Crown stands out from the competition</p>
+      </div>
       <div class="compare-table-wrap">
         <table class="compare-table">
           <thead>
@@ -116,31 +178,38 @@
           <tbody>
             <tr>
               <td>AI Stuck Mode</td>
-              <td class="check">&#10003;</td>
-              <td class="cross">&#10007;</td>
-              <td class="cross">&#10007;</td>
-              <td class="cross">&#10007;</td>
+              <td class="check">✓</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
             </tr>
             <tr>
               <td>Silent SOS Alerts</td>
-              <td class="check">&#10003;</td>
-              <td class="cross">&#10007;</td>
-              <td class="cross">&#10007;</td>
-              <td class="cross">&#10007;</td>
+              <td class="check">✓</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
             </tr>
             <tr>
               <td>Voice Quick-Add</td>
-              <td class="check">&#10003;</td>
-              <td class="cross">&#10007;</td>
-              <td class="cross">&#10007;</td>
-              <td class="cross">&#10007;</td>
+              <td class="check">✓</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
             </tr>
             <tr>
               <td>Team Collaboration</td>
-              <td class="check">&#10003;</td>
-              <td class="check">&#10003;</td>
-              <td class="check">&#10003;</td>
-              <td class="check">&#10003;</td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>Smart Calendar Sync</td>
+              <td class="check">✓</td>
+              <td class="cross">✗</td>
+              <td class="check">✓</td>
+              <td class="cross">✗</td>
             </tr>
           </tbody>
         </table>
@@ -148,40 +217,119 @@
     </section>
 
     <section class="cta-section">
-      <h2>Ready to Stop Drowning in To-Dos?</h2>
-      <p>Join thousands who’ve transformed their productivity</p>
-      <a href="personal.html" class="cta-btn primary large">Start Your Free Trial <span>&#8594;</span></a>
+      <div class="cta-content">
+        <h2>Ready to Stop Drowning in To-Dos?</h2>
+        <p>Join thousands who've transformed their productivity with AI-powered task management</p>
+        <a href="personal.html" class="cta-btn primary large">
+          <span>Start Your Free Trial</span>
+          <span class="btn-arrow">→</span>
+        </a>
+        <div class="cta-guarantee">
+          <span class="guarantee-icon">🔒</span>
+          <span class="guarantee-text">No credit card required • 14-day free trial</span>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-logo">
-          <span class="logo-icon">👑</span>
-          <span class="logo-text">Task Crown</span>
+    <div class="footer-content">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="logo-icon">👑</span>
+            <span class="logo-text">Task Crown</span>
+          </div>
+          <div class="footer-tag">The productivity app that actually helps you start.</div>
+          <div class="footer-social">
+            <a href="#" class="social-link">Twitter</a>
+            <a href="#" class="social-link">LinkedIn</a>
+            <a href="#" class="social-link">GitHub</a>
+          </div>
         </div>
-        <div class="footer-tag">The productivity app that actually helps you start.</div>
+        <div class="footer-links">
+          <div class="footer-column">
+            <div class="footer-title">Product</div>
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#demo">Demo</a>
+            <a href="#">API</a>
+          </div>
+          <div class="footer-column">
+            <div class="footer-title">Company</div>
+            <a href="#">About</a>
+            <a href="#">Blog</a>
+            <a href="#">Careers</a>
+            <a href="#">Press</a>
+          </div>
+          <div class="footer-column">
+            <div class="footer-title">Support</div>
+            <a href="#">Help Center</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+          </div>
+        </div>
       </div>
-      <div>
-        <div class="footer-title">Product</div>
-        <div><a href="#">Features</a></div>
-        <div><a href="#">Pricing</a></div>
-        <div><a href="#">Demo</a></div>
-      </div>
-      <div>
-        <div class="footer-title">Company</div>
-        <div><a href="#">About</a></div>
-        <div><a href="#">Blog</a></div>
-        <div><a href="#">Careers</a></div>
-      </div>
-      <div>
-        <div class="footer-title">Support</div>
-        <div><a href="#">Help Center</a></div>
-        <div><a href="#">Contact</a></div>
-        <div><a href="#">Privacy</a></div>
+      <div class="footer-bottom">
+        <div class="footer-copyright">© 2024 Task Crown. All rights reserved.</div>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
       </div>
     </div>
   </footer>
+
+  <script>
+    // Simple scroll animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.querySelectorAll('[data-aos]').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add hover effects to feature cards
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-8px) scale(1.02)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0) scale(1)';
+      });
+    });
+  </script>
 </body>
 </html>
