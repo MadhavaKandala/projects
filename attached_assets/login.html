@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskCrown Login - Your Competitive Task Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="login-container">
+    <!-- Background Beams -->
+    <div class="background-beams">
+      <svg class="beams-svg" width="100%" height="100%" viewBox="0 0 696 316" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="beam-path" d="M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875" stroke="url(#gradient-0)" stroke-opacity="0.4" stroke-width="0.5"/>
+        <path class="beam-path" d="M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867" stroke="url(#gradient-1)" stroke-opacity="0.4" stroke-width="0.5"/>
+        <path class="beam-path" d="M-366 -205C-366 -205 -298 200 166 327C630 454 698 859 698 859" stroke="url(#gradient-2)" stroke-opacity="0.4" stroke-width="0.5"/>
+        <path class="beam-path" d="M-359 -213C-359 -213 -291 192 173 319C637 446 705 851 705 851" stroke="url(#gradient-3)" stroke-opacity="0.4" stroke-width="0.5"/>
+        <path class="beam-path" d="M-352 -221C-352 -221 -284 184 180 311C644 438 712 843 712 843" stroke="url(#gradient-4)" stroke-opacity="0.4" stroke-width="0.5"/>
+        
+        <defs>
+          <linearGradient id="gradient-0" x1="0%" x2="0%" y1="0%" y2="0%">
+            <stop stop-color="#FFD700" stop-opacity="0"/>
+            <stop stop-color="#FFD700"/>
+            <stop offset="32.5%" stop-color="#FFA500"/>
+            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="gradient-1" x1="0%" x2="0%" y1="0%" y2="0%">
+            <stop stop-color="#FFD700" stop-opacity="0"/>
+            <stop stop-color="#FFD700"/>
+            <stop offset="32.5%" stop-color="#FFA500"/>
+            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="gradient-2" x1="0%" x2="0%" y1="0%" y2="0%">
+            <stop stop-color="#FFD700" stop-opacity="0"/>
+            <stop stop-color="#FFD700"/>
+            <stop offset="32.5%" stop-color="#FFA500"/>
+            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="gradient-3" x1="0%" x2="0%" y1="0%" y2="0%">
+            <stop stop-color="#FFD700" stop-opacity="0"/>
+            <stop stop-color="#FFD700"/>
+            <stop offset="32.5%" stop-color="#FFA500"/>
+            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="gradient-4" x1="0%" x2="0%" y1="0%" y2="0%">
+            <stop stop-color="#FFD700" stop-opacity="0"/>
+            <stop stop-color="#FFD700"/>
+            <stop offset="32.5%" stop-color="#FFA500"/>
+            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Login Form -->
+    <div class="login-content">
+      <!-- Logo and Branding -->
+      <div class="brand-section">
+        <div class="logo-container">
+          <div class="glow-effect"></div>
+          <div class="logo-crown">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+          </div>
+        </div>
+        <h1 class="brand-title">TaskCrown</h1>
+        <p class="brand-subtitle">Your Competitive Task Manager</p>
+      </div>
+
+      <!-- Login Card -->
+      <div class="login-card">
+        <div class="card-header">
+          <h2 class="card-title">Welcome Back</h2>
+          
+          <!-- Role Switcher -->
+          <div class="role-switcher">
+            <div class="role-tabs">
+              <button class="role-tab active" data-role="admin">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>Admin</span>
+              </button>
+              <button class="role-tab" data-role="employee">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                </svg>
+                <span>Employee</span>
+              </button>
+              <button class="role-tab" data-role="personal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                  <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span>Personal</span>
+              </button>
+            </div>
+          </div>
+          
+          <p class="role-subtitle" id="roleSubtitle">Manage your organization</p>
+        </div>
+
+        <div class="card-content">
+          <!-- Google Sign-in -->
+          <button class="google-btn" id="googleBtn">
+            <svg class="google-icon" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Continue with Google
+          </button>
+
+          <!-- Divider -->
+          <div class="divider">
+            <span class="divider-text">or</span>
+          </div>
+
+          <!-- Login Form -->
+          <form class="login-form" id="loginForm">
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <div class="input-wrapper">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <path d="M22 6l-10 7L2 6"/>
+                </svg>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  placeholder="admin@taskcrown.com"
+                  required
+                >
+              </div>
+              <span class="error-message" id="emailError"></span>
+            </div>
+
+            <div class="form-group">
+              <div class="password-header">
+                <label for="password" class="form-label">Password</label>
+                <button type="button" class="forgot-password" id="forgotPassword">Forgot password?</button>
+              </div>
+              <div class="input-wrapper">
+                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                <input 
+                  type="password" 
+                  id="password" 
+                  name="password" 
+                  placeholder="Enter your password"
+                  required
+                >
+                <button type="button" class="password-toggle" id="passwordToggle">
+                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                </button>
+              </div>
+              <span class="error-message" id="passwordError"></span>
+            </div>
+
+            <div class="form-options">
+              <label class="checkbox-wrapper">
+                <input type="checkbox" id="rememberMe">
+                <span class="checkmark"></span>
+                Remember me
+              </label>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+              <span class="btn-text">Sign in as Admin</span>
+              <div class="loading-spinner" id="loadingSpinner">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 12a9 9 0 11-6.219-8.56"/>
+                </svg>
+              </div>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Back to Home -->
+      <a href="home.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Home
+      </a>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html> 
