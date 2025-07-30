@@ -3,333 +3,534 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Task Crown - The Only To-Do App That Actually Helps You Start</title>
-  <link rel="stylesheet" href="home.css">
+  <title>Task Crown - AI-Powered Productivity App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="home.css">
 </head>
 <body>
-  <!-- Animated background particles -->
-  <div class="background-particles">
-    <div class="particle particle-1"></div>
-    <div class="particle particle-2"></div>
-    <div class="particle particle-3"></div>
-    <div class="particle particle-4"></div>
-  </div>
-
-  <header class="top-navbar">
-    <div class="navbar-left">
-      <div class="logo">
-        <span class="logo-icon">👑</span>
-        <span class="logo-text">Task Crown</span>
-      </div>
-    </div>
-    <nav class="navbar-middle">
-      <a href="#features" class="nav-link">Features</a>
-      <a href="#demo" class="nav-link">Demo</a>
-      <a href="#pricing" class="nav-link">Pricing</a>
-    </nav>
-    <div class="navbar-right">
-      <a href="#" class="sign-in">Sign in</a>
-      <a href="personal.html" class="try-free">Try Free</a>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="container">
       <div class="hero-content">
-        <div class="hero-badge">
-          <span class="badge-icon">🚀</span>
-          <span class="badge-text">AI-Powered Productivity</span>
+        <div class="badge">
+          <svg class="sparkles-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          AI-Powered Team Orchestration
         </div>
-        <h1 class="hero-title">The Only To-Do App That <br> Actually Helps You Start</h1>
-        <p class="hero-desc">Other apps watch you drown in to-dos. Task Crown throws you a lifeline with AI-powered Stuck Mode™, seamless team collaboration, and intelligent task suggestions.</p>
-        <div class="hero-cta">
-          <a href="personal.html" class="cta-btn primary large">
-            <span>Try Free</span>
-            <span class="btn-arrow">→</span>
-          </a>
-          <a href="#demo" class="cta-btn secondary">
-            <span class="play-icon">▶</span>
-            <span>Watch Demo</span>
-          </a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat-item">
-            <span class="stat-number">10K+</span>
-            <span class="stat-label">Active Users</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">95%</span>
-            <span class="stat-label">Success Rate</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-number">24/7</span>
-            <span class="stat-label">AI Support</span>
-          </div>
-        </div>
-      </div>
-    </section>
+        
+        <h1 class="hero-title">
+          Optimize Team Productivity.
+          <br>
+          Empower Execution.
+        </h1>
+        
+        <p class="hero-description">
+          Task Crown streamlines task assignments, team visibility, and performance tracking — everything your workforce needs to stay focused and deliver results.
+        </p>
 
-    <section id="features" class="features">
-      <div class="section-header">
-        <h2>Revolutionary Features</h2>
-        <p class="section-subtitle">Built for real productivity, not just task management</p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary btn-lg">
+            Start for Free (Team Edition)
+            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14m-7-7l7 7-7 7"/>
+            </svg>
+          </button>
+          
+          <button class="btn btn-outline btn-lg" id="demoBtn">
+            <svg class="play-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 3l14 9-14 9V3z"/>
+            </svg>
+            Watch Demo for Teams
+          </button>
+        </div>
+
+        <div class="hero-guarantee">
+          ✨ No credit card required • 14-day free trial • Cancel anytime
+        </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">
+          Built for Agile Teams and
+          <span class="gradient-text">Fast-Paced Workflows</span>
+        </h2>
+        <p class="section-description">
+          Built for operations leads, team managers, developers, and corporate task forces.
+        </p>
+      </div>
+
       <div class="features-grid">
         <div class="feature-card" data-aos="fade-up">
-          <div class="feature-icon yellow">⚡</div>
-          <div class="feature-title">Stuck Mode<sup>™</sup> AI</div>
-          <div class="feature-desc">When you're overwhelmed, get instant micro-tasks like "Drink water" or "Write 1 sentence" to break through mental blocks.</div>
-          <div class="feature-badge">AI-Powered</div>
-        </div>
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="feature-icon coral">👥</div>
-          <div class="feature-title">Silent SOS Button</div>
-          <div class="feature-desc">Private alerts to your manager when you need help. Reduces awkwardness and builds better team support.</div>
-          <div class="feature-badge">Team Safety</div>
-        </div>
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="feature-icon green">⏰</div>
-          <div class="feature-title">Focus Timer</div>
-          <div class="feature-desc">Pomodoro timer with intelligent break suggestions. Stay productive without burning out.</div>
-          <div class="feature-badge">Smart Breaks</div>
-        </div>
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="feature-icon blue">🎤</div>
-          <div class="feature-title">Voice Quick-Add</div>
-          <div class="feature-desc">Say "Add buy milk" and it's instantly added to your list. Hands-free task management.</div>
-          <div class="feature-badge">Voice AI</div>
-        </div>
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
-          <div class="feature-icon purple">📊</div>
-          <div class="feature-title">Workload Heatmap</div>
-          <div class="feature-desc">Visual overview of team capacity. See who's overloaded and redistribute tasks intelligently.</div>
-          <div class="feature-badge">Analytics</div>
-        </div>
-        <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
-          <div class="feature-icon teal">📅</div>
-          <div class="feature-title">Smart Calendar Sync</div>
-          <div class="feature-desc">Auto-block time for high-priority tasks. Your calendar becomes your productivity ally.</div>
-          <div class="feature-badge">Auto-Sync</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="why-section">
-      <div class="section-header">
-        <h2>Why Task Crown?</h2>
-        <p class="section-subtitle">The difference between managing tasks and actually completing them</p>
-      </div>
-      <div class="why-grid">
-        <div class="why-card" data-aos="fade-right">
-          <div class="why-icon yellow">🎯</div>
-          <div class="why-title yellow">Stuck Mode<sup>™</sup> AI</div>
-          <div class="why-desc">The only to-do app that actively unblocks you when overwhelmed</div>
-        </div>
-        <div class="why-card" data-aos="fade-up">
-          <div class="why-icon coral">🤝</div>
-          <div class="why-title coral">No-Blame Teamwork</div>
-          <div class="why-desc">SOS alerts reduce awkwardness and build psychological safety</div>
-        </div>
-        <div class="why-card" data-aos="fade-left">
-          <div class="why-icon green">🔄</div>
-          <div class="why-title green">Hybrid Focus</div>
-          <div class="why-desc">Personal and team tasks in one place with 1-click context switching</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="demo" class="demo-action">
-      <div class="section-header">
-        <h2>See It In Action</h2>
-        <p class="section-subtitle">Experience the future of productivity</p>
-      </div>
-      <div class="demo-box">
-        <div class="demo-content">
-          <div class="demo-icon">▶</div>
-          <div class="demo-desc">Interactive Demo Coming Soon<br><span class="demo-sub">Try Stuck Mode with sample tasks</span></div>
-          <div class="demo-features">
-            <span class="demo-feature">🎯 AI Suggestions</span>
-            <span class="demo-feature">⏱️ Focus Timer</span>
-            <span class="demo-feature">👥 Team View</span>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
           </div>
+          <h3>AI-Powered Block Remover</h3>
+          <p>When teams get stuck, AI instantly suggests micro-tasks and alternative approaches to keep projects moving forward.</p>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <h3>Instant Support Request</h3>
+          <p>Team members can privately request help from leads without disrupting workflow or creating awkward situations.</p>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3>Deep Work Timer</h3>
+          <p>Adaptive focus sessions that learn team patterns and suggest optimal work/break intervals for maximum productivity.</p>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+            </svg>
+          </div>
+          <h3>Quick Task Input</h3>
+          <p>Capture tasks instantly by speaking. Perfect for team leads and managers on the go or in meetings.</p>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 3v18h18M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+            </svg>
+          </div>
+          <h3>Team Load Balancer</h3>
+          <p>Visual team workload distribution to prevent burnout and optimize task allocation across your organization.</p>
+        </div>
+
+        <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3>Sprint Sync with Calendar</h3>
+          <p>Seamlessly sync with your calendar to automatically block time for important tasks and sprint planning.</p>
         </div>
       </div>
     </section>
 
-    <section class="compare-section">
+  <!-- Demo Preview Section -->
+  <section class="demo-preview">
+    <div class="container">
       <div class="section-header">
-        <h2>How We Compare</h2>
-        <p class="section-subtitle">See why Task Crown stands out from the competition</p>
+        <h2 class="section-title">See Task Crown in action</h2>
+        <p class="section-description">
+          Watch how your organization can reduce delays, optimize workload, and improve task turnaround with Task Crown's intelligent dashboard.
+        </p>
       </div>
-      <div class="compare-table-wrap">
-        <table class="compare-table">
+
+      <div class="demo-container" data-aos="fade-up">
+        <div class="demo-video" id="demoVideo">
+          <div class="demo-overlay">
+            <div class="play-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 3l14 9-14 9V3z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="demo-preview-card">
+            <div class="preview-header">
+              <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>AI Stuck Mode Active</span>
+              </div>
+            </div>
+            <div class="preview-content">
+              <p class="preview-text">"I'm feeling overwhelmed by this project..."</p>
+              <p class="preview-suggestion">→ AI suggests: "Just write the first sentence of your outline"</p>
+        </div>
+        </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- Comparison Section -->
+  <section class="comparison">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Why Leading Teams Choose Task Crown</h2>
+        <p class="section-description">
+          Compare our unique features with other team collaboration tools
+        </p>
+      </div>
+
+      <div class="comparison-table" data-aos="fade-up">
+        <table>
           <thead>
             <tr>
-              <th>Feature</th>
-              <th>Task Crown</th>
-              <th>Trello</th>
-              <th>Asana</th>
-              <th>Notion</th>
+              <th>Features</th>
+              <th class="highlight">Task Crown</th>
+              <th>Jira</th>
+              <th>ClickUp</th>
+              <th>Monday.com</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>AI Stuck Mode</td>
-              <td class="check">✓</td>
-              <td class="cross">✗</td>
-              <td class="cross">✗</td>
-              <td class="cross">✗</td>
+              <td>AI Block Remover</td>
+              <td class="highlight"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
             </tr>
             <tr>
-              <td>Silent SOS Alerts</td>
-              <td class="check">✓</td>
-              <td class="cross">✗</td>
-              <td class="cross">✗</td>
-              <td class="cross">✗</td>
+              <td>Instant Support Request</td>
+              <td class="highlight"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
             </tr>
             <tr>
-              <td>Voice Quick-Add</td>
-              <td class="check">✓</td>
-              <td class="cross">✗</td>
-              <td class="cross">✗</td>
-              <td class="cross">✗</td>
+              <td>Quick Task Input</td>
+              <td class="highlight"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+              <td><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
             </tr>
             <tr>
-              <td>Team Collaboration</td>
-              <td class="check">✓</td>
-              <td class="check">✓</td>
-              <td class="check">✓</td>
-              <td class="check">✓</td>
+              <td>Team Load Balancer</td>
+              <td class="highlight"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
             </tr>
             <tr>
-              <td>Smart Calendar Sync</td>
-              <td class="check">✓</td>
-              <td class="cross">✗</td>
-              <td class="check">✓</td>
-              <td class="cross">✗</td>
+              <td>Deep Work Timer</td>
+              <td class="highlight"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+            </tr>
+            <tr>
+              <td>Sprint Sync</td>
+              <td class="highlight"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+            </tr>
+            <tr>
+              <td>Crown Leaderboard</td>
+              <td class="highlight"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+              <td><svg class="x-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></td>
+            </tr>
+            <tr>
+              <td>Task Delegation UX</td>
+              <td class="highlight"><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
+              <td><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg></td>
             </tr>
           </tbody>
         </table>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="cta-section">
-      <div class="cta-content">
-        <h2>Ready to Stop Drowning in To-Dos?</h2>
-        <p>Join thousands who've transformed their productivity with AI-powered task management</p>
-        <a href="personal.html" class="cta-btn primary large">
-          <span>Start Your Free Trial</span>
-          <span class="btn-arrow">→</span>
-        </a>
-        <div class="cta-guarantee">
-          <span class="guarantee-icon">🔒</span>
-          <span class="guarantee-text">No credit card required • 14-day free trial</span>
+  <!-- Testimonials Section -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Trusted by High-Performance Teams</h2>
+        <p class="section-description">
+          See how Task Crown is helping organizations overcome productivity challenges
+        </p>
+      </div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card" data-aos="fade-up">
+          <div class="stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p>"Task Crown gave our dev team instant visibility into task bottlenecks. Sprint velocity increased by 40% in the first month."</p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150" alt="Priya N.">
+            <div>
+              <div class="author-name">Priya N.</div>
+              <div class="author-role">Engineering Manager at DevOptimize Inc.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p>"It makes sprint planning 10x easier, and our top performers love the crown system. Team morale has never been higher."</p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150" alt="Raj M.">
+            <div>
+              <div class="author-name">Raj M.</div>
+              <div class="author-role">Product Lead at WizeSoft</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="stars">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p>"The workload balancing feature saved us from burnout. We can now distribute tasks intelligently across our 50-person team."</p>
+          <div class="testimonial-author">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150" alt="Emily Watson">
+            <div>
+              <div class="author-name">Emily Watson</div>
+              <div class="author-role">Operations Director at TechFlow</div>
+            </div>
+          </div>
         </div>
       </div>
+      </div>
     </section>
-  </main>
 
+  <!-- Pricing Section -->
+  <section class="pricing">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Straightforward Pricing for Teams of Any Size</h2>
+        <p class="section-description">
+          Start free, upgrade when you're ready to unlock your team's full potential
+        </p>
+        
+        <div class="pricing-toggle">
+          <span class="toggle-label" id="monthlyLabel">Monthly</span>
+          <label class="switch">
+            <input type="checkbox" id="pricingToggle">
+            <span class="slider"></span>
+          </label>
+          <span class="toggle-label" id="yearlyLabel">
+            Yearly 
+            <span class="save-badge">Save 17%</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="pricing-grid">
+        <div class="pricing-card" data-aos="fade-up">
+          <div class="card-header">
+            <h3>STARTER</h3>
+            <div class="price">
+              <span class="price-amount" id="starterPrice">$0</span>
+              <span class="price-period">forever</span>
+            </div>
+            <p class="price-description">For individuals or test-driving the system</p>
+          </div>
+          
+          <ul class="features-list">
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Task assignment</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Team view (read-only)</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>5 crown-tracking slots</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Basic focus timer</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Mobile app access</li>
+          </ul>
+          
+          <button class="btn btn-outline btn-full">Start Free</button>
+        </div>
+
+        <div class="pricing-card popular" data-aos="fade-up" data-aos-delay="100">
+          <div class="popular-badge">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            Popular
+          </div>
+          
+          <div class="card-header">
+            <h3>TEAM</h3>
+            <div class="price">
+              <span class="price-amount" id="proPrice">$25</span>
+              <span class="price-period">month</span>
+            </div>
+            <p class="price-description">For small teams (up to 15 users)</p>
+          </div>
+          
+          <ul class="features-list">
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Full access for up to 15 users</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Team heatmaps</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Workload balancing</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Crown leaderboard</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Instant support requests</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Deep work timer</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Priority support</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Basic integrations</li>
+          </ul>
+          
+          <button class="btn btn-primary btn-full">Start Free Trial</button>
+        </div>
+
+        <div class="pricing-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="card-header">
+            <h3>ENTERPRISE</h3>
+            <div class="price">
+              <span class="price-amount" id="teamPrice">Custom</span>
+              <span class="price-period">pricing</span>
+            </div>
+            <p class="price-description">For large organizations</p>
+          </div>
+          
+          <ul class="features-list">
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Unlimited users</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Role-based access control</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Custom integrations</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Advanced analytics</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>SSO & SAML</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>24/7 dedicated support</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Custom onboarding</li>
+            <li><svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>SLA guarantees</li>
+          </ul>
+          
+          <button class="btn btn-outline btn-full">Contact Sales</button>
+        </div>
+      </div>
+    </div>
+    </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content" data-aos="fade-up">
+        <h2 class="cta-title">Ready to Level Up Team Execution?</h2>
+        <p class="cta-description">
+          Join organizations turning productivity into performance with Task Crown.
+        </p>
+        
+        <div class="cta-buttons">
+          <button class="btn btn-primary btn-lg">
+            Start Your Free Trial
+            <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14m-7-7l7 7-7 7"/>
+            </svg>
+          </button>
+          
+          <button class="btn btn-outline btn-lg">Schedule Demo</button>
+        </div>
+        
+        <p class="cta-guarantee">
+          14-day free trial • No credit card required • Cancel anytime
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-main">
+    <div class="container">
+      <div class="footer-content">
         <div class="footer-brand">
           <div class="footer-logo">
-            <span class="logo-icon">👑</span>
-            <span class="logo-text">Task Crown</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            <span>Task Crown</span>
           </div>
-          <div class="footer-tag">The productivity app that actually helps you start.</div>
+          <p class="footer-description">
+            AI-driven corporate task orchestration. Optimize productivity. Boost execution. Recognize performance.
+          </p>
           <div class="footer-social">
-            <a href="#" class="social-link">Twitter</a>
-            <a href="#" class="social-link">LinkedIn</a>
-            <a href="#" class="social-link">GitHub</a>
+            <a href="#" target="_blank">Twitter</a>
+            <span>•</span>
+            <a href="#" target="_blank">Github</a>
+            <span>•</span>
+            <a href="#">Discord</a>
           </div>
         </div>
+        
         <div class="footer-links">
           <div class="footer-column">
-            <div class="footer-title">Product</div>
-            <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#demo">Demo</a>
-            <a href="#">API</a>
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#pricing">Pricing</a></li>
+              <li><a href="#integrations">Integrations</a></li>
+              <li><a href="/docs/api">API Docs</a></li>
+            </ul>
           </div>
+          
           <div class="footer-column">
-            <div class="footer-title">Company</div>
-            <a href="#">About</a>
-            <a href="#">Blog</a>
-            <a href="#">Careers</a>
-            <a href="#">Press</a>
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#about">About</a></li>
+              <li><a href="#blog">Blog</a></li>
+              <li><a href="#careers">Careers</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
           </div>
+          
           <div class="footer-column">
-            <div class="footer-title">Support</div>
-            <a href="#">Help Center</a>
-            <a href="#">Contact</a>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-          </div>
-        </div>
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="/legal/privacy">Privacy Policy</a></li>
+              <li><a href="/legal/terms">Terms of Service</a></li>
+            </ul>
       </div>
+      </div>
+      </div>
+      
       <div class="footer-bottom">
-        <div class="footer-copyright">© 2024 Task Crown. All rights reserved.</div>
-        <div class="footer-legal">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Cookie Policy</a>
-        </div>
+        © 2024 Task Crown, Inc. All rights reserved.
       </div>
     </div>
   </footer>
 
-  <script>
-    // Simple scroll animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, observerOptions);
-
-    // Observe all animated elements
-    document.querySelectorAll('[data-aos]').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(30px)';
-      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      observer.observe(el);
-    });
-
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
-
-    // Add hover effects to feature cards
-    document.querySelectorAll('.feature-card').forEach(card => {
-      card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-8px) scale(1.02)';
-      });
+  <!-- Demo Modal -->
+  <div class="modal" id="demoModal">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Task Crown Demo</h3>
+        <button class="modal-close" id="modalClose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
       
-      card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-      });
-    });
-  </script>
+      <div class="modal-body">
+        <div class="demo-video-placeholder">
+          <svg class="play-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 3l14 9-14 9V3z"/>
+          </svg>
+          <p>Demo video would play here</p>
+          <p class="demo-subtitle">Watch how AI Stuck Mode breaks down overwhelming tasks</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="home.js"></script>
 </body>
 </html>
