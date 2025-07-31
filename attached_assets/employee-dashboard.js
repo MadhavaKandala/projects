@@ -151,7 +151,7 @@ const chatMessages = [
 
 // Current user data
 const currentUser = {
-  name: "Madhava Kumar",
+  name: "Madhava Sharma",
   designation: "Senior Developer",
   department: "Engineering",
   crowns: 35,
