@@ -16,9 +16,7 @@
       <!-- Logo -->
       <div class="sidebar-header">
         <div class="logo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
+          <span style="font-size:1.7em;">👑</span>
           <span>TaskCrown</span>
         </div>
       </div>
@@ -69,9 +67,7 @@
           </li>
           <li class="nav-item">
             <button class="nav-link" data-page="crowns">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
+              <span style="font-size: 1.2em;">👑</span>
               <span>Crown Stats</span>
             </button>
           </li>
@@ -136,7 +132,7 @@
           <div class="card welcome-banner">
             <div class="card-content">
               <h1 class="welcome-title" id="welcomeTitle">Good Morning, Madhava! 👋</h1>
-              <p class="welcome-subtitle">Ready to tackle your tasks and earn some crowns today?</p>
+              <p class="welcome-subtitle">Ready to conquer your tasks today?</p>
             </div>
           </div>
 
@@ -146,7 +142,7 @@
               <div class="stat-content">
                 <div class="stat-info">
                   <p class="stat-label">Completed Tasks</p>
-                  <p class="stat-value">28</p>
+                  <p class="stat-value" id="completedTasksCount">28</p>
                 </div>
                 <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
@@ -158,7 +154,7 @@
               <div class="stat-content">
                 <div class="stat-info">
                   <p class="stat-label">Ongoing Tasks</p>
-                  <p class="stat-value">5</p>
+                  <p class="stat-value" id="ongoingTasksCount">5</p>
                 </div>
                 <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <circle cx="12" cy="12" r="10"/>
@@ -170,7 +166,7 @@
               <div class="stat-content">
                 <div class="stat-info">
                   <p class="stat-label">Upcoming Deadlines</p>
-                  <p class="stat-value">3</p>
+                  <p class="stat-value" id="pendingTasksCount">3</p>
                 </div>
                 <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -184,11 +180,9 @@
               <div class="stat-content">
                 <div class="stat-info">
                   <p class="stat-label">Crowns Earned</p>
-                  <p class="stat-value">45</p>
+                  <p class="stat-value" id="crownsEarned">45</p>
                 </div>
-                <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
+                <span class="stat-icon" style="font-size: 1.5em;">👑</span>
               </div>
             </div>
           </div>
@@ -372,15 +366,36 @@
       <div class="page" id="crowns-page">
         <div class="page-content">
           <h1 class="page-title">Crown Stats</h1>
+          
+          <div class="crown-stats-grid">
+            <!-- Total Crowns -->
+            <div class="card crown-total">
+              <div class="card-content">
+                <div class="crown-display">
+                  <div class="crown-emoji">👑</div>
+                  <h2 class="crown-value" id="totalCrowns">35</h2>
+                  <p class="crown-label">Crowns Earned</p>
+                </div>
+              </div>
+            </div>
 
-          <!-- Total Crowns -->
-          <div class="card crown-total">
-            <div class="card-content">
-              <svg class="crown-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-              </svg>
-              <h2 class="crown-value">45 Crowns</h2>
-              <p class="crown-label">Total Earned This Month</p>
+            <!-- Monthly Progress -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">This Month's Progress</h3>
+              </div>
+              <div class="card-content">
+                <div class="monthly-progress">
+                  <div class="progress-info">
+                    <span class="progress-label">Crowns This Month</span>
+                    <span class="progress-value" id="monthlyCrowns">8</span>
+                  </div>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 80%"></div>
+                  </div>
+                  <p class="progress-note">2 more crowns to reach your monthly goal!</p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -399,7 +414,7 @@
           <!-- Badges -->
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Badges</h3>
+              <h3 class="card-title">Badges Unlocked</h3>
             </div>
             <div class="card-content">
               <div class="badges-grid" id="badgesGrid">
@@ -430,12 +445,12 @@
       <div class="page" id="help-page">
         <div class="page-content">
           <h1 class="page-title">Request Help</h1>
-
+          
           <div class="help-grid">
             <!-- Request Form -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Need Help?</h3>
+                <h3 class="card-title">Invite Colleague to Collaborate</h3>
               </div>
               <div class="card-content">
                 <form class="help-form" id="helpForm">
@@ -443,51 +458,94 @@
                     <label class="form-label">Select Task</label>
                     <select class="form-select" id="helpTaskSelect">
                       <option value="">Choose a task...</option>
+                      <option value="q4-report">Complete Q4 Report</option>
+                      <option value="marketing-campaign">Review Marketing Campaign</option>
                     </select>
                   </div>
 
                   <div class="form-group">
-                    <label class="form-label">Describe your issue</label>
-                    <textarea class="form-textarea" id="helpMessage" placeholder="What do you need help with?"></textarea>
+                    <label class="form-label">Colleague Email</label>
+                    <input type="email" class="form-input" id="colleagueEmail" placeholder="colleague@company.com">
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-textarea" id="helpMessage" placeholder="Hi, I need help with..." rows="3"></textarea>
                   </div>
 
                   <button type="submit" class="btn btn-primary btn-full">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                     </svg>
-                    <span>Send Help Request</span>
+                    <span>Send Invitation</span>
                   </button>
                 </form>
               </div>
             </div>
 
-            <!-- Suggested Teammates -->
+            <!-- Quick Help -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Suggested Teammates</h3>
+                <h3 class="card-title">Quick Help</h3>
               </div>
               <div class="card-content">
-                <div class="teammates-list" id="teammatesList">
-                  <!-- Teammates will be populated by JavaScript -->
+                <div class="quick-help-section">
+                  <div class="help-item">
+                    <h4 class="help-item-title">Suggested Teammates</h4>
+                    <div class="teammates-list" id="teammatesList">
+                      <!-- Teammates will be populated by JavaScript -->
+                    </div>
+                  </div>
+                  
+                  <div class="help-item">
+                    <h4 class="help-item-title">FAQ & Knowledge Base</h4>
+                    <div class="faq-links">
+                      <a href="#" class="faq-link">How to submit a project report?</a>
+                      <a href="#" class="faq-link">Marketing campaign guidelines</a>
+                      <a href="#" class="faq-link">Team collaboration best practices</a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- FAQ Section -->
+          <!-- Team Chat -->
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Frequently Asked Questions</h3>
+              <h3 class="card-title">Team Chat</h3>
             </div>
             <div class="card-content">
-              <div class="faq-list">
-                <div class="faq-item">
-                  <h4 class="faq-question">How do I prioritize my tasks?</h4>
-                  <p class="faq-answer">Tasks are automatically sorted by deadline and priority. Focus on high-priority items first.</p>
+              <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                  <div class="chat-message">
+                    <div class="message-avatar">
+                      <span>SJ</span>
+                    </div>
+                    <div class="message-content">
+                      <p class="message-author">Sarah Johnson</p>
+                      <p class="message-text">Hey team, anyone available to help with the Q4 report formatting?</p>
+                      <p class="message-time">2 hours ago</p>
+                    </div>
+                  </div>
+                  <div class="chat-message">
+                    <div class="message-avatar">
+                      <span>MC</span>
+                    </div>
+                    <div class="message-content">
+                      <p class="message-author">Mike Chen</p>
+                      <p class="message-text">I can help! I have the template from last quarter.</p>
+                      <p class="message-time">1 hour ago</p>
+                    </div>
+                  </div>
                 </div>
-                <div class="faq-item">
-                  <h4 class="faq-question">How are crowns calculated?</h4>
-                  <p class="faq-answer">Crowns are earned based on task completion, helping colleagues, and maintaining streaks.</p>
+                <div class="chat-input">
+                  <input type="text" class="chat-text-input" id="chatInput" placeholder="Type your message...">
+                  <button class="chat-send-btn" id="chatSendBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
@@ -499,11 +557,11 @@
       <div class="page" id="settings-page">
         <div class="page-content">
           <h1 class="page-title">Settings</h1>
-
+          
           <!-- Profile Section -->
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Profile</h3>
+              <h3 class="card-title">Profile Information</h3>
             </div>
             <div class="card-content">
               <div class="profile-section">
@@ -512,7 +570,7 @@
                 </div>
                 <div class="profile-info">
                   <h4 class="profile-name">Madhava</h4>
-                  <p class="profile-role">Software Engineer</p>
+                  <p class="profile-role">Senior Developer</p>
                   <p class="profile-department">Engineering Department</p>
                 </div>
               </div>
@@ -521,8 +579,31 @@
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                   <circle cx="12" cy="7" r="4"/>
                 </svg>
-                <span>Edit Profile</span>
+                <span>Change Photo</span>
               </button>
+              
+              <div class="profile-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-input" value="Madhava Kumar" id="profileName">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Designation</label>
+                    <input type="text" class="form-input" value="Senior Developer" id="profileDesignation">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <input type="text" class="form-input" value="Engineering" id="profileDepartment">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" value="madhava@company.com" id="profileEmail">
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -538,21 +619,30 @@
             </div>
           </div>
 
-          <!-- Theme -->
+          <!-- Appearance -->
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Appearance</h3>
             </div>
             <div class="card-content">
-              <div class="theme-selector">
-                <label class="theme-label">Theme</label>
-                <select class="theme-select" id="themeSelect">
-                  <option value="light">Light</option>
-                  <option value="dark">Dark</option>
-                  <option value="system">System</option>
-                </select>
+              <div class="appearance-section">
+                <div class="appearance-item">
+                  <div class="appearance-info">
+                    <p class="appearance-label">Dark Mode</p>
+                    <p class="appearance-description">Toggle dark mode theme</p>
+                  </div>
+                  <div class="toggle-switch" id="darkModeToggle">
+                    <input type="checkbox" id="darkModeCheckbox">
+                    <span class="toggle-slider"></span>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
+
+          <!-- Save Changes -->
+          <div class="settings-actions">
+            <button class="btn btn-primary" id="saveSettingsBtn">Save Changes</button>
           </div>
         </div>
       </div>

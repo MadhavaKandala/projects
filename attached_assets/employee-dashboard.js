@@ -27,6 +27,24 @@ const mockTasks = [
     priority: "Low",
     progress: 100,
   },
+  {
+    id: "4",
+    name: "Database Optimization",
+    assignedBy: "Alex Rodriguez",
+    deadline: "2024-01-18",
+    status: "Pending",
+    priority: "High",
+    progress: 0,
+  },
+  {
+    id: "5",
+    name: "API Documentation Update",
+    assignedBy: "Sarah Johnson",
+    deadline: "2024-01-22",
+    status: "In Progress",
+    priority: "Medium",
+    progress: 45,
+  },
 ];
 
 const mockEmployees = [
@@ -59,26 +77,97 @@ const mockNotifications = [
     time: "3 days ago",
     read: true,
   },
+  {
+    id: "4",
+    type: "admin",
+    message: "System maintenance scheduled for tomorrow at 2 AM",
+    time: "5 hours ago",
+    read: false,
+  },
+  {
+    id: "5",
+    type: "crown",
+    message: "Congratulations! You've earned the 'Streak Master' badge!",
+    time: "2 days ago",
+    read: true,
+  },
+  {
+    id: "6",
+    type: "task",
+    message: "Task deadline reminder: Database Optimization due in 2 days",
+    time: "1 day ago",
+    read: false,
+  },
 ];
 
 const crownHistory = [
-  { week: "Week 1", crowns: 8, reason: "Completed all tasks on time" },
-  { week: "Week 2", crowns: 12, reason: "Helped 3 colleagues" },
-  { week: "Week 3", crowns: 10, reason: "Maintained 7-day streak" },
-  { week: "Week 4", crowns: 15, reason: "Exceeded performance targets" },
+  { date: "2024-01-15", reason: "Task delivered before deadline", crowns: 1 },
+  { date: "2024-01-14", reason: "Helped 3 colleagues this week", crowns: 2 },
+  { date: "2024-01-12", reason: "Maintaining a 7-day streak", crowns: 1 },
+  { date: "2024-01-10", reason: "Excellent code review feedback", crowns: 1 },
+  { date: "2024-01-08", reason: "Completed 5 tasks in one day", crowns: 1 },
+  { date: "2024-01-05", reason: "Received 5-star feedback", crowns: 1 },
+  { date: "2024-01-03", reason: "Team collaboration excellence", crowns: 1 },
+  { date: "2024-01-01", reason: "New Year productivity boost", crowns: 1 },
 ];
 
 const badges = [
-  { name: "Speed Demon", description: "Complete 10 tasks in one day", unlocked: true },
-  { name: "Team Player", description: "Help 5 colleagues in a week", unlocked: true },
-  { name: "Streak Master", description: "Maintain 30-day streak", unlocked: false },
-  { name: "Crown Collector", description: "Earn 100 crowns", unlocked: false },
+  { name: "Early Bird", icon: "🌅", description: "Complete 5 tasks before deadline", unlocked: true },
+  { name: "Team Player", icon: "🤝", description: "Help 10 colleagues", unlocked: true },
+  { name: "Streak Master", icon: "🔥", description: "Maintain 7-day streak", unlocked: true },
+  { name: "Crown Collector", icon: "👑", description: "Earn 50 crowns", unlocked: false },
+  { name: "Speed Demon", icon: "⚡", description: "Complete 10 tasks in one day", unlocked: false },
+  { name: "Quality Guru", icon: "⭐", description: "Get 5-star feedback", unlocked: false },
+  { name: "Problem Solver", icon: "🧩", description: "Solve 20 complex tasks", unlocked: true },
+  { name: "Mentor", icon: "🎓", description: "Help 5 new team members", unlocked: false },
+  { name: "Innovator", icon: "💡", description: "Suggest 3 improvements", unlocked: true },
+  { name: "Reliable", icon: "✅", description: "Complete 100% of assigned tasks", unlocked: false },
 ];
 
+// Enhanced chat messages
+const chatMessages = [
+  {
+    id: 1,
+    author: "Sarah Johnson",
+    avatar: "SJ",
+    message: "Hey team, anyone available to help with the Q4 report formatting?",
+    time: "2 hours ago"
+  },
+  {
+    id: 2,
+    author: "Mike Chen",
+    avatar: "MC",
+    message: "I can help! I have the template from last quarter.",
+    time: "1 hour ago"
+  },
+  {
+    id: 3,
+    author: "Lisa Wang",
+    avatar: "LW",
+    message: "Thanks Mike! That would be great.",
+    time: "30 minutes ago"
+  }
+];
+
+// Current user data
+const currentUser = {
+  name: "Madhava Kumar",
+  designation: "Senior Developer",
+  department: "Engineering",
+  crowns: 35,
+  streak: 5,
+  efficiency: 85,
+  monthlyCrowns: 8,
+  monthlyGoal: 10
+};
+
 const suggestedTeammates = [
-  { name: "Sarah Johnson", department: "Marketing", available: true },
-  { name: "Mike Chen", department: "Sales", available: true },
-  { name: "Lisa Wang", department: "Design", available: false },
+  { name: "Sarah Johnson", department: "Marketing", available: true, expertise: "Content Strategy" },
+  { name: "Mike Chen", department: "Sales", available: true, expertise: "Client Relations" },
+  { name: "Lisa Wang", department: "Design", available: false, expertise: "UI/UX Design" },
+  { name: "Alex Rodriguez", department: "Engineering", available: true, expertise: "Backend Development" },
+  { name: "Emma Davis", department: "Product", available: true, expertise: "Product Management" },
+  { name: "David Kim", department: "QA", available: false, expertise: "Testing & Quality" },
 ];
 
 // State Management
@@ -98,27 +187,19 @@ const markAllReadBtn = document.getElementById('markAllReadBtn');
 const helpForm = document.getElementById('helpForm');
 const themeSelect = document.getElementById('themeSelect');
 
-// Initialize the dashboard
-document.addEventListener('DOMContentLoaded', () => {
-  // Check authentication
-  if (!localStorage.getItem('taskCrown_loggedIn')) {
-    window.location.href = 'login.html';
-    return;
-  }
-
-  setupEventListeners();
-  updateGreeting();
-  renderTasks();
-  renderLeaderboard();
-  renderCrownStats();
-  renderNotifications();
-  renderTeammates();
-  renderNotificationPreferences();
-  setupClock();
-  
-  // Set initial page
-  showPage('home');
-});
+// Initialize DOM elements after page load
+function initializeDOMElements() {
+  // Re-initialize DOM elements that might not be available immediately
+  window.sidebar = document.getElementById('sidebar');
+  window.mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  window.mobileOverlay = document.getElementById('mobileOverlay');
+  window.logoutBtn = document.getElementById('logoutBtn');
+  window.filterBtn = document.getElementById('filterBtn');
+  window.filterMenu = document.getElementById('filterMenu');
+  window.markAllReadBtn = document.getElementById('markAllReadBtn');
+  window.helpForm = document.getElementById('helpForm');
+  window.themeSelect = document.getElementById('themeSelect');
+}
 
 // Setup event listeners
 function setupEventListeners() {
@@ -131,14 +212,22 @@ function setupEventListeners() {
   });
 
   // Mobile menu
-  mobileMenuBtn.addEventListener('click', toggleMobileMenu);
-  mobileOverlay.addEventListener('click', closeMobileMenu);
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+  }
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener('click', closeMobileMenu);
+  }
 
   // Logout
-  logoutBtn.addEventListener('click', handleLogout);
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', handleLogout);
+  }
 
   // Filter dropdown
-  filterBtn.addEventListener('click', toggleFilterMenu);
+  if (filterBtn) {
+    filterBtn.addEventListener('click', toggleFilterMenu);
+  }
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.filter-dropdown')) {
       closeFilterMenu();
@@ -154,13 +243,19 @@ function setupEventListeners() {
   });
 
   // Mark all notifications as read
-  markAllReadBtn.addEventListener('click', markAllNotificationsAsRead);
+  if (markAllReadBtn) {
+    markAllReadBtn.addEventListener('click', markAllNotificationsAsRead);
+  }
 
   // Help form
-  helpForm.addEventListener('submit', handleHelpRequest);
+  if (helpForm) {
+    helpForm.addEventListener('submit', handleHelpRequest);
+  }
 
   // Theme selector
-  themeSelect.addEventListener('change', handleThemeChange);
+  if (themeSelect) {
+    themeSelect.addEventListener('change', handleThemeChange);
+  }
 
   // Quick action buttons
   document.querySelectorAll('.quick-action-btn').forEach(btn => {
@@ -193,23 +288,77 @@ function showPage(pageId) {
 
   currentPage = pageId;
   closeMobileMenu();
+  
+  // Update page-specific content
+  switch (pageId) {
+    case 'tasks':
+      renderTasks();
+      break;
+    case 'datapool':
+      renderLeaderboard();
+      break;
+    case 'notifications':
+      renderNotifications();
+      break;
+    case 'help':
+      renderTeammates();
+      renderChatMessages();
+      break;
+    case 'crowns':
+      renderCrownStats();
+      break;
+    case 'settings':
+      renderNotificationPreferences();
+      // Re-initialize dark mode when settings page is shown
+      setTimeout(() => initializeDarkMode(), 100);
+      break;
+  }
 }
 
 // Mobile Menu
 function toggleMobileMenu() {
-  sidebar.classList.toggle('open');
-  mobileOverlay.classList.toggle('open');
+  const sidebar = document.getElementById('sidebar');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  
+  if (sidebar && mobileOverlay) {
+    sidebar.classList.toggle('open');
+    mobileOverlay.classList.toggle('open');
+  }
 }
 
 function closeMobileMenu() {
-  sidebar.classList.remove('open');
-  mobileOverlay.classList.remove('open');
+  const sidebar = document.getElementById('sidebar');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  
+  if (sidebar && mobileOverlay) {
+    sidebar.classList.remove('open');
+    mobileOverlay.classList.remove('open');
+  }
 }
 
-// Greeting Update
+// Enhanced functions
+function updateStats() {
+  const completedTasks = tasks.filter(t => t.status === 'Completed').length;
+  const ongoingTasks = tasks.filter(t => t.status === 'In Progress').length;
+  const pendingTasks = tasks.filter(t => t.status === 'Pending').length;
+  
+  const completedTasksElement = document.getElementById('completedTasksCount');
+  const ongoingTasksElement = document.getElementById('ongoingTasksCount');
+  const pendingTasksElement = document.getElementById('pendingTasksCount');
+  const crownsEarnedElement = document.getElementById('crownsEarned');
+  const totalCrownsElement = document.getElementById('totalCrowns');
+  const monthlyCrownsElement = document.getElementById('monthlyCrowns');
+  
+  if (completedTasksElement) completedTasksElement.textContent = completedTasks;
+  if (ongoingTasksElement) ongoingTasksElement.textContent = ongoingTasks;
+  if (pendingTasksElement) pendingTasksElement.textContent = pendingTasks;
+  if (crownsEarnedElement) crownsEarnedElement.textContent = currentUser.crowns;
+  if (totalCrownsElement) totalCrownsElement.textContent = currentUser.crowns;
+  if (monthlyCrownsElement) monthlyCrownsElement.textContent = currentUser.monthlyCrowns;
+}
+
 function updateGreeting() {
-  const now = new Date();
-  const hour = now.getHours();
+  const hour = new Date().getHours();
   let greeting = 'Good Morning';
   
   if (hour >= 12 && hour < 18) {
@@ -217,11 +366,291 @@ function updateGreeting() {
   } else if (hour >= 18) {
     greeting = 'Good Evening';
   }
-
+  
   const welcomeTitle = document.getElementById('welcomeTitle');
   if (welcomeTitle) {
-    welcomeTitle.textContent = `${greeting}, Madhava! 👋`;
+    welcomeTitle.textContent = `${greeting}, ${currentUser.name}! 👋`;
   }
+  
+  // Update sidebar user name
+  const sidebarUserName = document.querySelector('.user-name');
+  if (sidebarUserName) {
+    sidebarUserName.textContent = currentUser.name.split(' ')[0];
+  }
+}
+
+function renderCrownHistory() {
+  const crownHistoryContainer = document.getElementById('crownHistory');
+  if (!crownHistoryContainer) return;
+
+  crownHistoryContainer.innerHTML = crownHistory.map(entry => `
+    <div class="crown-entry">
+      <div class="crown-entry-info">
+        <h4>${entry.reason}</h4>
+        <p>${entry.date}</p>
+      </div>
+      <div class="crown-entry-value">
+        <span>+${entry.crowns} 👑</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderBadges() {
+  const badgesContainer = document.getElementById('badgesGrid');
+  if (!badgesContainer) return;
+
+  badgesContainer.innerHTML = badges.map(badge => `
+    <div class="badge-item ${badge.unlocked ? 'unlocked' : 'locked'}">
+      <div class="badge-content">
+        <div class="badge-icon">${badge.icon}</div>
+        <div class="badge-info">
+          <h4>${badge.name}</h4>
+          <p>${badge.description}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderChatMessages() {
+  const chatContainer = document.getElementById('chatMessages');
+  if (!chatContainer) return;
+
+  chatContainer.innerHTML = chatMessages.map(msg => `
+    <div class="chat-message">
+      <div class="message-avatar">
+        <span>${msg.avatar}</span>
+      </div>
+      <div class="message-content">
+        <p class="message-author">${msg.author}</p>
+        <p class="message-text">${msg.message}</p>
+        <p class="message-time">${msg.time}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function sendChatMessage() {
+  const chatInput = document.getElementById('chatInput');
+  const message = chatInput.value.trim();
+  
+  if (message) {
+    const newMessage = {
+      id: chatMessages.length + 1,
+      author: currentUser.name,
+      avatar: currentUser.name.split(' ').map(n => n[0]).join(''),
+      message: message,
+      time: 'Just now'
+    };
+    
+    chatMessages.push(newMessage);
+    renderChatMessages();
+    chatInput.value = '';
+    
+    // Auto-scroll to bottom
+    const chatContainer = document.getElementById('chatMessages');
+    if (chatContainer) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+    
+    // Simulate response after 2 seconds
+    setTimeout(() => {
+      const responses = [
+        "Thanks for the update!",
+        "I'll look into that.",
+        "Great work!",
+        "Let me know if you need anything else.",
+        "Perfect timing!"
+      ];
+      
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      const responseMessage = {
+        id: chatMessages.length + 1,
+        author: "Team Bot",
+        avatar: "TB",
+        message: randomResponse,
+        time: 'Just now'
+      };
+      
+      chatMessages.push(responseMessage);
+      renderChatMessages();
+      
+      if (chatContainer) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      }
+    }, 2000);
+  }
+}
+
+function handleDarkModeToggle() {
+  const checkbox = document.getElementById('darkModeCheckbox');
+  const body = document.body;
+  
+  if (checkbox && checkbox.checked) {
+    body.classList.add('dark-mode');
+    localStorage.setItem('taskCrown_theme', 'dark');
+    showNotification('Dark mode enabled', 'info');
+  } else if (checkbox) {
+    body.classList.remove('dark-mode');
+    localStorage.setItem('taskCrown_theme', 'light');
+    showNotification('Light mode enabled', 'info');
+  }
+}
+
+// Function to set up dark mode toggle event listener
+function setupDarkModeToggle() {
+  const checkbox = document.getElementById('darkModeCheckbox');
+  const toggleContainer = document.getElementById('darkModeToggle');
+  
+  if (checkbox) {
+    // Remove any existing event listeners to prevent duplicates
+    checkbox.removeEventListener('change', handleDarkModeToggle);
+    // Add the event listener
+    checkbox.addEventListener('change', handleDarkModeToggle);
+    console.log('Dark mode toggle event listener attached');
+  }
+  
+  // Also add click event to the toggle container as backup
+  if (toggleContainer) {
+    toggleContainer.removeEventListener('click', handleToggleClick);
+    toggleContainer.addEventListener('click', handleToggleClick);
+    console.log('Dark mode toggle container click listener attached');
+  }
+}
+
+// Backup click handler for the toggle container
+function handleToggleClick() {
+  const checkbox = document.getElementById('darkModeCheckbox');
+  if (checkbox) {
+    checkbox.checked = !checkbox.checked;
+    handleDarkModeToggle();
+  }
+}
+
+function initializeDarkMode() {
+  const savedTheme = localStorage.getItem('taskCrown_theme') || 'light';
+  
+  // Apply theme to body immediately
+  if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+  
+  // Try to find and update the checkbox
+  const checkbox = document.getElementById('darkModeCheckbox');
+  if (checkbox) {
+    checkbox.checked = savedTheme === 'dark';
+  }
+  
+  // Set up the event listener
+  setupDarkModeToggle();
+}
+
+function saveSettings() {
+  const name = document.getElementById('profileName').value;
+  const designation = document.getElementById('profileDesignation').value;
+  const department = document.getElementById('profileDepartment').value;
+  const email = document.getElementById('profileEmail').value;
+  
+  // Update current user data
+  currentUser.name = name;
+  currentUser.designation = designation;
+  currentUser.department = department;
+  
+  // Update display
+  updateGreeting();
+  
+  // Update sidebar user info
+  const userNameElement = document.querySelector('.user-name');
+  if (userNameElement) {
+    userNameElement.textContent = name.split(' ')[0];
+  }
+  
+  // Update profile info
+  const profileNameElement = document.querySelector('.profile-name');
+  if (profileNameElement) {
+    profileNameElement.textContent = name;
+  }
+  
+  const profileRoleElement = document.querySelector('.profile-role');
+  if (profileRoleElement) {
+    profileRoleElement.textContent = designation;
+  }
+  
+  const profileDepartmentElement = document.querySelector('.profile-department');
+  if (profileDepartmentElement) {
+    profileDepartmentElement.textContent = department + ' Department';
+  }
+  
+  showNotification('Settings saved successfully!', 'success');
+}
+
+// Enhanced event listeners
+function setupEnhancedEventListeners() {
+  // Chat functionality
+  const chatSendBtn = document.getElementById('chatSendBtn');
+  const chatInput = document.getElementById('chatInput');
+  
+  if (chatSendBtn) {
+    chatSendBtn.addEventListener('click', sendChatMessage);
+  }
+  
+  if (chatInput) {
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendChatMessage();
+      }
+    });
+  }
+  
+  // Dark mode toggle - this is now handled in initializeDarkMode()
+  // The event listener is added there to ensure it's properly set up
+  
+  // Save settings
+  const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+  if (saveSettingsBtn) {
+    saveSettingsBtn.addEventListener('click', saveSettings);
+  }
+  
+  // Enhanced help form
+  const helpForm = document.getElementById('helpForm');
+  if (helpForm) {
+    helpForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const taskSelect = document.getElementById('helpTaskSelect');
+      const email = document.getElementById('colleagueEmail');
+      const message = document.getElementById('helpMessage');
+      
+      if (taskSelect.value && email.value && message.value) {
+        showNotification('Help request sent successfully!', 'success');
+        helpForm.reset();
+      } else {
+        showNotification('Please fill in all fields', 'error');
+      }
+    });
+  }
+  
+  // Mark all notifications as read
+  const markAllReadBtn = document.getElementById('markAllReadBtn');
+  if (markAllReadBtn) {
+    markAllReadBtn.addEventListener('click', markAllNotificationsAsRead);
+  }
+  
+  // Filter options
+  document.querySelectorAll('.filter-option').forEach(option => {
+    option.addEventListener('click', (e) => {
+      const filter = e.target.dataset.filter;
+      setFilter(filter);
+    });
+  });
+  
+  // Quick action buttons
+  document.querySelectorAll('.quick-action-btn').forEach(btn => {
+    btn.addEventListener('click', handleQuickAction);
+  });
 }
 
 // Clock Setup
@@ -291,7 +720,9 @@ function startTask(taskId) {
   const task = tasks.find(t => t.id === taskId);
   if (task) {
     task.status = 'In Progress';
+    task.progress = Math.min(task.progress + 25, 100);
     renderTasks();
+    updateStats();
     showNotification(`Started task: ${task.name}`, 'success');
   }
 }
@@ -302,7 +733,14 @@ function completeTask(taskId) {
     task.status = 'Completed';
     task.progress = 100;
     renderTasks();
-    showNotification(`Completed task: ${task.name}`, 'success');
+    updateStats();
+    
+    // Award crown for completing task
+    currentUser.crowns += 1;
+    currentUser.monthlyCrowns += 1;
+    updateStats();
+    
+    showNotification(`Completed task: ${task.name} and earned 1 crown! 👑`, 'success');
   }
 }
 
@@ -317,18 +755,31 @@ function requestHelp(taskId) {
 
 // Filter Management
 function toggleFilterMenu() {
-  filterMenu.classList.toggle('open');
-  filterBtn.parentElement.classList.toggle('open');
+  const filterMenu = document.getElementById('filterMenu');
+  const filterBtn = document.getElementById('filterBtn');
+  
+  if (filterMenu && filterBtn) {
+    filterMenu.classList.toggle('open');
+    filterBtn.parentElement.classList.toggle('open');
+  }
 }
 
 function closeFilterMenu() {
-  filterMenu.classList.remove('open');
-  filterBtn.parentElement.classList.remove('open');
+  const filterMenu = document.getElementById('filterMenu');
+  const filterBtn = document.getElementById('filterBtn');
+  
+  if (filterMenu && filterBtn) {
+    filterMenu.classList.remove('open');
+    filterBtn.parentElement.classList.remove('open');
+  }
 }
 
 function setFilter(filter) {
   currentFilter = filter;
-  filterBtn.querySelector('span').textContent = `Filter: ${filter}`;
+  const filterBtn = document.getElementById('filterBtn');
+  if (filterBtn) {
+    filterBtn.querySelector('span').textContent = `Filter: ${filter}`;
+  }
   closeFilterMenu();
   renderTasks();
 }
@@ -350,9 +801,7 @@ function renderTop3() {
       <p class="leaderboard-department">${employee.department}</p>
       <div class="leaderboard-stats">
         <div class="crown-stat">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
+          <span style="font-size: 1.2em;">👑</span>
           <span class="font-bold">${employee.crowns}</span>
         </div>
         <p class="text-sm">${employee.completedTasks} tasks completed</p>
@@ -372,9 +821,7 @@ function renderFullLeaderboard() {
       <td>${employee.department}</td>
       <td>
         <div class="crown-stat">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
+          <span style="font-size: 1.1em;">👑</span>
           ${employee.crowns}
         </div>
       </td>
@@ -396,6 +843,13 @@ function getRankIcon(rank) {
 function renderCrownStats() {
   renderCrownHistory();
   renderBadges();
+  
+  // Update crown stats display
+  const totalCrownsElement = document.getElementById('totalCrowns');
+  const monthlyCrownsElement = document.getElementById('monthlyCrowns');
+  
+  if (totalCrownsElement) totalCrownsElement.textContent = currentUser.crowns;
+  if (monthlyCrownsElement) monthlyCrownsElement.textContent = currentUser.monthlyCrowns;
 }
 
 function renderCrownHistory() {
@@ -405,13 +859,11 @@ function renderCrownHistory() {
   historyContainer.innerHTML = crownHistory.map(entry => `
     <div class="crown-entry">
       <div class="crown-entry-info">
-        <h4>${entry.week}</h4>
-        <p>${entry.reason}</p>
+        <h4>${entry.reason}</h4>
+        <p>${entry.date}</p>
       </div>
       <div class="crown-entry-value">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
+        <span style="font-size: 1.2em;">👑</span>
         <span class="font-bold">+${entry.crowns}</span>
       </div>
     </div>
@@ -425,9 +877,7 @@ function renderBadges() {
   badgesContainer.innerHTML = badges.map(badge => `
     <div class="badge-item ${badge.unlocked ? 'unlocked' : 'locked'}">
       <div class="badge-content">
-        <svg class="badge-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
+        <span class="badge-icon" style="font-size: 1.5em;">${badge.icon}</span>
         <div class="badge-info">
           <h4>${badge.name}</h4>
           <p>${badge.description}</p>
@@ -496,12 +946,13 @@ function renderTeammates() {
         <div class="teammate-details">
           <h4>${teammate.name}</h4>
           <p>${teammate.department}</p>
+          <small>${teammate.expertise}</small>
         </div>
       </div>
       <div class="teammate-status">
         <div class="status-indicator ${teammate.available ? 'online' : 'offline'}"></div>
         <button class="btn btn-outline btn-sm" ${!teammate.available ? 'disabled' : ''}>
-          Invite
+          ${teammate.available ? 'Invite' : 'Unavailable'}
         </button>
       </div>
     </div>
@@ -513,19 +964,21 @@ function handleHelpRequest(e) {
   e.preventDefault();
   
   const taskSelect = document.getElementById('helpTaskSelect');
+  const email = document.getElementById('colleagueEmail');
   const message = document.getElementById('helpMessage');
   
-  if (!taskSelect.value || !message.value.trim()) {
+  if (!taskSelect.value || !email.value.trim() || !message.value.trim()) {
     showNotification('Please fill in all fields', 'error');
     return;
   }
 
   const selectedTask = tasks.find(t => t.id === taskSelect.value);
   
-  showNotification(`Help request sent for: ${selectedTask.name}`, 'success');
+  showNotification(`Help request sent to ${email.value} for: ${selectedTask.name}`, 'success');
   
   // Reset form
   taskSelect.value = '';
+  email.value = '';
   message.value = '';
 }
 
@@ -539,11 +992,13 @@ function renderNotificationPreferences() {
     crowns: true,
     help: false,
     admin: true,
+    reminders: true,
+    achievements: true,
   };
 
   container.innerHTML = Object.entries(preferences).map(([key, value]) => `
     <div class="preference-item">
-      <label class="preference-label">${key} notifications</label>
+      <label class="preference-label">${key.charAt(0).toUpperCase() + key.slice(1)} notifications</label>
       <button class="btn ${value ? 'btn-primary' : 'btn-outline'} btn-sm" onclick="togglePreference('${key}')">
         ${value ? 'On' : 'Off'}
       </button>
@@ -553,7 +1008,15 @@ function renderNotificationPreferences() {
 
 function togglePreference(key) {
   // This would typically update a backend
-  showNotification(`${key} notifications ${Math.random() > 0.5 ? 'enabled' : 'disabled'}`, 'info');
+  const isEnabled = Math.random() > 0.5;
+  showNotification(`${key.charAt(0).toUpperCase() + key.slice(1)} notifications ${isEnabled ? 'enabled' : 'disabled'}`, 'info');
+  
+  // Update the button text
+  const button = event.target;
+  if (button) {
+    button.textContent = isEnabled ? 'On' : 'Off';
+    button.className = `btn ${isEnabled ? 'btn-primary' : 'btn-outline'} btn-sm`;
+  }
 }
 
 // Theme Management
@@ -563,6 +1026,34 @@ function handleThemeChange(e) {
   showNotification(`Theme changed to ${theme}`, 'info');
 }
 
+// Enhanced theme management
+function initializeTheme() {
+  const savedTheme = localStorage.getItem('taskCrown_theme') || 'light';
+  const themeSelect = document.getElementById('themeSelect');
+  if (themeSelect) {
+    themeSelect.value = savedTheme;
+    applyTheme(savedTheme);
+  }
+  
+  // Initialize dark mode checkbox
+  initializeDarkMode();
+}
+
+function applyTheme(theme) {
+  const body = document.body;
+  const checkbox = document.getElementById('darkModeCheckbox');
+  
+  if (theme === 'dark') {
+    body.classList.add('dark-mode');
+    if (checkbox) checkbox.checked = true;
+  } else {
+    body.classList.remove('dark-mode');
+    if (checkbox) checkbox.checked = false;
+  }
+  
+  localStorage.setItem('taskCrown_theme', theme);
+}
+
 // Quick Actions
 function handleQuickAction(e) {
   const action = e.currentTarget.querySelector('span').textContent;
@@ -570,21 +1061,28 @@ function handleQuickAction(e) {
   switch (action) {
     case 'Request Help':
       showPage('help');
+      showNotification('Help page opened', 'info');
       break;
     case 'View Leaderboard':
       showPage('datapool');
+      showNotification('Leaderboard opened', 'info');
       break;
     case 'New Task Notification':
       showPage('notifications');
+      showNotification('Notifications opened', 'info');
       break;
+    default:
+      showNotification('Action not implemented yet', 'warning');
   }
 }
 
 // Logout
 function handleLogout() {
+  // Clear all local storage
   localStorage.removeItem('taskCrown_loggedIn');
   localStorage.removeItem('taskCrown_role');
   localStorage.removeItem('taskCrown_googleLogin');
+  localStorage.removeItem('taskCrown_theme');
   
   showNotification('Logging out...', 'info');
   
@@ -605,50 +1103,8 @@ function showNotification(message, type = 'info') {
   const notification = document.createElement('div');
   notification.className = `notification-toast notification-${type}`;
   notification.innerHTML = `
-    <div class="notification-content">
-      <span class="notification-message">${message}</span>
-      <button class="notification-close">&times;</button>
-    </div>
-  `;
-
-  // Add styles
-  const colors = {
-    success: '#10b981',
-    error: '#ef4444',
-    info: '#fbbf24',
-    warning: '#f59e0b'
-  };
-
-  notification.style.cssText = `
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    background: ${colors[type] || colors.info};
-    color: white;
-    padding: 1rem 1.5rem;
-    border-radius: 0.75rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    max-width: 400px;
-  `;
-
-  notification.querySelector('.notification-content').style.cssText = `
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-  `;
-
-  notification.querySelector('.notification-close').style.cssText = `
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.25rem;
-    cursor: pointer;
-    padding: 0;
-    line-height: 1;
+    <span class="notification-message">${message}</span>
+    <button class="notification-close">&times;</button>
   `;
 
   // Add to page
@@ -695,11 +1151,75 @@ function populateTaskSelect() {
     option.textContent = task.name;
     taskSelect.appendChild(option);
   });
+  
+  // Add some additional task options
+  const additionalTasks = [
+    { id: 'q4-report', name: 'Complete Q4 Report' },
+    { id: 'marketing-campaign', name: 'Review Marketing Campaign' },
+    { id: 'database-optimization', name: 'Database Optimization' },
+    { id: 'api-documentation', name: 'API Documentation Update' }
+  ];
+  
+  additionalTasks.forEach(task => {
+    const option = document.createElement('option');
+    option.value = task.id;
+    option.textContent = task.name;
+    taskSelect.appendChild(option);
+  });
 }
 
-// Initialize task select when help page is shown
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize enhanced features
+function initializeEnhancedFeatures() {
+  updateStats();
+  updateGreeting();
+  renderCrownHistory();
+  renderBadges();
+  renderChatMessages();
+  initializeDarkMode(); // This now includes the event listener setup
+  initializeTheme();
+  setupEnhancedEventListeners();
+}
+
+// Enhanced initialization
+document.addEventListener('DOMContentLoaded', function() {
+  // Check authentication
+  const isLoggedIn = localStorage.getItem('taskCrown_loggedIn');
+  if (!isLoggedIn) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  // Initialize DOM elements
+  initializeDOMElements();
+  
+  // Initialize all features
+  setupEventListeners();
+  initializeEnhancedFeatures();
+  
+  // Show home page by default
+  showPage('home');
+  
+  // Setup clock
+  setupClock();
+  
+  // Populate task select for help form
   populateTaskSelect();
+  
+  // Initialize all page-specific content
+  renderTasks();
+  renderLeaderboard();
+  renderNotifications();
+  renderTeammates();
+  renderNotificationPreferences();
+  
+  // Try to set up dark mode toggle multiple times to ensure it works
+  setupDarkModeToggle();
+  setTimeout(() => setupDarkModeToggle(), 500);
+  setTimeout(() => setupDarkModeToggle(), 1000);
+  
+  console.log('🎉 TaskCrown Dashboard Enhanced Edition Loaded!');
+  console.log('✨ Features: Real-time stats, Chat system, Dark mode, Enhanced crown tracking');
+  console.log('🚀 Shortcuts: Press H for help, S for settings, N for notifications');
 });
 
 // Console welcome message
