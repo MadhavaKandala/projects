@@ -5,10 +5,14 @@
 
 body {
   margin: 0;
-  font-family: 'Inter', Arial, sans-serif;
-  background: linear-gradient(135deg, #1a1d3a 0%, #2d1b4e 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
   min-height: 100vh;
-  color: #fff;
+  color: #ffffff;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 /* Navigation */
@@ -17,9 +21,10 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-left .logo {
@@ -35,7 +40,11 @@ body {
 .logo-text {
   font-size: 1.4rem;
   font-weight: 700;
-  color: #fff;
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .navbar-center {
@@ -45,18 +54,19 @@ body {
 
 .nav-link {
   text-decoration: none;
-  color: #98b5ff;
+  color: #e2e8f0;
   font-weight: 500;
   font-size: 1rem;
   padding: 8px 16px;
   border-radius: 8px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .nav-link:hover,
 .nav-link.active {
-  color: #fff;
-  background: rgba(152, 181, 255, 0.1);
+  color: #ffffff;
+  background: rgba(59, 130, 246, 0.1);
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.2);
 }
 
 .navbar-right .profile-btn {
@@ -220,19 +230,22 @@ body {
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #5e7bfa 0%, #a66cff 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
 .action-btn.stuck-mode {
-  background: linear-gradient(135deg, #ff9500 0%, #ff6b35 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
 }
 
 .action-btn.secondary {
   background: rgba(255, 255, 255, 0.1);
-  color: #98b5ff;
-  border: 1px solid rgba(152, 181, 255, 0.3);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .btn-icon {
@@ -251,15 +264,17 @@ body {
   align-items: flex-start;
   gap: 16px;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(15px);
 }
 
 .task-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .task-checkbox {
@@ -270,16 +285,16 @@ body {
   appearance: none;
   width: 20px;
   height: 20px;
-  border: 2px solid #98b5ff;
+  border: 2px solid #3b82f6;
   border-radius: 4px;
   cursor: pointer;
   position: relative;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .task-checkbox input[type="checkbox"]:checked {
-  background: #5e7bfa;
-  border-color: #5e7bfa;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  border-color: #3b82f6;
 }
 
 .task-checkbox input[type="checkbox"]:checked::after {
@@ -332,18 +347,21 @@ body {
 }
 
 .priority-badge.high {
-  background: rgba(255, 71, 87, 0.2);
-  color: #ff4757;
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .priority-badge.medium {
-  background: rgba(255, 149, 0, 0.2);
-  color: #ff9500;
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .priority-badge.low {
-  background: rgba(63, 201, 126, 0.2);
-  color: #3fc97e;
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .due-time {
@@ -419,9 +437,10 @@ body {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #5e7bfa, #a66cff);
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
   border-radius: 4px;
   transition: width 0.3s ease;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
 .progress-value {

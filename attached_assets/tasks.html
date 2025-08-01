@@ -964,10 +964,14 @@
                             <span class="nav-icon">🔔</span>
                             <span>Notifications</span>
                         </a>
-                        <a href="settings.html" class="nav-item">
-                            <span class="nav-icon">⚙️</span>
-                            <span>Settings</span>
-                        </a>
+                                            <a href="settings.html" class="nav-item">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="nav-item" id="logout-btn" onclick="logout()">
+                        <span class="nav-icon">🚪</span>
+                        <span>Logout</span>
+                    </a>
                     </div>
             </nav>
         </aside>
@@ -1518,6 +1522,24 @@
             e.target.classList.remove('dragging');
             document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
         });
+
+        // Logout function
+        function logout() {
+            const confirmLogout = confirm('Are you sure you want to logout?');
+            if (confirmLogout) {
+                // Clear any stored user data
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userSettings');
+                
+                // Show logout message
+                showToast('Logging out...', 'info');
+                
+                // Redirect to home page after a short delay
+                setTimeout(() => {
+                    window.location.href = '../home.html';
+                }, 1000);
+            }
+        }
     </script>
     <script src="theme-utils.js"></script>
     <script src="chatbot-config.js"></script>

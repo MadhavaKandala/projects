@@ -892,6 +892,10 @@
                             <span class="nav-icon">⚙️</span>
                             <span>Settings</span>
                         </a>
+                        <a href="#" class="nav-item" id="logout-btn" onclick="logout()">
+                            <span class="nav-icon">🚪</span>
+                            <span>Logout</span>
+                        </a>
                     </div>
             </nav>
         </aside>
@@ -1804,15 +1808,47 @@
                 level: 'Gold',
                 productivity: 92,
                 tasksCompleted: 156,
-                streak: 12
+                streak: 12,
+                department: 'Engineering',
+                joinDate: '2023-01-15',
+                lastActive: new Date().toISOString()
             },
             quickStats: {
                 tasksToday: 24,
                 collaborations: 8,
                 crownsEarned: 47,
-                focusHours: 6.5
+                focusHours: 6.5,
+                projectsActive: 3,
+                meetingsToday: 2,
+                codeReviews: 5,
+                bugsFixed: 12
             },
-            isSidebarCollapsed: false
+            isSidebarCollapsed: false,
+            realTimeData: {
+                teamMembers: [
+                    { name: 'Riya Sharma', role: 'UI/UX Designer', status: 'online', avatar: '👩‍🎨', productivity: 88 },
+                    { name: 'Arjun Singh', role: 'DevOps Engineer', status: 'busy', avatar: '👨‍🔧', productivity: 95 },
+                    { name: 'Priya Patel', role: 'Frontend Developer', status: 'online', avatar: '👩‍💻', productivity: 91 },
+                    { name: 'Amit Kumar', role: 'Backend Developer', status: 'away', avatar: '👨‍💻', productivity: 87 }
+                ],
+                recentProjects: [
+                    { name: 'E-commerce Platform', progress: 75, deadline: '2024-02-15', team: 6 },
+                    { name: 'Mobile App Redesign', progress: 45, deadline: '2024-03-01', team: 4 },
+                    { name: 'API Integration', progress: 90, deadline: '2024-01-30', team: 3 }
+                ],
+                upcomingDeadlines: [
+                    { task: 'Database Optimization', due: '2024-01-25', priority: 'high' },
+                    { task: 'Security Audit', due: '2024-01-28', priority: 'medium' },
+                    { task: 'User Testing', due: '2024-02-01', priority: 'low' }
+                ],
+                performanceMetrics: {
+                    weekly: { tasks: 18, quality: 94, collaboration: 89 },
+                    monthly: { tasks: 67, quality: 91, collaboration: 87 },
+                    quarterly: { tasks: 189, quality: 93, collaboration: 90 }
+                }
+            },
+            notifications: [],
+            activities: []
         };
 
         // Enhanced Quick Actions
@@ -1951,12 +1987,18 @@
                     animation: slideIn 0.3s ease-out;
                 `;
                 
+                const timestamp = new Date().toISOString();
+                
                 activityElement.innerHTML = `
                     <div style="display: flex; align-items: center; gap: 0.75rem;">
                         <span style="font-size: 1.25rem;">${activity.icon}</span>
                         <div style="flex: 1;">
                             <div style="font-weight: 500; font-size: 0.875rem;">${activity.title}</div>
-                            <div style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">${activity.time}</div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: hsl(var(--muted-foreground));">
+                                <span class="time-ago" data-timestamp="${timestamp}">Just now</span>
+                                <span>•</span>
+                                <span class="current-time" style="font-size: 0.7rem;"></span>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1967,6 +2009,374 @@
                 const activities = activityContainer.querySelectorAll('.activity-item');
                 if (activities.length > 10) {
                     activities[activities.length - 1].remove();
+                }
+            }
+        }
+
+        // Dynamic Chart Creation
+        function createProgressChart(containerId, data, options = {}) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = container.offsetWidth;
+            canvas.height = 100;
+            container.innerHTML = '';
+            container.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Draw progress bar
+            const progress = data.progress || 0;
+            const barHeight = 8;
+            const barY = height / 2 - barHeight / 2;
+            
+            // Background
+            ctx.fillStyle = 'hsl(var(--muted))';
+            ctx.fillRect(0, barY, width, barHeight);
+            
+            // Progress
+            const progressWidth = (progress / 100) * width;
+            ctx.fillStyle = 'hsl(var(--primary))';
+            ctx.fillRect(0, barY, progressWidth, barHeight);
+            
+            // Add gradient effect
+            const gradient = ctx.createLinearGradient(0, 0, progressWidth, 0);
+            gradient.addColorStop(0, 'hsl(var(--primary))');
+            gradient.addColorStop(1, 'hsl(var(--accent))');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, barY, progressWidth, barHeight);
+            
+            // Progress text
+            ctx.fillStyle = 'hsl(var(--foreground))';
+            ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${progress}%`, width / 2, height - 10);
+        }
+
+        // Real-time Data Updates
+        function updateRealTimeData() {
+            // Update team member statuses
+            DashboardState.realTimeData.teamMembers.forEach(member => {
+                const statuses = ['online', 'busy', 'away', 'offline'];
+                if (Math.random() < 0.1) { // 10% chance to change status
+                    member.status = statuses[Math.floor(Math.random() * statuses.length)];
+                }
+                member.productivity += (Math.random() - 0.5) * 2; // Small productivity fluctuation
+                member.productivity = Math.max(70, Math.min(100, member.productivity));
+            });
+            
+            // Update project progress
+            DashboardState.realTimeData.recentProjects.forEach(project => {
+                if (Math.random() < 0.05) { // 5% chance to update progress
+                    project.progress += Math.random() * 2;
+                    project.progress = Math.min(100, project.progress);
+                }
+            });
+            
+            // Update performance metrics
+            Object.keys(DashboardState.realTimeData.performanceMetrics).forEach(period => {
+                const metrics = DashboardState.realTimeData.performanceMetrics[period];
+                metrics.tasks += Math.floor(Math.random() * 2);
+                metrics.quality += (Math.random() - 0.5) * 1;
+                metrics.quality = Math.max(85, Math.min(100, metrics.quality));
+                metrics.collaboration += (Math.random() - 0.5) * 1;
+                metrics.collaboration = Math.max(80, Math.min(100, metrics.collaboration));
+            });
+            
+            // Update quick stats
+            DashboardState.quickStats.tasksToday += Math.floor(Math.random() * 2);
+            DashboardState.quickStats.collaborations += Math.floor(Math.random() * 1);
+            DashboardState.quickStats.crownsEarned += Math.floor(Math.random() * 1);
+            DashboardState.quickStats.focusHours += (Math.random() * 0.1);
+            
+            renderDynamicContent();
+        }
+
+        // Dynamic Content Rendering
+        function renderDynamicContent() {
+            // Update team members section
+            const teamContainer = document.querySelector('.team-members-list');
+            if (teamContainer) {
+                teamContainer.innerHTML = DashboardState.realTimeData.teamMembers.map(member => `
+                    <div class="team-member" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border-radius: calc(var(--radius) - 2px); background: hsl(var(--card)); border: 1px solid hsl(var(--border)); margin-bottom: 0.5rem;">
+                        <div style="position: relative;">
+                            <div style="width: 2.5rem; height: 2.5rem; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                                ${member.avatar}
+                            </div>
+                            <div style="position: absolute; bottom: 0; right: 0; width: 0.75rem; height: 0.75rem; border-radius: 50%; background: ${member.status === 'online' ? 'hsl(var(--success))' : member.status === 'busy' ? 'hsl(var(--warning))' : member.status === 'away' ? 'hsl(var(--danger))' : 'hsl(var(--muted))'}; border: 2px solid hsl(var(--card));"></div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500; font-size: 0.875rem;">${member.name}</div>
+                            <div style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">${member.role}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.875rem; font-weight: 500; color: hsl(var(--primary));">${Math.round(member.productivity)}%</div>
+                            <div style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">Productivity</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Update projects section
+            const projectsContainer = document.querySelector('.projects-list');
+            if (projectsContainer) {
+                projectsContainer.innerHTML = DashboardState.realTimeData.recentProjects.map(project => `
+                    <div class="project-item" style="padding: 1rem; border-radius: calc(var(--radius) - 2px); background: hsl(var(--card)); border: 1px solid hsl(var(--border)); margin-bottom: 0.75rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <div style="font-weight: 500; font-size: 0.875rem;">${project.name}</div>
+                            <div style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">${project.team} members</div>
+                        </div>
+                        <div style="margin-bottom: 0.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem;">
+                                <span style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">Progress</span>
+                                <span style="font-size: 0.75rem; font-weight: 500;">${Math.round(project.progress)}%</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background: hsl(var(--muted)); border-radius: 3px; overflow: hidden;">
+                                <div style="width: ${project.progress}%; height: 100%; background: var(--gradient-primary); border-radius: 3px; transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">
+                            Due: ${new Date(project.deadline).toLocaleDateString()}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            // Update deadlines section
+            const deadlinesContainer = document.querySelector('.deadlines-list');
+            if (deadlinesContainer) {
+                deadlinesContainer.innerHTML = DashboardState.realTimeData.upcomingDeadlines.map(deadline => {
+                    const daysLeft = Math.ceil((new Date(deadline.due) - new Date()) / (1000 * 60 * 60 * 24));
+                    const priorityColor = deadline.priority === 'high' ? 'hsl(var(--danger))' : 
+                                        deadline.priority === 'medium' ? 'hsl(var(--warning))' : 'hsl(var(--success))';
+                    
+                    return `
+                        <div class="deadline-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border-radius: calc(var(--radius) - 2px); background: hsl(var(--card)); border-left: 4px solid ${priorityColor}; margin-bottom: 0.5rem;">
+                            <div style="width: 2rem; height: 2rem; background: ${priorityColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; color: white;">
+                                ⏰
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 500; font-size: 0.875rem;">${deadline.task}</div>
+                                <div style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">Due: ${new Date(deadline.due).toLocaleDateString()}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 0.875rem; font-weight: 500; color: ${priorityColor};">${daysLeft}d</div>
+                                <div style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">left</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            // Update performance metrics
+            updatePerformanceCharts();
+        }
+
+        // Performance Charts
+        function updatePerformanceCharts() {
+            const metrics = DashboardState.realTimeData.performanceMetrics;
+            
+            // Create weekly performance chart
+            createPerformanceChart('weeklyChart', {
+                tasks: metrics.weekly.tasks,
+                quality: metrics.weekly.quality,
+                collaboration: metrics.weekly.collaboration
+            });
+            
+            // Create monthly performance chart
+            createPerformanceChart('monthlyChart', {
+                tasks: metrics.monthly.tasks,
+                quality: metrics.monthly.quality,
+                collaboration: metrics.monthly.collaboration
+            });
+        }
+
+        function createPerformanceChart(containerId, data) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = container.offsetWidth;
+            canvas.height = 120;
+            container.innerHTML = '';
+            container.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Draw radar chart
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = Math.min(centerX, centerY) - 20;
+            
+            // Draw background circles
+            for (let i = 1; i <= 5; i++) {
+                ctx.strokeStyle = 'hsl(var(--muted))';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, (radius / 5) * i, 0, 2 * Math.PI);
+                ctx.stroke();
+            }
+            
+            // Draw performance polygon
+            const points = [
+                { x: centerX, y: centerY - (data.tasks / 100) * radius }, // Tasks
+                { x: centerX + (data.quality / 100) * radius * 0.866, y: centerY - (data.quality / 100) * radius * 0.5 }, // Quality
+                { x: centerX + (data.collaboration / 100) * radius * 0.866, y: centerY + (data.collaboration / 100) * radius * 0.5 }, // Collaboration
+                { x: centerX, y: centerY + (data.tasks / 100) * radius * 0.5 }, // Bottom
+                { x: centerX - (data.quality / 100) * radius * 0.866, y: centerY + (data.quality / 100) * radius * 0.5 }, // Left
+                { x: centerX - (data.collaboration / 100) * radius * 0.866, y: centerY - (data.collaboration / 100) * radius * 0.5 } // Top-left
+            ];
+            
+            // Fill polygon
+            ctx.fillStyle = 'hsl(var(--primary) / 0.2)';
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            points.forEach(point => ctx.lineTo(point.x, point.y));
+            ctx.closePath();
+            ctx.fill();
+            
+            // Stroke polygon
+            ctx.strokeStyle = 'hsl(var(--primary))';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(points[0].x, points[0].y);
+            points.forEach(point => ctx.lineTo(point.x, point.y));
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        // Dynamic Weather and Time Integration
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Update all time elements
+            const timeElements = document.querySelectorAll('.current-time');
+            timeElements.forEach(element => {
+                element.textContent = now.toLocaleTimeString('en-US', {
+                    hour12: true,
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            });
+            
+            // Update all date elements
+            const dateElements = document.querySelectorAll('.current-date');
+            dateElements.forEach(element => {
+                element.textContent = now.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            });
+            
+            // Update short date elements
+            const shortDateElements = document.querySelectorAll('.current-date-short');
+            shortDateElements.forEach(element => {
+                element.textContent = now.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+            });
+            
+            // Update time ago elements
+            const timeAgoElements = document.querySelectorAll('.time-ago');
+            timeAgoElements.forEach(element => {
+                const timestamp = element.getAttribute('data-timestamp');
+                if (timestamp) {
+                    const timeDiff = now - new Date(timestamp);
+                    const minutes = Math.floor(timeDiff / (1000 * 60));
+                    const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+                    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                    
+                    if (days > 0) {
+                        element.textContent = `${days}d ago`;
+                    } else if (hours > 0) {
+                        element.textContent = `${hours}h ago`;
+                    } else if (minutes > 0) {
+                        element.textContent = `${minutes}m ago`;
+                    } else {
+                        element.textContent = 'Just now';
+                    }
+                }
+            });
+            
+                    // Update greeting based on time
+        updateGreeting(now);
+        
+        // Update greeting card
+        updateGreetingCard(now);
+        }
+        
+        function updateGreeting(now) {
+            const hour = now.getHours();
+            let greeting = '';
+            
+            if (hour < 12) {
+                greeting = 'Good Morning';
+            } else if (hour < 17) {
+                greeting = 'Good Afternoon';
+            } else {
+                greeting = 'Good Evening';
+            }
+            
+            const greetingElements = document.querySelectorAll('.time-greeting');
+            greetingElements.forEach(element => {
+                element.textContent = greeting;
+            });
+        }
+        
+        function updateGreetingCard(now) {
+            const greetingCard = document.querySelector('.greeting-card');
+            if (greetingCard) {
+                const greetingContent = greetingCard.querySelector('.greeting-content');
+                if (greetingContent) {
+                    const hour = now.getHours();
+                    let greeting = '';
+                    let emoji = '';
+                    
+                    if (hour < 12) {
+                        greeting = 'Good Morning';
+                        emoji = '🌅';
+                    } else if (hour < 17) {
+                        greeting = 'Good Afternoon';
+                        emoji = '☀️';
+                    } else {
+                        greeting = 'Good Evening';
+                        emoji = '🌙';
+                    }
+                    
+                    // Update or add time display to greeting card
+                    let timeDisplay = greetingCard.querySelector('.greeting-time');
+                    if (!timeDisplay) {
+                        timeDisplay = document.createElement('div');
+                        timeDisplay.className = 'greeting-time';
+                        timeDisplay.style.cssText = `
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                            font-size: 0.875rem;
+                            opacity: 0.9;
+                            margin-top: 0.5rem;
+                        `;
+                        greetingContent.appendChild(timeDisplay);
+                    }
+                    
+                    timeDisplay.innerHTML = `
+                        <span>${emoji}</span>
+                        <span class="time-greeting">${greeting}</span>
+                        <span>•</span>
+                        <span class="current-time"></span>
+                        <span>•</span>
+                        <span class="current-date-short"></span>
+                    `;
                 }
             }
         }
@@ -1999,26 +2409,229 @@
                 }
             });
             
+            // Initialize dynamic content
+            renderDynamicContent();
+            
+            // Start real-time updates
+            setInterval(updateRealTimeData, 5000); // Update every 5 seconds
+            setInterval(updateDateTime, 1000); // Update time every second
+            
             // Welcome notification
             setTimeout(() => {
                 showNotification(`Welcome back, ${DashboardState.currentUser.name}! Your dashboard is ready.`, 'success');
             }, 500);
             
-            // Simulate real-time updates
+            // Simulate real-time activities
             setInterval(() => {
                 const activities = [
                     { icon: '👑', title: 'Team member earned 5 crowns', time: 'Just now' },
                     { icon: '✅', title: 'Project milestone completed', time: '2 min ago' },
                     { icon: '🎯', title: 'Focus session started', time: '5 min ago' },
-                    { icon: '🤝', title: 'New collaboration request', time: '10 min ago' }
+                    { icon: '🤝', title: 'New collaboration request', time: '10 min ago' },
+                    { icon: '🚀', title: 'Code deployed to production', time: '15 min ago' },
+                    { icon: '📊', title: 'Performance metrics updated', time: '20 min ago' },
+                    { icon: '🎉', title: 'Team goal achieved', time: '25 min ago' },
+                    { icon: '🔧', title: 'Bug fix completed', time: '30 min ago' }
                 ];
                 
-                if (Math.random() < 0.3) { // 30% chance every interval
+                if (Math.random() < 0.4) { // 40% chance every interval
                     const randomActivity = activities[Math.floor(Math.random() * activities.length)];
                     addActivityItem(randomActivity);
                 }
-            }, 30000); // Every 30 seconds
+            }, 15000); // Every 15 seconds
+            
+            // Add dynamic elements to DOM
+            addDynamicElements();
+            
+            // Add floating clock widget
+            addFloatingClock();
         });
+        
+        // Add floating clock widget
+        function addFloatingClock() {
+            const floatingClock = document.createElement('div');
+            floatingClock.id = 'floatingClock';
+            floatingClock.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: hsl(var(--card));
+                border: 1px solid hsl(var(--border));
+                border-radius: var(--radius);
+                padding: 1rem;
+                box-shadow: var(--shadow-medium);
+                z-index: 1000;
+                backdrop-filter: blur(10px);
+                min-width: 120px;
+                text-align: center;
+                transition: all 0.3s ease;
+            `;
+            
+            floatingClock.innerHTML = `
+                <div class="current-time" style="font-size: 1.25rem; font-weight: 600; color: hsl(var(--primary)); margin-bottom: 0.25rem;"></div>
+                <div class="current-date-short" style="font-size: 0.75rem; color: hsl(var(--muted-foreground));"></div>
+                <div class="time-greeting" style="font-size: 0.7rem; color: hsl(var(--accent)); margin-top: 0.25rem;"></div>
+            `;
+            
+            // Add hover effect
+            floatingClock.addEventListener('mouseenter', () => {
+                floatingClock.style.transform = 'scale(1.05)';
+                floatingClock.style.boxShadow = 'var(--shadow-strong)';
+            });
+            
+            floatingClock.addEventListener('mouseleave', () => {
+                floatingClock.style.transform = 'scale(1)';
+                floatingClock.style.boxShadow = 'var(--shadow-medium)';
+            });
+            
+            document.body.appendChild(floatingClock);
+        }
+
+        // Add dynamic elements to the dashboard
+        function addDynamicElements() {
+            // Add time and date display to header
+            const header = document.querySelector('.header');
+            if (header) {
+                const timeDisplay = document.createElement('div');
+                timeDisplay.style.cssText = `
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    font-size: 0.875rem;
+                    margin-left: auto;
+                `;
+                timeDisplay.innerHTML = `
+                    <div class="current-time" style="font-weight: 600; color: hsl(var(--primary)); font-size: 1rem;"></div>
+                    <div class="current-date" style="color: hsl(var(--muted-foreground)); font-size: 0.75rem;"></div>
+                `;
+                header.appendChild(timeDisplay);
+            }
+            
+            // Add time display to sidebar
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                const sidebarTimeDisplay = document.createElement('div');
+                sidebarTimeDisplay.style.cssText = `
+                    background: hsl(var(--card));
+                    border: 1px solid hsl(var(--border));
+                    border-radius: var(--radius);
+                    padding: 1rem;
+                    margin-bottom: 1rem;
+                    text-align: center;
+                `;
+                sidebarTimeDisplay.innerHTML = `
+                    <div class="current-time" style="font-size: 1.5rem; font-weight: 600; color: hsl(var(--primary)); margin-bottom: 0.25rem;"></div>
+                    <div class="current-date-short" style="font-size: 0.875rem; color: hsl(var(--muted-foreground));"></div>
+                    <div class="time-greeting" style="font-size: 0.75rem; color: hsl(var(--accent)); margin-top: 0.25rem;"></div>
+                `;
+                sidebar.insertBefore(sidebarTimeDisplay, sidebar.firstChild);
+            }
+            
+            // Add dynamic containers for real-time data
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                // Add team members section
+                const teamSection = document.createElement('div');
+                teamSection.className = 'card';
+                teamSection.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">👥 Team Members</h3>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">Live Status</span>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: hsl(var(--accent));">
+                                <span>🕐</span>
+                                <span class="current-time"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-members-list"></div>
+                `;
+                mainContent.appendChild(teamSection);
+                
+                // Add projects section
+                const projectsSection = document.createElement('div');
+                projectsSection.className = 'card';
+                projectsSection.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">📋 Active Projects</h3>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">Progress Tracking</span>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: hsl(var(--accent));">
+                                <span>📅</span>
+                                <span class="current-date-short"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="projects-list"></div>
+                `;
+                mainContent.appendChild(projectsSection);
+                
+                // Add deadlines section
+                const deadlinesSection = document.createElement('div');
+                deadlinesSection.className = 'card';
+                deadlinesSection.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">⏰ Upcoming Deadlines</h3>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">Priority Tasks</span>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: hsl(var(--accent));">
+                                <span>⏰</span>
+                                <span class="current-time"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="deadlines-list"></div>
+                `;
+                deadlinesSection.style.marginTop = '1.5rem';
+                mainContent.appendChild(deadlinesSection);
+                
+                // Add performance charts section
+                const chartsSection = document.createElement('div');
+                chartsSection.className = 'card';
+                chartsSection.innerHTML = `
+                    <div class="card-header">
+                        <h3 class="card-title">📊 Performance Analytics</h3>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-size: 0.875rem; color: hsl(var(--muted-foreground));">Real-time Metrics</span>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; color: hsl(var(--accent));">
+                                <span>📈</span>
+                                <span class="current-date-short"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <h4 style="margin-bottom: 0.5rem; font-size: 0.875rem;">Weekly Performance</h4>
+                            <div id="weeklyChart"></div>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 0.5rem; font-size: 0.875rem;">Monthly Performance</h4>
+                            <div id="monthlyChart"></div>
+                        </div>
+                    </div>
+                `;
+                chartsSection.style.marginTop = '1.5rem';
+                mainContent.appendChild(chartsSection);
+            }
+        }
+
+        // Logout function
+        function logout() {
+            const confirmLogout = confirm('Are you sure you want to logout?');
+            if (confirmLogout) {
+                // Clear any stored user data
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userSettings');
+                
+                // Show logout message
+                showNotification('Logging out...', 'info');
+                
+                // Redirect to home page after a short delay
+                setTimeout(() => {
+                    window.location.href = '../home.html';
+                }, 1000);
+            }
+        }
     </script>
     <script src="theme-utils.js"></script>
     <script src="chatbot-config.js"></script>
