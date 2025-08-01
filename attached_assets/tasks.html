@@ -114,6 +114,11 @@
             --sidebar-background: 240 10% 6%;
             --sidebar-foreground: 60 9% 98%; /* #fefefc */
             --sidebar-border: 240 6% 15%;
+            --sidebar-primary: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
+            --sidebar-primary-foreground: 240 10% 3.9%; /* Dark background */
+            --sidebar-accent: 199 100% 15%; /* Darker accent for hover */
+            --sidebar-accent-foreground: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
+            --sidebar-ring: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
             --gradient-surface: linear-gradient(135deg, #1e293b, #334155);
         }
 
@@ -144,9 +149,9 @@
         /* Sidebar Styles */
         .sidebar {
             width: 280px;
-            background: hsl(var(--sidebar-background, 240 5% 96%));
+            background: hsl(var(--sidebar-background));
             backdrop-filter: blur(20px);
-            border-right: 1px solid hsl(var(--sidebar-border, var(--border)));
+            border-right: 1px solid hsl(var(--sidebar-border));
             padding: 1.5rem;
             overflow-y: auto;
             transition: var(--transition-smooth);
@@ -241,7 +246,7 @@
         .nav-title {
             font-size: 0.75rem;
             font-weight: 600;
-            color: hsl(var(--muted-foreground));
+            color: hsl(var(--sidebar-foreground));
             margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -253,22 +258,31 @@
             gap: 0.75rem;
             padding: 0.75rem;
             border-radius: calc(var(--radius) - 2px);
-            color: var(--text-dark);
+            color: hsl(var(--sidebar-foreground));
             text-decoration: none;
             transition: var(--transition-smooth);
             margin-bottom: 0.25rem;
+            font-weight: 500;
+            position: relative;
         }
 
         .nav-item:hover {
-            background: rgba(66, 196, 255, 0.1);
-            color: var(--accent-blue);
+            background: hsl(var(--sidebar-accent));
+            color: hsl(var(--sidebar-accent-foreground));
+            transform: translateX(4px);
+        }
+
+        .nav-item:hover {
+            background: hsl(var(--sidebar-accent));
+            color: hsl(var(--sidebar-accent-foreground));
         }
 
         .nav-item.active {
-            background: rgba(66, 196, 255, 0.15);
-            color: var(--accent-blue);
-            font-weight: 500;
-            border-left: 3px solid var(--accent-blue);
+            background: hsl(var(--sidebar-primary));
+            color: hsl(var(--sidebar-primary-foreground));
+            font-weight: 600;
+            border-left: 3px solid hsl(var(--sidebar-ring));
+            box-shadow: 0 2px 8px hsl(var(--sidebar-primary) / 0.3);
         }
 
         .nav-icon {
@@ -325,8 +339,8 @@
         }
 
         .btn-primary {
-            background: var(--accent-blue);
-            color: white;
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
         }
 
         .btn-primary:hover {
@@ -350,8 +364,8 @@
 
         /* Kanban Specific Styles */
         .kanban-header {
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
+            background: hsl(var(--card));
+            border-bottom: 1px solid hsl(var(--border));
             padding: 16px 24px;
         }
 
@@ -392,7 +406,7 @@
             align-items: center;
             gap: 16px;
             font-size: 14px;
-            color: #64748b;
+            color: hsl(var(--muted-foreground));
         }
 
         .controls {
@@ -410,9 +424,11 @@
         .search-box input {
             width: 100%;
             padding: 8px 12px 8px 36px;
-            border: 1px solid #d1d5db;
+            border: 1px solid hsl(var(--border));
             border-radius: 6px;
             font-size: 14px;
+            background: hsl(var(--input));
+            color: hsl(var(--foreground));
         }
 
         .search-icon {
@@ -420,7 +436,7 @@
             left: 12px;
             top: 50%;
             transform: translateY(-50%);
-            color: #9ca3af;
+            color: hsl(var(--muted-foreground));
             width: 16px;
             height: 16px;
         }
@@ -435,7 +451,7 @@
         }
 
         .column {
-            background: #f1f5f9;
+            background: hsl(var(--muted));
             border-radius: 8px;
             display: flex;
             flex-direction: column;
@@ -443,7 +459,7 @@
 
         .column-header {
             padding: 16px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid hsl(var(--border));
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -460,8 +476,8 @@
 
         .task-count {
             font-size: 12px;
-            color: #64748b;
-            background: white;
+            color: hsl(var(--muted-foreground));
+            background: hsl(var(--card));
             padding: 2px 6px;
             border-radius: 4px;
         }
@@ -473,18 +489,19 @@
         }
 
         .task-card {
-            background: white;
-            border: 1px solid #e2e8f0;
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 12px;
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
+            color: hsl(var(--card-foreground));
         }
 
         .task-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px hsl(var(--foreground) / 0.1);
             transform: translateY(-2px);
         }
 
@@ -502,7 +519,7 @@
 
         .task-id {
             font-size: 12px;
-            color: #64748b;
+            color: hsl(var(--muted-foreground));
             font-family: 'Courier New', monospace;
             display: flex;
             align-items: center;
@@ -521,7 +538,7 @@
         .priority-low { background: #22c55e; }
 
         .drag-handle {
-            color: #9ca3af;
+            color: hsl(var(--muted-foreground));
             cursor: grab;
         }
 
@@ -534,6 +551,7 @@
             font-weight: 500;
             line-height: 1.4;
             margin-bottom: 8px;
+            color: hsl(var(--card-foreground));
         }
 
         .task-tags {
@@ -544,8 +562,8 @@
         }
 
         .tag {
-            background: #e0e7ff;
-            color: #3730a3;
+            background: hsl(var(--accent));
+            color: hsl(var(--accent-foreground));
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 11px;
@@ -559,7 +577,7 @@
         .progress-bar {
             width: 100%;
             height: 4px;
-            background: #e2e8f0;
+            background: hsl(var(--muted));
             border-radius: 2px;
             overflow: hidden;
         }
@@ -581,7 +599,7 @@
             justify-content: space-between;
             align-items: center;
             font-size: 12px;
-            color: #64748b;
+            color: hsl(var(--muted-foreground));
         }
 
         .task-date {
@@ -621,8 +639,8 @@
         }
 
         .column.drag-over {
-            background: #dbeafe;
-            border: 2px dashed #3b82f6;
+            background: hsl(var(--accent));
+            border: 2px dashed hsl(var(--primary));
         }
 
         .right-panel {
@@ -631,8 +649,8 @@
             top: 0;
             width: 400px;
             height: 100vh;
-            background: white;
-            border-left: 1px solid #e2e8f0;
+            background: hsl(var(--card));
+            border-left: 1px solid hsl(var(--border));
             transform: translateX(100%);
             transition: transform 0.3s ease;
             z-index: 1000;
@@ -646,7 +664,7 @@
 
         .panel-header {
             padding: 16px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid hsl(var(--border));
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
@@ -669,7 +687,7 @@
             border: none;
             font-size: 20px;
             cursor: pointer;
-            color: #64748b;
+            color: hsl(var(--muted-foreground));
             padding: 4px;
         }
 
@@ -697,7 +715,7 @@
         }
 
         .info-label {
-            color: #64748b;
+            color: hsl(var(--muted-foreground));
         }
 
         .subtask-item {
@@ -711,10 +729,11 @@
         .subtask-checkbox {
             width: 16px;
             height: 16px;
-            border: 2px solid #d1d5db;
+            border: 2px solid hsl(var(--border));
             border-radius: 3px;
             cursor: pointer;
             position: relative;
+            background: hsl(var(--input));
         }
 
         .subtask-checkbox.completed {
@@ -810,7 +829,7 @@
         }
 
         .modal-content {
-            background: white;
+            background: hsl(var(--card));
             border-radius: 8px;
             padding: 24px;
             width: 90%;
@@ -840,15 +859,17 @@
             font-size: 14px;
             font-weight: 500;
             margin-bottom: 4px;
-            color: #374151;
+            color: hsl(var(--foreground));
         }
 
         .form-input, .form-textarea, .form-select {
             width: 100%;
             padding: 8px 12px;
-            border: 1px solid #d1d5db;
+            border: 1px solid hsl(var(--border));
             border-radius: 6px;
             font-size: 14px;
+            background: hsl(var(--input));
+            color: hsl(var(--foreground));
         }
 
         .form-textarea {
@@ -1544,5 +1565,18 @@
     <script src="theme-utils.js"></script>
     <script src="chatbot-config.js"></script>
     <script src="dynamic-utils.js"></script>
+    <script>
+        // Ensure theme is properly applied on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force theme refresh
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            
+            // Re-render tasks to ensure proper styling
+            if (typeof renderTasks === 'function') {
+                renderTasks();
+            }
+        });
+    </script>
 </body>
 </html>

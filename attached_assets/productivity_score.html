@@ -16,13 +16,11 @@
       </div>
     </div>
     <div class="navbar-center">
-      <a href="home.html" class="nav-link">Home</a>
       <a href="personal.html" class="nav-link">Dashboard</a>
       <a href="pending_tasks.html" class="nav-link">Pending Tasks</a>
       <a href="high_priority.html" class="nav-link">High Priority</a>
       <a href="completed_this_week.html" class="nav-link">Completed</a>
       <a href="productivity_score.html" class="nav-link active">Productivity</a>
-      <a href="team.html" class="nav-link">Team</a>
     </div>
     <div class="navbar-right">
       <button class="profile-btn">
@@ -222,6 +220,180 @@
   </main>
 
   <script>
+    // Global state for dynamic functionality
+    let productivityState = {
+      currentScore: 87,
+      weeklyData: [70, 80, 90, 85, 95, 75, 60],
+      monthlyData: [65, 70, 75, 80, 85, 90, 87],
+      metrics: {
+        taskCompletion: 92,
+        timeEfficiency: 78,
+        focusScore: 85,
+        consistency: 90
+      }
+    };
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      updateScore();
+      setupChartInteractions();
+      
+      // Update score every minute
+      setInterval(updateScore, 60000);
+      
+      // Update metrics every 30 seconds
+      setInterval(updateMetrics, 30000);
+    });
+
+    function updateScore() {
+      // Simulate real-time score fluctuations
+      const change = (Math.random() - 0.5) * 2; // -1 to +1
+      productivityState.currentScore = Math.max(60, Math.min(100, productivityState.currentScore + change));
+      
+      // Update score display
+      const scoreElement = document.querySelector('.score-value');
+      if (scoreElement) {
+        scoreElement.textContent = Math.round(productivityState.currentScore);
+      }
+      
+      // Update score ring
+      updateScoreRing();
+      
+      // Update insights
+      updateInsights();
+    }
+
+    function updateScoreRing() {
+      const scoreRing = document.querySelector('.score-ring circle:last-child');
+      if (scoreRing) {
+        const circumference = 2 * Math.PI * 85; // radius = 85
+        const progress = productivityState.currentScore / 100;
+        const dashoffset = circumference * (1 - progress);
+        scoreRing.style.strokeDashoffset = dashoffset;
+      }
+    }
+
+    function updateInsights() {
+      const insights = document.querySelectorAll('.insight-desc');
+      if (insights.length >= 3) {
+        const change = productivityState.currentScore - 87; // baseline
+        insights[0].textContent = `${change > 0 ? '+' : ''}${Math.round(change)} points this week`;
+        insights[1].textContent = `${Math.round((productivityState.currentScore / 87) * 100 - 100)}% better than last month`;
+        insights[2].textContent = `Best score: ${Math.max(productivityState.currentScore, 94)} (${change > 0 ? 'today' : '2 days ago'})`;
+      }
+    }
+
+    function updateMetrics() {
+      // Simulate metric updates
+      productivityState.metrics.taskCompletion += (Math.random() - 0.5) * 1;
+      productivityState.metrics.timeEfficiency += (Math.random() - 0.5) * 1;
+      productivityState.metrics.focusScore += (Math.random() - 0.5) * 1;
+      productivityState.metrics.consistency += (Math.random() - 0.5) * 1;
+      
+      // Keep values in reasonable ranges
+      Object.keys(productivityState.metrics).forEach(key => {
+        productivityState.metrics[key] = Math.max(70, Math.min(100, productivityState.metrics[key]));
+      });
+      
+      // Update metric displays
+      updateMetricDisplays();
+    }
+
+    function updateMetricDisplays() {
+      const metricValues = document.querySelectorAll('.metric-value');
+      const metricFills = document.querySelectorAll('.metric-fill');
+      const metricChanges = document.querySelectorAll('.metric-change');
+      
+      const metrics = [
+        productivityState.metrics.taskCompletion,
+        productivityState.metrics.timeEfficiency,
+        productivityState.metrics.focusScore,
+        productivityState.metrics.consistency
+      ];
+      
+      metrics.forEach((value, index) => {
+        if (metricValues[index]) {
+          metricValues[index].textContent = Math.round(value) + '%';
+        }
+        if (metricFills[index]) {
+          metricFills[index].style.width = value + '%';
+        }
+      });
+    }
+
+    function setupChartInteractions() {
+      // Add click handlers for chart bars
+      document.querySelectorAll('.bar-group').forEach((barGroup, index) => {
+        barGroup.addEventListener('click', function() {
+          showDayDetails(index);
+        });
+      });
+
+      // Add click handlers for recommendation buttons
+      document.querySelectorAll('.rec-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const action = this.textContent;
+          handleRecommendationAction(action);
+        });
+      });
+    }
+
+    function showDayDetails(dayIndex) {
+      const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      const currentScore = productivityState.weeklyData[dayIndex];
+      const previousScore = productivityState.monthlyData[dayIndex];
+      
+      showNotification(`📊 ${days[dayIndex]}: Current ${currentScore}% vs Previous ${previousScore}%`);
+    }
+
+    function handleRecommendationAction(action) {
+      switch (action) {
+        case 'Try Pomodoro Timer':
+          showNotification('🧘 Pomodoro Timer activated! 25 minutes of focused work.');
+          productivityState.metrics.focusScore += 5;
+          break;
+        case 'Set Focus Time':
+          const hours = prompt('How many hours of focus time?', '2');
+          if (hours) {
+            showNotification(`📅 Focus time scheduled for ${hours} hours`);
+            productivityState.metrics.timeEfficiency += 3;
+          }
+          break;
+        case 'Learn More':
+          showNotification('🎯 Priority Matrix guide opened. Use Eisenhower method for better task prioritization.');
+          break;
+      }
+      
+      updateMetricDisplays();
+    }
+
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.textContent = message;
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4CAF50;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      `;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+
     // Logout function
     function logout() {
       const confirmLogout = confirm('Are you sure you want to logout?');
@@ -240,5 +412,88 @@
       }
     }
   </script>
+
+  <style>
+    /* Animation keyframes */
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+
+    /* Score circle enhancements */
+    .score-circle {
+      transition: all 0.3s ease;
+    }
+
+    .score-circle:hover {
+      transform: scale(1.05);
+    }
+
+    .score-ring circle:last-child {
+      transition: stroke-dashoffset 0.5s ease;
+    }
+
+    /* Chart enhancements */
+    .bar-group {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .bar-group:hover {
+      transform: scaleY(1.1);
+    }
+
+    .bar.current {
+      transition: height 0.3s ease;
+    }
+
+    /* Metric card enhancements */
+    .metric-card {
+      transition: all 0.3s ease;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .metric-fill {
+      transition: width 0.5s ease;
+    }
+
+    /* Recommendation card enhancements */
+    .recommendation-card {
+      transition: all 0.3s ease;
+    }
+
+    .recommendation-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+
+    .rec-btn {
+      transition: all 0.3s ease;
+    }
+
+    .rec-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Pulse animation for score */
+    .score-value {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+  </style>
 </body>
 </html>

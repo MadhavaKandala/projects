@@ -16,13 +16,11 @@
       </div>
     </div>
     <div class="navbar-center">
-      <a href="home.html" class="nav-link">Home</a>
       <a href="personal.html" class="nav-link">Dashboard</a>
       <a href="pending_tasks.html" class="nav-link">Pending Tasks</a>
       <a href="high_priority.html" class="nav-link active">High Priority</a>
       <a href="completed_this_week.html" class="nav-link">Completed</a>
       <a href="productivity_score.html" class="nav-link">Productivity</a>
-      <a href="team.html" class="nav-link">Team</a>
     </div>
     <div class="navbar-right">
       <button class="profile-btn">
@@ -120,6 +118,135 @@
   </main>
 
   <script>
+    // Dynamic task management
+    let tasks = [
+      { id: 1, title: "Complete API Integration", progress: 75, timeRemaining: "2 hours" },
+      { id: 2, title: "Review Security Audit", progress: 40, timeRemaining: "1 day" },
+      { id: 3, title: "Prepare Sprint Presentation", progress: 10, timeRemaining: "2 days" }
+    ];
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      setupTaskInteractions();
+      
+      // Update progress every 30 seconds
+      setInterval(updateProgress, 30000);
+    });
+
+    function setupTaskInteractions() {
+      // Add click handlers for progress bars
+      document.querySelectorAll('.progress-bar').forEach((bar, index) => {
+        bar.addEventListener('click', function() {
+          updateTaskProgress(index + 1);
+        });
+      });
+
+      // Add click handlers for action buttons
+      document.querySelector('.action-btn.primary').addEventListener('click', activateStuckMode);
+      document.querySelectorAll('.action-btn.secondary')[0].addEventListener('click', sendSOSAlert);
+      document.querySelectorAll('.action-btn.secondary')[1].addEventListener('click', scheduleFocusTime);
+    }
+
+    function updateTaskProgress(taskId) {
+      const task = tasks.find(t => t.id === taskId);
+      if (task) {
+        task.progress = Math.min(100, task.progress + 10);
+        const progressBar = document.querySelectorAll('.progress-fill')[taskId - 1];
+        const progressText = document.querySelectorAll('.task-progress span')[taskId - 1];
+        
+        if (progressBar) {
+          progressBar.style.width = task.progress + '%';
+        }
+        if (progressText) {
+          progressText.textContent = task.progress + '%';
+        }
+        
+        if (task.progress === 100) {
+          showNotification(`🎉 Task "${task.title}" completed!`);
+        } else {
+          showNotification(`📈 Progress updated for "${task.title}"`);
+        }
+      }
+    }
+
+    function updateProgress() {
+      // Simulate real-time progress updates
+      tasks.forEach((task, index) => {
+        if (task.progress < 100 && Math.random() < 0.3) {
+          task.progress = Math.min(100, task.progress + Math.floor(Math.random() * 5));
+          const progressBar = document.querySelectorAll('.progress-fill')[index];
+          const progressText = document.querySelectorAll('.task-progress span')[index];
+          
+          if (progressBar) {
+            progressBar.style.width = task.progress + '%';
+          }
+          if (progressText) {
+            progressText.textContent = task.progress + '%';
+          }
+        }
+      });
+    }
+
+    function activateStuckMode() {
+      showNotification('🧠 Stuck Mode™ activated! Breaking down tasks into smaller steps...');
+      
+      // Add visual feedback
+      document.querySelectorAll('.task-card').forEach(card => {
+        card.style.border = '2px solid #FF9800';
+        setTimeout(() => {
+          card.style.border = '';
+        }, 3000);
+      });
+    }
+
+    function sendSOSAlert() {
+      showNotification('🆘 SOS Alert sent to team! Help is on the way.');
+      
+      // Simulate team response
+      setTimeout(() => {
+        showNotification('👥 Team member Sarah is available to help!');
+      }, 2000);
+    }
+
+    function scheduleFocusTime() {
+      const duration = prompt('How many hours of focus time do you need?', '2');
+      if (duration) {
+        showNotification(`📅 Focus time scheduled for ${duration} hours`);
+        
+        // Add to calendar (simulated)
+        setTimeout(() => {
+          showNotification('✅ Focus time added to your calendar');
+        }, 1000);
+      }
+    }
+
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.textContent = message;
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #2196F3;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      `;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+          }
+        }, 300);
+      }, 3000);
+    }
+
     // Logout function
     function logout() {
       const confirmLogout = confirm('Are you sure you want to logout?');
@@ -138,5 +265,53 @@
       }
     }
   </script>
+
+  <style>
+    /* Animation keyframes */
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+
+    /* Task card enhancements */
+    .task-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .task-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+
+    /* Progress bar enhancements */
+    .progress-bar {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .progress-bar:hover {
+      transform: scaleY(1.2);
+    }
+
+    .progress-fill {
+      transition: width 0.5s ease;
+    }
+
+    /* Action button enhancements */
+    .action-btn {
+      transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+  </style>
 </body>
 </html>

@@ -114,6 +114,11 @@
             --sidebar-background: 240 10% 6%;
             --sidebar-foreground: 60 9% 98%; /* #fefefc */
             --sidebar-border: 240 6% 15%;
+            --sidebar-primary: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
+            --sidebar-primary-foreground: 240 10% 3.9%; /* Dark background */
+            --sidebar-accent: 199 100% 15%; /* Darker accent for hover */
+            --sidebar-accent-foreground: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
+            --sidebar-ring: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
             --gradient-surface: linear-gradient(135deg, #1e293b, #334155);
         }
 
@@ -143,12 +148,17 @@
         /* Sidebar Styles */
         .sidebar {
             width: 280px;
-            background: hsl(var(--sidebar-background, 240 5% 96%));
+            background: hsl(var(--sidebar-background));
             backdrop-filter: blur(20px);
-            border-right: 1px solid hsl(var(--sidebar-border, var(--border)));
+            border-right: 1px solid hsl(var(--sidebar-border));
             padding: 1.5rem;
             overflow-y: auto;
             transition: var(--transition-smooth);
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            z-index: 40;
         }
 
         .sidebar.collapsed {
@@ -239,7 +249,7 @@
         .nav-title {
             font-size: 0.75rem;
             font-weight: 600;
-            color: hsl(var(--muted-foreground));
+            color: hsl(var(--sidebar-foreground));
             margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -251,22 +261,26 @@
             gap: 0.75rem;
             padding: 0.75rem;
             border-radius: calc(var(--radius) - 2px);
-            color: var(--text-dark);
+            color: hsl(var(--sidebar-foreground));
             text-decoration: none;
             transition: var(--transition-smooth);
             margin-bottom: 0.25rem;
+            font-weight: 500;
+            position: relative;
         }
 
         .nav-item:hover {
-            background: rgba(66, 196, 255, 0.1);
-            color: var(--accent-blue);
+            background: hsl(var(--sidebar-accent));
+            color: hsl(var(--sidebar-accent-foreground));
+            transform: translateX(4px);
         }
 
         .nav-item.active {
-            background: rgba(66, 196, 255, 0.15);
-            color: var(--accent-blue);
-            font-weight: 500;
-            border-left: 3px solid var(--accent-blue);
+            background: hsl(var(--sidebar-primary));
+            color: hsl(var(--sidebar-primary-foreground));
+            font-weight: 600;
+            border-left: 3px solid hsl(var(--sidebar-ring));
+            box-shadow: 0 2px 8px hsl(var(--sidebar-primary) / 0.3);
         }
 
         .nav-icon {
@@ -297,6 +311,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            margin-left: 280px;
         }
 
         .header {
@@ -367,10 +382,12 @@
         @media (max-width: 1024px) {
             .grid-3 { grid-template-columns: repeat(2, 1fr); }
             .grid-5 { grid-template-columns: repeat(3, 1fr); }
+            .main-content { margin-left: 0; }
         }
 
         @media (max-width: 768px) {
             .grid-2, .grid-3, .grid-5 { grid-template-columns: 1fr; }
+            .main-content { margin-left: 0; }
             .sidebar { width: 100%; position: fixed; z-index: 1000; transform: translateX(-100%); }
             .sidebar.open { transform: translateX(0); }
         }
@@ -1243,13 +1260,6 @@
                         </div>
 
                         <div class="quick-actions-grid mb-4">
-                            <button class="btn action-btn" style="background: var(--accent-blue); color: white;" onclick="showNotification('New task created!', 'success')">
-                                <span class="action-icon">➕</span>
-                                <div>
-                                    <p class="action-title">Add New Task</p>
-                                    <p class="action-desc">Quick task creation</p>
-                                </div>
-                            </button>
                             <button class="btn action-btn" style="background: hsl(var(--warning)); color: white;" onclick="showNotification('Help request sent to team', 'info')">
                                 <span class="action-icon">❓</span>
                                 <div>
@@ -1548,8 +1558,17 @@
 
         // Sidebar Toggle
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
             sidebar.classList.toggle('collapsed');
+            
+            if (sidebar.classList.contains('collapsed')) {
+                mainContent.style.marginLeft = '80px';
+                localStorage.setItem('sidebarCollapsed', 'true');
+            } else {
+                mainContent.style.marginLeft = '280px';
+                localStorage.setItem('sidebarCollapsed', 'false');
+            }
         }
 
         // AI Assistant
@@ -2383,10 +2402,17 @@
 
         // Enhanced initialization
         document.addEventListener('DOMContentLoaded', function() {
+            // Force theme refresh
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            
             // Load sidebar state
             const savedSidebarState = localStorage.getItem('sidebarCollapsed');
             if (savedSidebarState === 'true') {
-                toggleSidebar();
+                const sidebar = document.querySelector('.sidebar');
+                const mainContent = document.querySelector('.main-content');
+                sidebar.classList.add('collapsed');
+                mainContent.style.marginLeft = '80px';
             }
             
             // Initialize search functionality
@@ -2445,6 +2471,9 @@
             
             // Add floating clock widget
             addFloatingClock();
+            
+            // Add floating chatbot button
+            addFloatingChatbot();
         });
         
         // Add floating clock widget
@@ -2453,7 +2482,7 @@
             floatingClock.id = 'floatingClock';
             floatingClock.style.cssText = `
                 position: fixed;
-                bottom: 20px;
+                bottom: 100px;
                 right: 20px;
                 background: hsl(var(--card));
                 border: 1px solid hsl(var(--border));
@@ -2485,6 +2514,52 @@
             });
             
             document.body.appendChild(floatingClock);
+        }
+
+        // Add floating chatbot button
+        function addFloatingChatbot() {
+            const floatingChatbot = document.createElement('div');
+            floatingChatbot.id = 'floatingChatbot';
+            floatingChatbot.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: hsl(var(--primary));
+                color: hsl(var(--primary-foreground));
+                border: none;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                box-shadow: var(--shadow-medium);
+                z-index: 1001;
+                backdrop-filter: blur(10px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.5rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            `;
+            
+            floatingChatbot.innerHTML = '🤖';
+            
+            // Add hover effect
+            floatingChatbot.addEventListener('mouseenter', () => {
+                floatingChatbot.style.transform = 'scale(1.1)';
+                floatingChatbot.style.boxShadow = 'var(--shadow-strong)';
+            });
+            
+            floatingChatbot.addEventListener('mouseleave', () => {
+                floatingChatbot.style.transform = 'scale(1)';
+                floatingChatbot.style.boxShadow = 'var(--shadow-medium)';
+            });
+            
+            // Add click event to open AI Assistant
+            floatingChatbot.addEventListener('click', () => {
+                window.open('ai-assistant.html', '_blank');
+            });
+            
+            document.body.appendChild(floatingChatbot);
         }
 
         // Add dynamic elements to the dashboard

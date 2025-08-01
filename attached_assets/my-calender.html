@@ -114,6 +114,11 @@
             --sidebar-background: 240 10% 6%;
             --sidebar-foreground: 60 9% 98%; /* #fefefc */
             --sidebar-border: 240 6% 15%;
+            --sidebar-primary: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
+            --sidebar-primary-foreground: 240 10% 3.9%; /* Dark background */
+            --sidebar-accent: 199 100% 15%; /* Darker accent for hover */
+            --sidebar-accent-foreground: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
+            --sidebar-ring: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
             --gradient-surface: linear-gradient(135deg, #1e293b, #334155);
         }
 
@@ -144,9 +149,9 @@
         /* Sidebar Styles */
         .sidebar {
             width: 280px;
-            background: hsl(var(--sidebar-background, 240 5% 96%));
+            background: hsl(var(--sidebar-background));
             backdrop-filter: blur(20px);
-            border-right: 1px solid hsl(var(--sidebar-border, var(--border)));
+            border-right: 1px solid hsl(var(--sidebar-border));
             padding: 1.5rem;
             overflow-y: auto;
             transition: var(--transition-smooth);
@@ -241,7 +246,7 @@
         .nav-title {
             font-size: 0.75rem;
             font-weight: 600;
-            color: hsl(var(--muted-foreground));
+            color: hsl(var(--sidebar-foreground));
             margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
@@ -253,22 +258,26 @@
             gap: 0.75rem;
             padding: 0.75rem;
             border-radius: calc(var(--radius) - 2px);
-            color: var(--text-dark);
+            color: hsl(var(--sidebar-foreground));
             text-decoration: none;
             transition: var(--transition-smooth);
             margin-bottom: 0.25rem;
+            font-weight: 500;
+            position: relative;
         }
 
         .nav-item:hover {
-            background: rgba(66, 196, 255, 0.1);
-            color: var(--accent-blue);
+            background: hsl(var(--sidebar-accent));
+            color: hsl(var(--sidebar-accent-foreground));
+            transform: translateX(4px);
         }
 
         .nav-item.active {
-            background: rgba(66, 196, 255, 0.15);
-            color: var(--accent-blue);
-            font-weight: 500;
-            border-left: 3px solid var(--accent-blue);
+            background: hsl(var(--sidebar-primary));
+            color: hsl(var(--sidebar-primary-foreground));
+            font-weight: 600;
+            border-left: 3px solid hsl(var(--sidebar-ring));
+            box-shadow: 0 2px 8px hsl(var(--sidebar-primary) / 0.3);
         }
 
         .nav-icon {
@@ -327,8 +336,8 @@
         }
 
         .btn-primary {
-            background: var(--accent-blue);
-            color: white;
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
         }
 
         .btn-primary:hover {
@@ -587,7 +596,7 @@
         }
 
         .modal-content {
-            background: white;
+            background: hsl(var(--card));
             border-radius: 8px;
             padding: 24px;
             width: 90%;
@@ -1021,5 +1030,13 @@
     <script src="theme-utils.js"></script>
     <script src="chatbot-config.js"></script>
     <script src="dynamic-utils.js"></script>
+    <script>
+        // Ensure theme is properly applied on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force theme refresh
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+        });
+    </script>
 </body>
 </html>
