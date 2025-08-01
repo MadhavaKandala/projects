@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Settings & Configuration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #f1f5f9;
+            --background: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Settings Grid */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .settings-card {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.125rem;
+        }
+
+        .card-icon.security { background: var(--danger); }
+        .card-icon.users { background: var(--primary); }
+        .card-icon.system { background: var(--success); }
+        .card-icon.notifications { background: var(--warning); }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            transition: var(--transition);
+            background: var(--background);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            background: var(--background);
+            cursor: pointer;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            resize: vertical;
+            min-height: 100px;
+            background: var(--background);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 3rem;
+            height: 1.5rem;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border);
+            transition: var(--transition);
+            border-radius: 1.5rem;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 1.125rem;
+            width: 1.125rem;
+            left: 0.1875rem;
+            bottom: 0.1875rem;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(1.5rem);
+        }
+
+        /* Permission Matrix */
+        .permission-matrix {
+            display: grid;
+            grid-template-columns: 1fr auto auto auto auto;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .permission-header {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 0.5rem;
+            background: var(--secondary);
+            border-radius: var(--radius);
+        }
+
+        .permission-item {
+            font-size: 0.875rem;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .permission-checkbox {
+            width: 1rem;
+            height: 1rem;
+            cursor: pointer;
+        }
+
+        /* Security Status */
+        .security-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+        }
+
+        .security-status.success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .security-status.warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .security-status.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        /* Backup Section */
+        .backup-section {
+            background: var(--secondary);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-top: 1.5rem;
+        }
+
+        .backup-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .permission-matrix {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+            }
+
+            .permission-header {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div>
+                    <h1>Admin Settings & Configuration</h1>
+                    <p>Manage system settings, user permissions, and security configurations</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-download"></i>
+                        Export Config
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Grid -->
+        <div class="settings-grid">
+            <!-- Security Settings -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-icon security">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="card-title">Security Settings</h3>
+                </div>
+
+                <div class="security-status success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>All security measures are up to date</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Session Timeout (minutes)</label>
+                    <input type="number" class="form-input" value="30" min="5" max="480">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password Policy</label>
+                    <select class="form-select">
+                        <option>Strong (8+ chars, symbols, numbers)</option>
+                        <option>Medium (6+ chars, numbers)</option>
+                        <option>Basic (4+ chars)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Two-Factor Authentication</label>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>Required for all users</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Login Attempts Limit</label>
+                    <input type="number" class="form-input" value="5" min="3" max="10">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">IP Whitelist</label>
+                    <textarea class="form-textarea" placeholder="Enter allowed IP addresses (one per line)">192.168.1.0/24
+10.0.0.0/8</textarea>
+                </div>
+            </div>
+
+            <!-- User Management -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-icon users">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="card-title">User Management</h3>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Default User Role</label>
+                    <select class="form-select">
+                        <option>Employee</option>
+                        <option>Manager</option>
+                        <option>Admin</option>
+                        <option>Guest</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Auto-assign Teams</label>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>Automatically assign new users to teams</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">User Permissions Matrix</label>
+                    <div class="permission-matrix">
+                        <div class="permission-header">Permission</div>
+                        <div class="permission-header">Admin</div>
+                        <div class="permission-header">Manager</div>
+                        <div class="permission-header">Employee</div>
+                        <div class="permission-header">Guest</div>
+
+                        <div class="permission-item">View Dashboard</div>
+                        <input type="checkbox" class="permission-checkbox" checked>
+                        <input type="checkbox" class="permission-checkbox" checked>
+                        <input type="checkbox" class="permission-checkbox" checked>
+                        <input type="checkbox" class="permission-checkbox">
+
+                        <div class="permission-item">Manage Tasks</div>
+                        <input type="checkbox" class="permission-checkbox" checked>
+                        <input type="checkbox" class="permission-checkbox" checked>
+                        <input type="checkbox" class="permission-checkbox">
+                        <input type="checkbox" class="permission-checkbox">
+
+                        <div class="permission-item">View Analytics</div>
+                        <input type="checkbox" class="permission-checkbox" checked>
+                        <input type="checkbox" class="permission-checkbox" checked>
+                        <input type="checkbox" class="permission-checkbox">
+                        <input type="checkbox" class="permission-checkbox">
+
+                        <div class="permission-item">Manage Users</div>
+                        <input type="checkbox" class="permission-checkbox" checked>
+                        <input type="checkbox" class="permission-checkbox">
+                        <input type="checkbox" class="permission-checkbox">
+                        <input type="checkbox" class="permission-checkbox">
+
+                        <div class="permission-item">System Settings</div>
+                        <input type="checkbox" class="permission-checkbox" checked>
+                        <input type="checkbox" class="permission-checkbox">
+                        <input type="checkbox" class="permission-checkbox">
+                        <input type="checkbox" class="permission-checkbox">
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Configuration -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-icon system">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3 class="card-title">System Configuration</h3>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Company Name</label>
+                    <input type="text" class="form-input" value="Task Crown Inc.">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">System Timezone</label>
+                    <select class="form-select">
+                        <option>UTC (Coordinated Universal Time)</option>
+                        <option>EST (Eastern Standard Time)</option>
+                        <option>PST (Pacific Standard Time)</option>
+                        <option>IST (Indian Standard Time)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Date Format</label>
+                    <select class="form-select">
+                        <option>MM/DD/YYYY</option>
+                        <option>DD/MM/YYYY</option>
+                        <option>YYYY-MM-DD</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Language</label>
+                    <select class="form-select">
+                        <option>English (US)</option>
+                        <option>Spanish</option>
+                        <option>French</option>
+                        <option>German</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Maintenance Mode</label>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>Enable maintenance mode</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">API Rate Limit (requests/min)</label>
+                    <input type="number" class="form-input" value="100" min="10" max="1000">
+                </div>
+
+                <div class="backup-section">
+                    <h4 style="margin-bottom: 1rem;">System Backup</h4>
+                    <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                        Last backup: 2 hours ago | Next backup: 22 hours
+                    </p>
+                    <div class="backup-actions">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-download"></i>
+                            Manual Backup
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-upload"></i>
+                            Restore
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="settings-card">
+                <div class="card-header">
+                    <div class="card-icon notifications">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3 class="card-title">Notification Settings</h3>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Notifications</label>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>Enable email notifications</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Push Notifications</label>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>Enable push notifications</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Notification Types</label>
+                    <div style="margin-top: 0.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                            <input type="checkbox" checked>
+                            <span>Task assignments</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                            <input type="checkbox" checked>
+                            <span>Deadline reminders</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                            <input type="checkbox" checked>
+                            <span>Performance updates</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                            <input type="checkbox">
+                            <span>System maintenance</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="checkbox" checked>
+                            <span>Security alerts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Notification Schedule</label>
+                    <select class="form-select">
+                        <option>Immediate</option>
+                        <option>Every 15 minutes</option>
+                        <option>Every hour</option>
+                        <option>Daily digest</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Quiet Hours</label>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <input type="time" class="form-input" value="22:00" style="width: auto;">
+                        <span>to</span>
+                        <input type="time" class="form-input" value="08:00" style="width: auto;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Save settings functionality
+        document.querySelector('.btn-primary').addEventListener('click', function() {
+            // Collect all form data
+            const formData = new FormData();
+            
+            // Add loading state
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            this.disabled = true;
+            
+            // Simulate save operation
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                    this.disabled = false;
+                }, 2000);
+            }, 1500);
+        });
+
+        // Toggle switch functionality
+        document.querySelectorAll('.toggle-switch input').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const card = this.closest('.settings-card');
+                const icon = card.querySelector('.card-icon');
+                
+                if (this.checked) {
+                    icon.style.background = 'var(--success)';
+                } else {
+                    icon.style.background = 'var(--danger)';
+                }
+            });
+        });
+
+        // Permission matrix functionality
+        document.querySelectorAll('.permission-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const row = this.parentElement;
+                const checkboxes = row.querySelectorAll('.permission-checkbox');
+                
+                // If admin checkbox is checked, check all others
+                if (this === checkboxes[0] && this.checked) {
+                    checkboxes.forEach(cb => cb.checked = true);
+                }
+                // If admin checkbox is unchecked, uncheck all others
+                else if (this === checkboxes[0] && !this.checked) {
+                    checkboxes.forEach(cb => cb.checked = false);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
