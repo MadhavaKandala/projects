@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - Employee Dashboard</title>
+    <style>
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 221.2 83.2% 53.3%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96%;
+            --secondary-foreground: 222.2 84% 4.9%;
+            --muted: 210 40% 96%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96%;
+            --accent-foreground: 222.2 84% 4.9%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 221.2 83.2% 53.3%;
+            --radius: 0.75rem;
+            --transition: all 0.3s ease;
+        }
+
+        /* Dark theme variables */
+        [data-theme="dark"] {
+            --background: 240 10% 3.9%;
+            --foreground: 240 10% 98%;
+            --card: 240 10% 6%;
+            --card-foreground: 240 10% 98%;
+            --popover: 240 10% 6%;
+            --popover-foreground: 240 10% 98%;
+            --primary: 221.2 83.2% 53.3%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 240 4.8% 8%;
+            --secondary-foreground: 240 10% 98%;
+            --muted: 240 4.8% 8%;
+            --muted-foreground: 240 3.8% 60%;
+            --accent: 240 4.8% 8%;
+            --accent-foreground: 240 10% 98%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 240 6% 15%;
+            --input: 240 6% 15%;
+            --ring: 221.2 83.2% 53.3%;
+            --radius: 0.75rem;
+            --transition: all 0.3s ease;
+            --sidebar-background: 240 10% 6%;
+            --sidebar-foreground: 240 10% 98%;
+            --sidebar-border: 240 6% 15%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: hsl(var(--sidebar-background, 240 5% 96%));
+            border-right: 1px solid hsl(var(--sidebar-border, var(--border)));
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            background: hsl(var(--card));
+            border-radius: var(--radius);
+            border: 1px solid hsl(var(--border));
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .user-details h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+            margin-bottom: 0.25rem;
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .user-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .crown-count {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+        }
+
+        .crown-shimmer {
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .level-badge {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: hsl(var(--muted-foreground));
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            color: hsl(var(--muted-foreground));
+            text-decoration: none;
+            transition: var(--transition);
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item:hover {
+            background: hsl(var(--muted));
+            color: hsl(var(--foreground));
+        }
+
+        .nav-item.active {
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+            width: 1.5rem;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: hsl(var(--foreground));
+        }
+
+        .notification-count {
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: hsl(var(--muted));
+            padding: 0.25rem;
+            border-radius: var(--radius);
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            border-radius: calc(var(--radius) - 0.25rem);
+            background: transparent;
+            border: none;
+            color: hsl(var(--muted-foreground));
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .filter-tab.active {
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .mark-all-read {
+            padding: 0.5rem 1rem;
+            background: hsl(var(--secondary));
+            color: hsl(var(--secondary-foreground));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .mark-all-read:hover {
+            background: hsl(var(--muted));
+        }
+
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .notification-item {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .notification-item:hover {
+            border-color: hsl(var(--primary));
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-item.unread {
+            background: hsl(var(--primary) / 0.05);
+            border-left: 4px solid hsl(var(--primary));
+        }
+
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 8px;
+            height: 8px;
+            background: hsl(var(--primary));
+            border-radius: 50%;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: hsl(var(--foreground));
+            margin-bottom: 0.25rem;
+        }
+
+        .notification-time {
+            font-size: 0.875rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .notification-message {
+            color: hsl(var(--muted-foreground));
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            border: 1px solid hsl(var(--border));
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            background: hsl(var(--muted));
+        }
+
+        .action-btn.primary {
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+            border-color: hsl(var(--primary));
+        }
+
+        .action-btn.primary:hover {
+            background: hsl(var(--primary) / 0.9);
+        }
+
+        .notification-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .category-task { background: #dbeafe; color: #1d4ed8; }
+        .category-system { background: #f3e8ff; color: #7c3aed; }
+        .category-update { background: #dcfce7; color: #16a34a; }
+        .category-reminder { background: #fef3c7; color: #d97706; }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: hsl(var(--foreground));
+        }
+
+        .empty-description {
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: var(--transition);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar" id="sidebar">
+            <div class="user-profile" id="userProfile">
+                <div class="user-info">
+                    <div class="user-avatar">👨‍💻</div>
+                    <div class="user-details">
+                        <h3>Madhava Sharma</h3>
+                        <p>Senior Developer</p>
+                    </div>
+                </div>
+                <div class="user-stats">
+                    <div class="crown-count">
+                        <span class="crown-shimmer">👑</span>
+                        <span>247</span>
+                    </div>
+                    <div class="level-badge">Gold</div>
+                </div>
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-title">Navigation</div>
+                    <a href="employee-dashboard.html" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="tasks.html" class="nav-item">
+                        <span class="nav-icon">✅</span>
+                        <span>My Tasks</span>
+                    </a>
+                    <a href="my-calender.html" class="nav-item">
+                        <span class="nav-icon">📅</span>
+                        <span>My Calendar</span>
+                    </a>
+                    <a href="team-overview.html" class="nav-item">
+                        <span class="nav-icon">👥</span>
+                        <span>Team Overview</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Tools</div>
+                    <a href="employee-analytics.html" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="request-help.html" class="nav-item">
+                        <span class="nav-icon">❓</span>
+                        <span>Request Help</span>
+                    </a>
+                    <a href="employee-resources.html" class="nav-item">
+                        <span class="nav-icon">📚</span>
+                        <span>Resources</span>
+                    </a>
+                    <a href="ai-assistant.html" class="nav-item">
+                        <span class="nav-icon">🧠</span>
+                        <span>AI Assistant</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Account</div>
+                    <a href="crown-stats.html" class="nav-item">
+                        <span class="nav-icon">👑</span>
+                        <span>Crown Stats</span>
+                    </a>
+                    <a href="notifications.html" class="nav-item active">
+                        <span class="nav-icon">🔔</span>
+                        <span>Notifications</span>
+                    </a>
+                    <a href="settings.html" class="nav-item">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="header">
+                <div>
+                    <h1 class="page-title">Notifications</h1>
+                    <div class="notification-count" id="unread-count">5 unread</div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All</button>
+                    <button class="filter-tab" data-filter="task">Tasks</button>
+                    <button class="filter-tab" data-filter="system">System</button>
+                    <button class="filter-tab" data-filter="update">Updates</button>
+                    <button class="filter-tab" data-filter="reminder">Reminders</button>
+                </div>
+                <button class="mark-all-read" onclick="markAllAsRead()">Mark all as read</button>
+            </div>
+
+            <div class="notifications-list" id="notifications-list">
+                <!-- Notifications will be populated by JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sample notifications data
+        const notifications = [
+            {
+                id: 1,
+                title: 'Task Assignment',
+                message: 'You have been assigned a new task: "Implement user authentication system"',
+                category: 'task',
+                time: '2 minutes ago',
+                unread: true,
+                actions: ['View Task', 'Accept']
+            },
+            {
+                id: 2,
+                title: 'System Maintenance',
+                message: 'Scheduled maintenance will occur tonight from 2:00 AM to 4:00 AM. Please save your work.',
+                category: 'system',
+                time: '1 hour ago',
+                unread: true,
+                actions: ['Dismiss']
+            },
+            {
+                id: 3,
+                title: 'Project Update',
+                message: 'The Starlink project has been updated with new requirements. Check the project dashboard for details.',
+                category: 'update',
+                time: '3 hours ago',
+                unread: true,
+                actions: ['View Project', 'Dismiss']
+            },
+            {
+                id: 4,
+                title: 'Meeting Reminder',
+                message: 'Team standup meeting starts in 15 minutes. Join the video call.',
+                category: 'reminder',
+                time: '4 hours ago',
+                unread: false,
+                actions: ['Join Meeting', 'Dismiss']
+            },
+            {
+                id: 5,
+                title: 'Code Review Request',
+                message: 'Sarah has requested your review for PR #1234 in the authentication module.',
+                category: 'task',
+                time: '6 hours ago',
+                unread: false,
+                actions: ['Review PR', 'Dismiss']
+            },
+            {
+                id: 6,
+                title: 'Performance Review',
+                message: 'Your quarterly performance review is scheduled for next week. Please prepare your self-assessment.',
+                category: 'reminder',
+                time: '1 day ago',
+                unread: false,
+                actions: ['Schedule', 'Dismiss']
+            },
+            {
+                id: 7,
+                title: 'Security Alert',
+                message: 'New security patches have been deployed. Please restart your development environment.',
+                category: 'system',
+                time: '2 days ago',
+                unread: false,
+                actions: ['Restart', 'Dismiss']
+            },
+            {
+                id: 8,
+                title: 'Training Available',
+                message: 'New React 18 training module is now available. Complete it to earn 50 points.',
+                category: 'update',
+                time: '3 days ago',
+                unread: false,
+                actions: ['Start Training', 'Dismiss']
+            }
+        ];
+
+        let currentFilter = 'all';
+        let filteredNotifications = [...notifications];
+
+        function renderNotifications() {
+            const container = document.getElementById('notifications-list');
+            const unreadCount = filteredNotifications.filter(n => n.unread).length;
+            
+            document.getElementById('unread-count').textContent = `${unreadCount} unread`;
+
+            if (filteredNotifications.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔔</div>
+                        <div class="empty-title">No notifications</div>
+                        <div class="empty-description">You're all caught up! Check back later for new updates.</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredNotifications.map(notification => `
+                <div class="notification-item ${notification.unread ? 'unread' : ''}" data-id="${notification.id}">
+                    <div class="notification-header">
+                        <div>
+                            <div class="notification-title">${notification.title}</div>
+                            <span class="notification-category category-${notification.category}">${notification.category}</span>
+                        </div>
+                        <div class="notification-time">${notification.time}</div>
+                    </div>
+                    <div class="notification-message">${notification.message}</div>
+                    <div class="notification-actions">
+                        ${notification.actions.map(action => `
+                            <button class="action-btn ${action === 'View Task' || action === 'Accept' || action === 'Join Meeting' || action === 'Review PR' || action === 'Schedule' || action === 'Restart' || action === 'Start Training' ? 'primary' : ''}" 
+                                    onclick="handleAction(${notification.id}, '${action}')">
+                                ${action}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function handleAction(notificationId, action) {
+            const notification = notifications.find(n => n.id === notificationId);
+            
+            if (action === 'Dismiss') {
+                // Remove notification
+                const index = notifications.findIndex(n => n.id === notificationId);
+                if (index > -1) {
+                    notifications.splice(index, 1);
+                    applyFilter();
+                }
+            } else if (action === 'Accept' || action === 'View Task' || action === 'Review PR') {
+                // Mark as read and show success message
+                notification.unread = false;
+                showMessage(`Action "${action}" completed successfully!`);
+                applyFilter();
+            } else if (action === 'Join Meeting') {
+                // Simulate joining meeting
+                showMessage('Joining meeting... Redirecting to video call.');
+                notification.unread = false;
+                applyFilter();
+            } else if (action === 'Schedule') {
+                // Simulate scheduling
+                showMessage('Opening calendar to schedule performance review...');
+                notification.unread = false;
+                applyFilter();
+            } else if (action === 'Restart') {
+                // Simulate restart
+                showMessage('Restarting development environment...');
+                notification.unread = false;
+                applyFilter();
+            } else if (action === 'Start Training') {
+                // Simulate training start
+                showMessage('Starting React 18 training module...');
+                notification.unread = false;
+                applyFilter();
+            } else if (action === 'View Project') {
+                // Simulate project view
+                showMessage('Opening project dashboard...');
+                notification.unread = false;
+                applyFilter();
+            }
+        }
+
+        function markAllAsRead() {
+            notifications.forEach(notification => {
+                notification.unread = false;
+            });
+            applyFilter();
+            showMessage('All notifications marked as read!');
+        }
+
+        function applyFilter() {
+            if (currentFilter === 'all') {
+                filteredNotifications = [...notifications];
+            } else {
+                filteredNotifications = notifications.filter(n => n.category === currentFilter);
+            }
+            renderNotifications();
+        }
+
+        function showMessage(message) {
+            // Create a temporary message element
+            const messageEl = document.createElement('div');
+            messageEl.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: hsl(var(--primary));
+                color: hsl(var(--primary-foreground));
+                padding: 1rem 1.5rem;
+                border-radius: var(--radius);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+                font-weight: 500;
+                animation: slideIn 0.3s ease;
+            `;
+            messageEl.textContent = message;
+            
+            document.body.appendChild(messageEl);
+            
+            setTimeout(() => {
+                messageEl.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(messageEl);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            renderNotifications();
+
+            // Filter tab functionality
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    applyFilter();
+                });
+            });
+        });
+    </script>
+    <script src="theme-utils.js"></script>
+    <script src="chatbot-config.js"></script>
+</body>
+</html> 

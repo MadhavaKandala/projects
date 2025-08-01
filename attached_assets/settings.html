@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - TaskCrown</title>
+    <style>
+        :root {
+            --background: 240 10% 98%;
+            --foreground: 240 10% 3.9%;
+            --card: 0 0% 100%;
+            --card-border: 240 6% 90%;
+            --primary: 210 100% 70%;
+            --primary-foreground: 0 0% 100%;
+            --muted: 240 4.8% 95.9%;
+            --muted-foreground: 240 3.8% 46.1%;
+            --border: 240 5.9% 90%;
+            --radius: 0.75rem;
+            --transition: all 0.3s ease;
+        }
+
+        /* Dark theme variables */
+        [data-theme="dark"] {
+            --background: 240 10% 3.9%;
+            --foreground: 240 10% 98%;
+            --card: 240 10% 6%;
+            --card-border: 240 6% 15%;
+            --primary: 210 100% 70%;
+            --primary-foreground: 0 0% 100%;
+            --muted: 240 4.8% 8%;
+            --muted-foreground: 240 3.8% 60%;
+            --border: 240 6% 15%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: hsl(var(--card));
+            border-right: 1px solid hsl(var(--border));
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .brand-name {
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: hsl(var(--muted-foreground));
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            color: hsl(var(--foreground));
+            transition: var(--transition);
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item:hover {
+            background: hsl(var(--muted));
+        }
+
+        .nav-item.active {
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+        }
+
+        .user-profile {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid hsl(var(--border));
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .user-details h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .settings-container {
+            max-width: 800px;
+        }
+
+        .settings-section {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--card-border));
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .section-description {
+            color: hsl(var(--muted-foreground));
+            font-size: 0.875rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            background: hsl(var(--card));
+            color: hsl(var(--foreground));
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: hsl(var(--primary));
+            box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: hsl(var(--muted));
+            transition: var(--transition);
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: var(--transition);
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: hsl(var(--primary));
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .toggle-text {
+            flex: 1;
+        }
+
+        .toggle-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .toggle-description {
+            font-size: 0.75rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .button-primary {
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+
+        .button-primary:hover {
+            background: hsl(var(--primary) / 0.9);
+        }
+
+        .button-secondary {
+            background: hsl(var(--muted));
+            color: hsl(var(--foreground));
+            border: 1px solid hsl(var(--border));
+        }
+
+        .button-secondary:hover {
+            background: hsl(var(--muted) / 0.8);
+        }
+
+        .button-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .button-danger:hover {
+            background: #b91c1c;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .alert-success {
+            background: #dcfce7;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            color: #d97706;
+            border: 1px solid #fde68a;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: var(--transition);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">👑</div>
+                <div class="brand-name">TaskCrown</div>
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-title">Navigation</div>
+                    <a href="employee-dashboard.html" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="tasks.html" class="nav-item">
+                        <span class="nav-icon">✅</span>
+                        <span>My Tasks</span>
+                    </a>
+                    <a href="my-calender.html" class="nav-item">
+                        <span class="nav-icon">📅</span>
+                        <span>My Calendar</span>
+                    </a>
+                    <a href="team-overview.html" class="nav-item">
+                        <span class="nav-icon">👥</span>
+                        <span>Team Overview</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Tools</div>
+                    <a href="employee-analytics.html" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="request-help.html" class="nav-item">
+                        <span class="nav-icon">❓</span>
+                        <span>Request Help</span>
+                    </a>
+                    <a href="employee-resources.html" class="nav-item">
+                        <span class="nav-icon">📚</span>
+                        <span>Resources</span>
+                    </a>
+                    <a href="ai-assistant.html" class="nav-item">
+                        <span class="nav-icon">🧠</span>
+                        <span>AI Assistant</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Account</div>
+                    <a href="crown-stats.html" class="nav-item">
+                        <span class="nav-icon">👑</span>
+                        <span>Crown Stats</span>
+                    </a>
+                    <a href="notifications.html" class="nav-item">
+                        <span class="nav-icon">🔔</span>
+                        <span>Notifications</span>
+                    </a>
+                    <a href="settings.html" class="nav-item active">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="user-profile">
+                <div class="user-info">
+                    <div class="user-avatar">👨‍💻</div>
+                    <div class="user-details">
+                        <h3>Madhava Sharma</h3>
+                        <p>Senior Developer</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1>Settings</h1>
+                <p>Manage your account preferences and settings</p>
+            </div>
+
+            <div class="settings-container">
+                <!-- Alert Messages -->
+                <div id="alert-container"></div>
+
+                <!-- Profile Settings -->
+                <div class="settings-section">
+                    <div class="section-header">
+                        <div class="section-icon" style="background: #dbeafe; color: #2563eb;">👤</div>
+                        <div>
+                            <div class="section-title">Profile Settings</div>
+                            <div class="section-description">Update your personal information and profile picture</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div class="profile-avatar" onclick="document.getElementById('avatar-upload').click()">
+                            👨‍💻
+                        </div>
+                        <input type="file" id="avatar-upload" class="file-input" accept="image/*">
+                        <div style="font-size: 0.75rem; color: hsl(var(--muted-foreground));">Click to upload new avatar</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="full-name" value="Madhava Sharma">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="email" value="madhava.sharma@company.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Job Title</label>
+                        <input type="text" class="form-input" id="job-title" value="Senior Developer">
+                    </div>
+
+                    <div class="button-group">
+                        <button class="button button-primary" onclick="saveProfile()">Save Changes</button>
+                        <button class="button button-secondary" onclick="resetProfile()">Reset</button>
+                    </div>
+                </div>
+
+                <!-- Notification Settings -->
+                <div class="settings-section">
+                    <div class="section-header">
+                        <div class="section-icon" style="background: #fef3c7; color: #d97706;">🔔</div>
+                        <div>
+                            <div class="section-title">Notification Preferences</div>
+                            <div class="section-description">Choose how and when you want to be notified</div>
+                        </div>
+                    </div>
+
+                    <div class="toggle-label">
+                        <div class="toggle-text">
+                            <div class="toggle-title">Email Notifications</div>
+                            <div class="toggle-description">Receive notifications via email</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="email-notifications" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-label">
+                        <div class="toggle-text">
+                            <div class="toggle-title">Push Notifications</div>
+                            <div class="toggle-description">Receive browser push notifications</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="push-notifications" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-label">
+                        <div class="toggle-text">
+                            <div class="toggle-title">Task Reminders</div>
+                            <div class="toggle-description">Get reminded about upcoming tasks</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="task-reminders" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="button button-primary" onclick="saveNotifications()">Save Preferences</button>
+                    </div>
+                </div>
+
+                                 <!-- Theme Settings -->
+                 <div class="settings-section">
+                     <div class="section-header">
+                         <div class="section-icon" style="background: #f3e8ff; color: #9333ea;">🎨</div>
+                         <div>
+                             <div class="section-title">Theme & Appearance</div>
+                             <div class="section-description">Customize the look and feel of your dashboard</div>
+                         </div>
+                     </div>
+
+                     <div class="toggle-label">
+                         <div class="toggle-text">
+                             <div class="toggle-title">Dark Mode</div>
+                             <div class="toggle-description">Switch between light and dark themes</div>
+                         </div>
+                         <label class="toggle-switch">
+                             <input type="checkbox" id="dark-mode">
+                             <span class="toggle-slider"></span>
+                         </label>
+                     </div>
+
+                     <div class="button-group">
+                         <button class="button button-primary" onclick="saveTheme()">Apply Theme</button>
+                     </div>
+                 </div>
+
+                 <!-- Privacy Settings -->
+                 <div class="settings-section">
+                     <div class="section-header">
+                         <div class="section-icon" style="background: #dcfce7; color: #16a34a;">🔒</div>
+                         <div>
+                             <div class="section-title">Privacy & Security</div>
+                             <div class="section-description">Manage your privacy and security settings</div>
+                         </div>
+                     </div>
+
+                    <div class="toggle-label">
+                        <div class="toggle-text">
+                            <div class="toggle-title">Profile Visibility</div>
+                            <div class="toggle-description">Allow team members to see your profile</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="profile-visibility" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-label">
+                        <div class="toggle-text">
+                            <div class="toggle-title">Activity Status</div>
+                            <div class="toggle-description">Show when you're online</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="activity-status" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-label">
+                        <div class="toggle-text">
+                            <div class="toggle-title">Two-Factor Authentication</div>
+                            <div class="toggle-description">Add an extra layer of security</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="two-factor">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="button button-primary" onclick="savePrivacy()">Save Settings</button>
+                        <button class="button button-secondary" onclick="changePassword()">Change Password</button>
+                    </div>
+                </div>
+
+                <!-- Account Management -->
+                <div class="settings-section">
+                    <div class="section-header">
+                        <div class="section-icon" style="background: #fee2e2; color: #dc2626;">⚠️</div>
+                        <div>
+                            <div class="section-title">Account Management</div>
+                            <div class="section-description">Manage your account and data</div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="button button-secondary" onclick="exportData()">Export My Data</button>
+                        <button class="button button-secondary" onclick="downloadBackup()">Download Backup</button>
+                        <button class="button button-danger" onclick="deleteAccount()">Delete Account</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize settings
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Avatar upload
+            document.getElementById('avatar-upload').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const avatar = document.querySelector('.profile-avatar');
+                        avatar.style.backgroundImage = `url(${e.target.result})`;
+                        avatar.style.backgroundSize = 'cover';
+                        avatar.style.backgroundPosition = 'center';
+                        avatar.textContent = '';
+                        showAlert('Avatar updated successfully!', 'success');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+                 function loadSettings() {
+             const settings = JSON.parse(localStorage.getItem('userSettings')) || {};
+             
+             if (settings.emailNotifications !== undefined) {
+                 document.getElementById('email-notifications').checked = settings.emailNotifications;
+             }
+             if (settings.pushNotifications !== undefined) {
+                 document.getElementById('push-notifications').checked = settings.pushNotifications;
+             }
+             if (settings.taskReminders !== undefined) {
+                 document.getElementById('task-reminders').checked = settings.taskReminders;
+             }
+             if (settings.profileVisibility !== undefined) {
+                 document.getElementById('profile-visibility').checked = settings.profileVisibility;
+             }
+             if (settings.activityStatus !== undefined) {
+                 document.getElementById('activity-status').checked = settings.activityStatus;
+             }
+             if (settings.twoFactor !== undefined) {
+                 document.getElementById('two-factor').checked = settings.twoFactor;
+             }
+             
+             // Load theme setting
+             if (settings.darkMode !== undefined) {
+                 document.getElementById('dark-mode').checked = settings.darkMode;
+                 applyTheme(settings.darkMode);
+             }
+         }
+
+        function saveSettings(category, data) {
+            const settings = JSON.parse(localStorage.getItem('userSettings')) || {};
+            Object.assign(settings, data);
+            localStorage.setItem('userSettings', JSON.stringify(settings));
+        }
+
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            
+            alertContainer.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        function saveProfile() {
+            const profileData = {
+                fullName: document.getElementById('full-name').value,
+                email: document.getElementById('email').value,
+                jobTitle: document.getElementById('job-title').value
+            };
+            
+            saveSettings('profile', profileData);
+            showAlert('Profile updated successfully!', 'success');
+        }
+
+        function resetProfile() {
+            document.getElementById('full-name').value = 'Madhava Sharma';
+            document.getElementById('email').value = 'madhava.sharma@company.com';
+            document.getElementById('job-title').value = 'Senior Developer';
+            showAlert('Profile reset to default values', 'warning');
+        }
+
+        function saveNotifications() {
+            const notificationData = {
+                emailNotifications: document.getElementById('email-notifications').checked,
+                pushNotifications: document.getElementById('push-notifications').checked,
+                taskReminders: document.getElementById('task-reminders').checked
+            };
+            
+            saveSettings('notifications', notificationData);
+            showAlert('Notification preferences saved!', 'success');
+        }
+
+                 function savePrivacy() {
+             const privacyData = {
+                 profileVisibility: document.getElementById('profile-visibility').checked,
+                 activityStatus: document.getElementById('activity-status').checked,
+                 twoFactor: document.getElementById('two-factor').checked
+             };
+             
+             saveSettings('privacy', privacyData);
+             showAlert('Privacy settings saved!', 'success');
+         }
+
+         function saveTheme() {
+             const darkMode = document.getElementById('dark-mode').checked;
+             
+             const themeData = {
+                 darkMode: darkMode
+             };
+             
+             saveSettings('theme', themeData);
+             applyTheme(darkMode);
+             showAlert('Theme applied successfully!', 'success');
+         }
+
+         function applyTheme(darkMode) {
+             if (darkMode) {
+                 document.documentElement.setAttribute('data-theme', 'dark');
+             } else {
+                 document.documentElement.removeAttribute('data-theme');
+             }
+             
+             // Save theme preference globally
+             localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+         }
+
+        function changePassword() {
+            const newPassword = prompt('Enter new password:');
+            if (newPassword) {
+                const confirmPassword = prompt('Confirm new password:');
+                if (newPassword === confirmPassword) {
+                    showAlert('Password changed successfully!', 'success');
+                } else {
+                    showAlert('Passwords do not match!', 'error');
+                }
+            }
+        }
+
+        function exportData() {
+            const userData = {
+                profile: {
+                    name: document.getElementById('full-name').value,
+                    email: document.getElementById('email').value,
+                    jobTitle: document.getElementById('job-title').value
+                },
+                settings: JSON.parse(localStorage.getItem('userSettings')) || {},
+                exportDate: new Date().toISOString()
+            };
+            
+            const dataStr = JSON.stringify(userData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'taskcrown-data.json';
+            link.click();
+            
+            URL.revokeObjectURL(url);
+            showAlert('Data exported successfully!', 'success');
+        }
+
+        function downloadBackup() {
+            showAlert('Backup download started...', 'success');
+            setTimeout(() => {
+                showAlert('Backup downloaded successfully!', 'success');
+            }, 2000);
+        }
+
+        function deleteAccount() {
+            const confirmDelete = confirm('Are you sure you want to delete your account? This action cannot be undone.');
+            if (confirmDelete) {
+                const finalConfirm = confirm('This will permanently delete all your data. Are you absolutely sure?');
+                if (finalConfirm) {
+                    showAlert('Account deletion initiated. You will be logged out in 30 seconds.', 'warning');
+                    setTimeout(() => {
+                        alert('Account deleted. Redirecting to login page...');
+                        window.location.href = 'login.html';
+                    }, 3000);
+                }
+            }
+        }
+
+                 // Auto-save settings on change
+         document.querySelectorAll('input[type="checkbox"]').forEach(element => {
+             element.addEventListener('change', function() {
+                 const data = {};
+                 data[this.id] = this.checked;
+                 saveSettings('general', data);
+                 
+                 // Special handling for dark mode toggle
+                 if (this.id === 'dark-mode') {
+                     applyTheme(this.checked);
+                 }
+             });
+         });
+
+         // Apply theme on page load
+         document.addEventListener('DOMContentLoaded', function() {
+             const savedTheme = localStorage.getItem('theme');
+             if (savedTheme === 'dark') {
+                 document.getElementById('dark-mode').checked = true;
+                 applyTheme(true);
+             }
+         });
+    </script>
+    <script src="theme-utils.js"></script>
+    <script src="chatbot-config.js"></script>
+</body>
+</html> 

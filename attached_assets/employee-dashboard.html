@@ -95,6 +95,26 @@
             --border-dark: rgba(254, 254, 252, 0.1);
         }
 
+        /* Dark theme variables */
+        [data-theme="dark"] {
+            --background: 240 10% 3.9%;
+            --foreground: 240 10% 98%;
+            --surface: 240 7% 8%;
+            --card: 240 10% 6%;
+            --card-foreground: 240 10% 98%;
+            --card-border: 240 6% 15%;
+            --muted: 240 4.8% 8%;
+            --muted-foreground: 240 3.8% 60%;
+            --accent: 240 4.8% 8%;
+            --accent-foreground: 240 5.9% 90%;
+            --border: 240 6% 15%;
+            --input: 240 6% 15%;
+            --sidebar-background: 240 10% 6%;
+            --sidebar-foreground: 240 10% 98%;
+            --sidebar-border: 240 6% 15%;
+            --gradient-surface: linear-gradient(135deg, #1e293b, #334155);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -103,8 +123,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, var(--bg-light) 0%, #e2e8f0 50%, var(--bg-light) 100%);
-            color: var(--text-dark);
+            background: hsl(var(--background, 240 10% 98%));
+            color: hsl(var(--foreground, 240 10% 3.9%));
             line-height: 1.5;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
@@ -121,9 +141,9 @@
         /* Sidebar Styles */
         .sidebar {
             width: 280px;
-            background: var(--card-light);
+            background: hsl(var(--sidebar-background, 240 5% 96%));
             backdrop-filter: blur(20px);
-            border-right: 1px solid var(--border-light);
+            border-right: 1px solid hsl(var(--sidebar-border, var(--border)));
             padding: 1.5rem;
             overflow-y: auto;
             transition: var(--transition-smooth);
@@ -846,31 +866,31 @@
                         <span class="nav-icon">❓</span>
                         <span>Request Help</span>
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="employee-resources.html" class="nav-item">
                         <span class="nav-icon">📚</span>
                         <span>Resources</span>
                     </a>
-                    <a href="#" class="nav-item">
+                    <a href="ai-assistant.html" class="nav-item">
                         <span class="nav-icon">🧠</span>
                         <span>AI Assistant</span>
                     </a>
                 </div>
 
-                <div class="nav-section">
-                    <div class="nav-title">Account</div>
-                    <a href="#" class="nav-item">
-                        <span class="nav-icon">👑</span>
-                        <span>Crown Stats</span>
-                    </a>
-                    <a href="#" class="nav-item">
-                        <span class="nav-icon">🔔</span>
-                        <span>Notifications</span>
-                    </a>
-                    <a href="#" class="nav-item">
-                        <span class="nav-icon">⚙️</span>
-                        <span>Settings</span>
-                    </a>
-                </div>
+                                    <div class="nav-section">
+                        <div class="nav-title">Account</div>
+                        <a href="crown-stats.html" class="nav-item">
+                            <span class="nav-icon">👑</span>
+                            <span>Crown Stats</span>
+                        </a>
+                        <a href="notifications.html" class="nav-item">
+                            <span class="nav-icon">🔔</span>
+                            <span>Notifications</span>
+                        </a>
+                        <a href="settings.html" class="nav-item">
+                            <span class="nav-icon">⚙️</span>
+                            <span>Settings</span>
+                        </a>
+                    </div>
             </nav>
         </aside>
 
@@ -1722,5 +1742,7 @@
         `;
         document.head.appendChild(style);
     </script>
+    <script src="theme-utils.js"></script>
+    <script src="chatbot-config.js"></script>
 </body>
 </html>

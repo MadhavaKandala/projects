@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crown Stats - TaskCrown</title>
+    <style>
+        :root {
+            --background: 240 10% 98%;
+            --foreground: 240 10% 3.9%;
+            --card: 0 0% 100%;
+            --card-border: 240 6% 90%;
+            --primary: 210 100% 70%;
+            --primary-foreground: 0 0% 100%;
+            --muted: 240 4.8% 95.9%;
+            --muted-foreground: 240 3.8% 46.1%;
+            --border: 240 5.9% 90%;
+            --radius: 0.75rem;
+            --transition: all 0.3s ease;
+            --crown-gold: #FFD700;
+            --crown-silver: #C0C0C0;
+            --crown-bronze: #CD7F32;
+        }
+
+        /* Dark theme variables */
+        [data-theme="dark"] {
+            --background: 240 10% 3.9%;
+            --foreground: 240 10% 98%;
+            --surface: 240 7% 8%;
+            --card: 240 10% 6%;
+            --card-foreground: 240 10% 98%;
+            --card-border: 240 6% 15%;
+            --muted: 240 4.8% 8%;
+            --muted-foreground: 240 3.8% 60%;
+            --accent: 240 4.8% 8%;
+            --accent-foreground: 240 5.9% 90%;
+            --border: 240 6% 15%;
+            --input: 240 6% 15%;
+            --sidebar-background: 240 10% 6%;
+            --sidebar-foreground: 240 10% 98%;
+            --sidebar-border: 240 6% 15%;
+            --gradient-surface: linear-gradient(135deg, #1e293b, #334155);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: hsl(var(--background));
+            color: hsl(var(--foreground));
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: hsl(var(--sidebar-background, 240 5% 96%));
+            border-right: 1px solid hsl(var(--sidebar-border, var(--border)));
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .brand-name {
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: hsl(var(--muted-foreground));
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            color: hsl(var(--foreground));
+            transition: var(--transition);
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item:hover {
+            background: hsl(var(--muted));
+        }
+
+        .nav-item.active {
+            background: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+        }
+
+        .user-profile {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid hsl(var(--border));
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .user-details h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Crown Stats Specific Styles */
+        .crown-hero {
+            background: linear-gradient(135deg, var(--crown-gold), #FFA500);
+            border-radius: var(--radius);
+            padding: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .crown-level {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: crown-shimmer 2s infinite;
+        }
+
+        @keyframes crown-shimmer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .crown-points {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .crown-progress {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            height: 8px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .crown-progress-bar {
+            background: white;
+            height: 100%;
+            border-radius: 1rem;
+            transition: width 0.3s ease;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--card-border));
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: hsl(var(--muted-foreground));
+            font-size: 0.875rem;
+        }
+
+        .achievements-section {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--card-border));
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .achievement-card {
+            background: hsl(var(--muted));
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+
+        .achievement-card.unlocked {
+            background: linear-gradient(135deg, var(--crown-gold), #FFA500);
+            color: white;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .achievement-desc {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .leaderboard-section {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--card-border));
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid hsl(var(--border));
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .rank.gold { background: var(--crown-gold); color: white; }
+        .rank.silver { background: var(--crown-silver); color: white; }
+        .rank.bronze { background: var(--crown-bronze); color: white; }
+        .rank.other { background: hsl(var(--muted)); color: hsl(var(--foreground)); }
+
+        .leaderboard-user {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .leaderboard-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #42c4ff, #08144f);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            color: white;
+        }
+
+        .leaderboard-info h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .leaderboard-info p {
+            font-size: 0.75rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .leaderboard-points {
+            font-weight: 600;
+            color: var(--crown-gold);
+        }
+
+        .recent-activity {
+            background: hsl(var(--card));
+            border: 1px solid hsl(var(--card-border));
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid hsl(var(--border));
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: hsl(var(--muted-foreground));
+        }
+
+        .activity-points {
+            font-weight: 600;
+            color: var(--crown-gold);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: var(--transition);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .achievements-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">👑</div>
+                <div class="brand-name">TaskCrown</div>
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-title">Navigation</div>
+                    <a href="employee-dashboard.html" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="tasks.html" class="nav-item">
+                        <span class="nav-icon">✅</span>
+                        <span>My Tasks</span>
+                    </a>
+                    <a href="my-calender.html" class="nav-item">
+                        <span class="nav-icon">📅</span>
+                        <span>My Calendar</span>
+                    </a>
+                    <a href="team-overview.html" class="nav-item">
+                        <span class="nav-icon">👥</span>
+                        <span>Team Overview</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Tools</div>
+                    <a href="employee-analytics.html" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="request-help.html" class="nav-item">
+                        <span class="nav-icon">❓</span>
+                        <span>Request Help</span>
+                    </a>
+                    <a href="employee-resources.html" class="nav-item">
+                        <span class="nav-icon">📚</span>
+                        <span>Resources</span>
+                    </a>
+                    <a href="ai-assistant.html" class="nav-item">
+                        <span class="nav-icon">🧠</span>
+                        <span>AI Assistant</span>
+                    </a>
+                </div>
+
+                                    <div class="nav-section">
+                        <div class="nav-title">Account</div>
+                        <a href="crown-stats.html" class="nav-item active">
+                            <span class="nav-icon">👑</span>
+                            <span>Crown Stats</span>
+                        </a>
+                        <a href="notifications.html" class="nav-item">
+                            <span class="nav-icon">🔔</span>
+                            <span>Notifications</span>
+                        </a>
+                        <a href="settings.html" class="nav-item">
+                            <span class="nav-icon">⚙️</span>
+                            <span>Settings</span>
+                        </a>
+                    </div>
+            </nav>
+
+            <div class="user-profile">
+                <div class="user-info">
+                    <div class="user-avatar">👨‍💻</div>
+                    <div class="user-details">
+                        <h3>Madhava Sharma</h3>
+                        <p>Senior Developer</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header">
+                <h1>Crown Stats</h1>
+                <p>Track your achievements and performance</p>
+            </div>
+
+            <!-- Crown Hero Section -->
+            <div class="crown-hero">
+                <div class="crown-level">👑</div>
+                <div class="crown-points">247 Crowns</div>
+                <div>Gold Level • 47 points to Platinum</div>
+                <div class="crown-progress">
+                    <div class="crown-progress-bar" style="width: 85%"></div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #dbeafe; color: #2563eb;">📈</div>
+                    <div class="stat-value">85%</div>
+                    <div class="stat-label">Task Completion Rate</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #dcfce7; color: #16a34a;">🔥</div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fef3c7; color: #d97706;">⚡</div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">Tasks Completed</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #f3e8ff; color: #9333ea;">🏆</div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-label">Achievements Unlocked</div>
+                </div>
+            </div>
+
+            <!-- Achievements Section -->
+            <div class="achievements-section">
+                <div class="section-title">
+                    <span>🏆</span>
+                    Achievements
+                </div>
+                <div class="achievements-grid">
+                    <div class="achievement-card unlocked">
+                        <div class="achievement-icon">🚀</div>
+                        <div class="achievement-title">First Task</div>
+                        <div class="achievement-desc">Complete your first task</div>
+                    </div>
+
+                    <div class="achievement-card unlocked">
+                        <div class="achievement-icon">🔥</div>
+                        <div class="achievement-title">Streak Master</div>
+                        <div class="achievement-desc">Maintain a 7-day streak</div>
+                    </div>
+
+                    <div class="achievement-card unlocked">
+                        <div class="achievement-icon">⚡</div>
+                        <div class="achievement-title">Speed Demon</div>
+                        <div class="achievement-desc">Complete 10 tasks in a day</div>
+                    </div>
+
+                    <div class="achievement-card unlocked">
+                        <div class="achievement-icon">🎯</div>
+                        <div class="achievement-title">Perfect Week</div>
+                        <div class="achievement-desc">100% completion rate for a week</div>
+                    </div>
+
+                    <div class="achievement-card unlocked">
+                        <div class="achievement-icon">👑</div>
+                        <div class="achievement-title">Crown Collector</div>
+                        <div class="achievement-desc">Earn 100 crown points</div>
+                    </div>
+
+                    <div class="achievement-card unlocked">
+                        <div class="achievement-icon">💎</div>
+                        <div class="achievement-title">Diamond Hands</div>
+                        <div class="achievement-desc">Complete 50 high-priority tasks</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon">🌟</div>
+                        <div class="achievement-title">Legend</div>
+                        <div class="achievement-desc">Reach Platinum level</div>
+                    </div>
+
+                    <div class="achievement-card">
+                        <div class="achievement-icon">🏅</div>
+                        <div class="achievement-title">Team Player</div>
+                        <div class="achievement-desc">Help 10 team members</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard Section -->
+            <div class="leaderboard-section">
+                <div class="section-title">
+                    <span>🏆</span>
+                    Team Leaderboard
+                </div>
+                <div class="leaderboard-item">
+                    <div class="rank gold">1</div>
+                    <div class="leaderboard-user">
+                        <div class="leaderboard-avatar">MS</div>
+                        <div class="leaderboard-info">
+                            <h4>Madhava Sharma</h4>
+                            <p>Senior Developer</p>
+                        </div>
+                    </div>
+                    <div class="leaderboard-points">247</div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank silver">2</div>
+                    <div class="leaderboard-user">
+                        <div class="leaderboard-avatar">RJ</div>
+                        <div class="leaderboard-info">
+                            <h4>Rajesh Kumar</h4>
+                            <p>Full Stack Developer</p>
+                        </div>
+                    </div>
+                    <div class="leaderboard-points">198</div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank bronze">3</div>
+                    <div class="leaderboard-user">
+                        <div class="leaderboard-avatar">PK</div>
+                        <div class="leaderboard-info">
+                            <h4>Priya Singh</h4>
+                            <p>Frontend Developer</p>
+                        </div>
+                    </div>
+                    <div class="leaderboard-points">156</div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank other">4</div>
+                    <div class="leaderboard-user">
+                        <div class="leaderboard-avatar">AM</div>
+                        <div class="leaderboard-info">
+                            <h4>Amit Patel</h4>
+                            <p>Backend Developer</p>
+                        </div>
+                    </div>
+                    <div class="leaderboard-points">134</div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank other">5</div>
+                    <div class="leaderboard-user">
+                        <div class="leaderboard-avatar">SK</div>
+                        <div class="leaderboard-info">
+                            <h4>Sunita Kumar</h4>
+                            <p>QA Engineer</p>
+                        </div>
+                    </div>
+                    <div class="leaderboard-points">98</div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <div class="section-title">
+                    <span>📊</span>
+                    Recent Activity
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: #dcfce7; color: #16a34a;">✅</div>
+                    <div class="activity-content">
+                        <div class="activity-text">Completed task "CFA Client Integration"</div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                    <div class="activity-points">+15</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: #fef3c7; color: #d97706;">🔥</div>
+                    <div class="activity-content">
+                        <div class="activity-text">Maintained 12-day streak</div>
+                        <div class="activity-time">1 day ago</div>
+                    </div>
+                    <div class="activity-points">+5</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: #dbeafe; color: #2563eb;">🏆</div>
+                    <div class="activity-content">
+                        <div class="activity-text">Unlocked achievement "Diamond Hands"</div>
+                        <div class="activity-time">3 days ago</div>
+                    </div>
+                    <div class="activity-points">+25</div>
+                </div>
+
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: #f3e8ff; color: #9333ea;">👥</div>
+                    <div class="activity-content">
+                        <div class="activity-text">Helped team member with code review</div>
+                        <div class="activity-time">1 week ago</div>
+                    </div>
+                    <div class="activity-points">+10</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize crown stats
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCrownProgress();
+            animateStats();
+        });
+
+        function updateCrownProgress() {
+            const progressBar = document.querySelector('.crown-progress-bar');
+            const currentPoints = 247;
+            const nextLevelPoints = 300;
+            const progress = (currentPoints / nextLevelPoints) * 100;
+            
+            progressBar.style.width = Math.min(progress, 100) + '%';
+        }
+
+        function animateStats() {
+            const statValues = document.querySelectorAll('.stat-value');
+            
+            statValues.forEach(stat => {
+                const finalValue = stat.textContent;
+                const isPercentage = finalValue.includes('%');
+                const numericValue = parseInt(finalValue);
+                
+                if (!isNaN(numericValue)) {
+                    let currentValue = 0;
+                    const increment = numericValue / 50;
+                    
+                    const timer = setInterval(() => {
+                        currentValue += increment;
+                        if (currentValue >= numericValue) {
+                            currentValue = numericValue;
+                            clearInterval(timer);
+                        }
+                        
+                        if (isPercentage) {
+                            stat.textContent = Math.floor(currentValue) + '%';
+                        } else {
+                            stat.textContent = Math.floor(currentValue);
+                        }
+                    }, 20);
+                }
+            });
+        }
+
+        // Add hover effects to achievement cards
+        document.querySelectorAll('.achievement-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                if (this.classList.contains('unlocked')) {
+                    this.style.transform = 'translateY(-4px) scale(1.02)';
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add click effects to leaderboard items
+        document.querySelectorAll('.leaderboard-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const userName = this.querySelector('h4').textContent;
+                alert(`Viewing profile of ${userName}`);
+            });
+        });
+    </script>
+    <script src="theme-utils.js"></script>
+    <script src="chatbot-config.js"></script>
+</body>
+</html> 
