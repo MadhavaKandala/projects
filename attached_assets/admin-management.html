@@ -92,6 +92,40 @@
             box-shadow: var(--shadow-lg);
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .quick-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.25rem;
+        }
+
         /* Main Grid */
         .main-grid {
             display: grid;
@@ -180,6 +214,30 @@
 
         .filter-select:focus {
             outline: none;
+            border-color: var(--primary);
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--background);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-btn:hover {
+            background: var(--secondary);
+            border-color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
             border-color: var(--primary);
         }
 
@@ -313,6 +371,11 @@
         .badge-disabled {
             background: rgba(239, 68, 68, 0.1);
             color: var(--danger);
+        }
+
+        .badge-probation {
+            background: rgba(168, 85, 247, 0.1);
+            color: #8b5cf6;
         }
 
         .badge-outline {
@@ -487,7 +550,7 @@
         /* Admin Actions */
         .admin-actions {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 0.75rem;
         }
 
@@ -637,15 +700,31 @@
         <div class="header">
             <div class="header-content">
                 <div>
-                    <h1>Employee Management Panel</h1>
-                    <p>Manage employee profiles, productivity, and performance with advanced analytics</p>
+                    <h1>Advanced Employee Management Panel</h1>
+                    <p>Comprehensive employee management with AI-powered insights, performance tracking, and team optimization</p>
                 </div>
-                <button class="add-btn">
-                    <svg class="icon" viewBox="0 0 24 24">
-                        <path d="M17 7h-4V3a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v4H3a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h4v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4h4a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1z"/>
-                    </svg>
-                    Add Employee
-                </button>
+                <div class="header-actions">
+                    <div class="quick-stats">
+                        <div class="stat-item">
+                            <span class="stat-value">24</span>
+                            <span class="stat-label">Active</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">3</span>
+                            <span class="stat-label">On Leave</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">92%</span>
+                            <span class="stat-label">Avg Performance</span>
+                        </div>
+                    </div>
+                    <button class="add-btn">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M17 7h-4V3a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v4H3a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h4v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4h4a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1z"/>
+                        </svg>
+                        Add Employee
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -680,6 +759,8 @@
                             <option value="Frontend">Frontend</option>
                             <option value="Backend">Backend</option>
                             <option value="QA">QA</option>
+                            <option value="DevOps">DevOps</option>
+                            <option value="Product">Product</option>
                         </select>
                         
                         <select class="filter-select" id="statusFilter">
@@ -687,6 +768,15 @@
                             <option value="Active">Active</option>
                             <option value="On Leave">On Leave</option>
                             <option value="Disabled">Disabled</option>
+                            <option value="Probation">Probation</option>
+                        </select>
+
+                        <select class="filter-select" id="tierFilter">
+                            <option value="all">All Tiers</option>
+                            <option value="Platinum">Platinum</option>
+                            <option value="Gold">Gold</option>
+                            <option value="Silver">Silver</option>
+                            <option value="Bronze">Bronze</option>
                         </select>
                         
                         <select class="filter-select" id="sortFilter">
@@ -694,7 +784,16 @@
                             <option value="joined">Recently Joined</option>
                             <option value="crowns">Highest Crowns</option>
                             <option value="performance">Top Performers</option>
+                            <option value="tasks">Most Active</option>
+                            <option value="overdue">Overdue Tasks</option>
                         </select>
+
+                        <button class="filter-btn" id="advancedFilterBtn">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46"/>
+                            </svg>
+                            Advanced
+                        </button>
                     </div>
                 </div>
                 
@@ -846,6 +945,86 @@
                     { type: "reward", text: "Earned 3 Crowns", time: "Today" },
                     { type: "assigned", text: "Added to Project 'Infrastructure'", time: "2 days ago" },
                 ]
+            },
+            {
+                id: 7,
+                name: "Anjali Verma",
+                role: "Product Manager",
+                team: "Product",
+                email: "anjali.verma@company.com",
+                status: "Active",
+                crowns: 456,
+                joinedDate: "2022-06-10",
+                tier: "Platinum",
+                performance: 94,
+                activeTasks: 15,
+                pendingReviews: 2,
+                overdue: 0,
+                recentActivity: [
+                    { type: "completed", text: "Completed task: Product Roadmap Q4", time: "3 hrs ago" },
+                    { type: "reward", text: "Earned 8 Crowns", time: "Today" },
+                    { type: "assigned", text: "Added to Project 'Market Analysis'", time: "Yesterday" },
+                ]
+            },
+            {
+                id: 8,
+                name: "Vikram Singh",
+                role: "Junior Developer",
+                team: "Frontend",
+                email: "vikram.singh@company.com",
+                status: "Probation",
+                crowns: 45,
+                joinedDate: "2023-08-01",
+                tier: "Bronze",
+                performance: 68,
+                activeTasks: 4,
+                pendingReviews: 6,
+                overdue: 2,
+                recentActivity: [
+                    { type: "issue", text: "Missed task deadline", time: "July 27" },
+                    { type: "completed", text: "Completed task: Button Component", time: "July 26" },
+                    { type: "assigned", text: "Added to Project 'Learning Path'", time: "July 25" },
+                ]
+            },
+            {
+                id: 9,
+                name: "Meera Patel",
+                role: "UX Designer",
+                team: "Design",
+                email: "meera.patel@company.com",
+                status: "Active",
+                crowns: 189,
+                joinedDate: "2023-02-20",
+                tier: "Silver",
+                performance: 87,
+                activeTasks: 11,
+                pendingReviews: 1,
+                overdue: 0,
+                recentActivity: [
+                    { type: "completed", text: "Completed task: User Journey Mapping", time: "5 hrs ago" },
+                    { type: "reward", text: "Earned 4 Crowns", time: "Today" },
+                    { type: "assigned", text: "Added to Project 'Mobile App'", time: "Yesterday" },
+                ]
+            },
+            {
+                id: 10,
+                name: "Aditya Sharma",
+                role: "Senior Backend Developer",
+                team: "Backend",
+                email: "aditya.sharma@company.com",
+                status: "Active",
+                crowns: 523,
+                joinedDate: "2021-11-15",
+                tier: "Platinum",
+                performance: 96,
+                activeTasks: 13,
+                pendingReviews: 1,
+                overdue: 0,
+                recentActivity: [
+                    { type: "completed", text: "Completed task: API Performance Optimization", time: "2 hrs ago" },
+                    { type: "reward", text: "Earned 6 Crowns", time: "Today" },
+                    { type: "assigned", text: "Added to Project 'Microservices'", time: "Yesterday" },
+                ]
             }
         ];
 
@@ -864,7 +1043,9 @@
             document.getElementById('searchInput').addEventListener('input', handleSearch);
             document.getElementById('teamFilter').addEventListener('change', handleFilter);
             document.getElementById('statusFilter').addEventListener('change', handleFilter);
+            document.getElementById('tierFilter').addEventListener('change', handleFilter);
             document.getElementById('sortFilter').addEventListener('change', handleSort);
+            document.getElementById('advancedFilterBtn').addEventListener('click', toggleAdvancedFilters);
         }
 
         // Handle search
@@ -935,7 +1116,8 @@
             const statusClass = {
                 'Active': 'badge-active',
                 'On Leave': 'badge-leave',
-                'Disabled': 'badge-disabled'
+                'Disabled': 'badge-disabled',
+                'Probation': 'badge-probation'
             };
             
             return `<span class="badge ${statusClass[status] || 'badge-outline'}">${status}</span>`;
@@ -1131,7 +1313,7 @@
                     <div class="admin-actions">
                         <button class="admin-btn" onclick="editRole(${employee.id})">
                             <svg class="icon" viewBox="0 0 24 24">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
                                 <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                             </svg>
                             Edit Role/Team
@@ -1144,6 +1326,34 @@
                             </svg>
                             Transfer Tasks
                         </button>
+                        <button class="admin-btn" onclick="managePermissions(${employee.id})">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h4"/>
+                                <polyline points="16,5 14,3 12,5"/>
+                                <path d="M15 3h5v5"/>
+                                <path d="M12 12h9"/>
+                                <path d="M16 16h5"/>
+                                <path d="M12 20h5"/>
+                            </svg>
+                            Permissions
+                        </button>
+                        <button class="admin-btn" onclick="viewTaskHistory(${employee.id})">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                            Task History
+                        </button>
+                        <button class="admin-btn" onclick="performanceReview(${employee.id})">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14,2 14,8 20,8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10,9 9,9 8,9"/>
+                            </svg>
+                            Performance Review
+                        </button>
                         <button class="admin-btn danger" onclick="disableAccount(${employee.id})">
                             <svg class="icon" viewBox="0 0 24 24">
                                 <circle cx="12" cy="12" r="10"/>
@@ -1151,22 +1361,19 @@
                             </svg>
                             Disable Account
                         </button>
-                        <button class="admin-btn" onclick="viewTaskHistory(${employee.id})">
-                            <svg class="icon" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="10"/>
-                                <polyline points="12,6 12,12 16,14"/>
-                            </svg>
-                            View Task History
-                        </button>
                     </div>
                 </div>
 
                 <div class="ai-suggestions">
-                    <h4>💡 AI Suggestions</h4>
-                    ${employee.overdue > 0 ? `<div class="suggestion danger">⚠️ This employee has ${employee.overdue} overdue task(s).</div>` : ''}
-                    ${employee.performance < 80 ? `<div class="suggestion warning">📉 Performance dropped - Consider a check-in.</div>` : ''}
-                    ${employee.performance >= 90 ? `<div class="suggestion success">🌟 Top 10% performer - Great job!</div>` : ''}
-                    ${employee.pendingReviews > 3 ? `<div class="suggestion warning">📋 High review workload - Consider redistribution.</div>` : ''}
+                    <h4>🤖 AI-Powered Insights</h4>
+                    ${employee.overdue > 0 ? `<div class="suggestion danger">⚠️ This employee has ${employee.overdue} overdue task(s). Consider task redistribution or deadline extension.</div>` : ''}
+                    ${employee.performance < 80 ? `<div class="suggestion warning">📉 Performance dropped - Schedule a 1-on-1 meeting to identify challenges.</div>` : ''}
+                    ${employee.performance >= 90 ? `<div class="suggestion success">🌟 Top 10% performer - Consider promotion or leadership opportunities.</div>` : ''}
+                    ${employee.pendingReviews > 3 ? `<div class="suggestion warning">📋 High review workload - Consider redistributing tasks to prevent burnout.</div>` : ''}
+                    ${employee.crowns > 300 ? `<div class="suggestion success">👑 High crown count - This employee is highly engaged and productive.</div>` : ''}
+                    ${employee.activeTasks > 10 ? `<div class="suggestion warning">📊 Heavy workload - Monitor for potential stress or quality issues.</div>` : ''}
+                    ${employee.team === 'Design' && employee.performance > 85 ? `<div class="suggestion success">🎨 Design team star - Consider for design system leadership.</div>` : ''}
+                    ${employee.team === 'Backend' && employee.performance > 90 ? `<div class="suggestion success">⚙️ Backend expert - Perfect candidate for architecture decisions.</div>` : ''}
                 </div>
             `;
         }
@@ -1201,6 +1408,73 @@
 
         function viewTaskHistory(id) {
             alert(`Viewing task history for employee ID: ${id}`);
+        }
+
+        function managePermissions(id) {
+            alert(`Managing permissions for employee ID: ${id}`);
+        }
+
+        function performanceReview(id) {
+            alert(`Starting performance review for employee ID: ${id}`);
+        }
+
+        function toggleAdvancedFilters() {
+            const btn = document.getElementById('advancedFilterBtn');
+            btn.classList.toggle('active');
+            // This could open a modal with advanced filtering options
+            alert('Advanced filters feature coming soon!');
+        }
+
+        // Enhanced filter handling
+        function handleFilter() {
+            const teamFilter = document.getElementById('teamFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const tierFilter = document.getElementById('tierFilter').value;
+            
+            filteredEmployees = employees.filter(emp => {
+                const matchesTeam = teamFilter === 'all' || emp.team === teamFilter;
+                const matchesStatus = statusFilter === 'all' || emp.status === statusFilter;
+                const matchesTier = tierFilter === 'all' || emp.tier === tierFilter;
+                return matchesTeam && matchesStatus && matchesTier;
+            });
+            
+            // Also apply search if there's a search term
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (searchTerm) {
+                filteredEmployees = filteredEmployees.filter(emp => 
+                    emp.name.toLowerCase().includes(searchTerm) ||
+                    emp.role.toLowerCase().includes(searchTerm) ||
+                    emp.email.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderEmployeeList();
+        }
+
+        // Enhanced sorting
+        function handleSort() {
+            const sortBy = document.getElementById('sortFilter').value;
+            
+            filteredEmployees.sort((a, b) => {
+                switch (sortBy) {
+                    case 'name':
+                        return a.name.localeCompare(b.name);
+                    case 'joined':
+                        return new Date(b.joinedDate) - new Date(a.joinedDate);
+                    case 'crowns':
+                        return b.crowns - a.crowns;
+                    case 'performance':
+                        return b.performance - a.performance;
+                    case 'tasks':
+                        return b.activeTasks - a.activeTasks;
+                    case 'overdue':
+                        return b.overdue - a.overdue;
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderEmployeeList();
         }
 
         // Initialize the application
