@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - TaskCrown</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-light: #fefefc;
+            --primary-dark: #08144f;
+            --accent-blue: #42c4ff;
+            --text-light: #fefefc;
+            --text-dark: #08144f;
+            --bg-light: #f8fafc;
+            --card-light: rgba(254, 254, 252, 0.9);
+            --border-light: rgba(8, 20, 79, 0.1);
+            --primary: #8b5cf6;
+            --secondary: #f1f5f9;
+            --success: #059669;
+            --success-light: #a7f3d0;
+            --warning: #f59e0b;
+            --warning-light: #fde68a;
+            --danger: #dc2626;
+            --info: #0ea5e9;
+            --info-light: #bae6fd;
+            --card-bg: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --radius: 0.75rem;
+            --gradient-primary: linear-gradient(135deg, #42c4ff, #08144f);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e2e8f0 50%, var(--bg-light) 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--card-light);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            z-index: 40;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: calc(var(--radius) - 2px);
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(66, 196, 255, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .nav-item.active {
+            background: rgba(66, 196, 255, 0.15);
+            color: var(--accent-blue);
+            font-weight: 500;
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .user-profile {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .user-details h3 {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-details p {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .user-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .crown-count {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .level-badge {
+            background: #fbbf24;
+            color: black;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--card-light);
+            border: 1px solid var(--border-light);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(100px, -100px);
+        }
+
+        .welcome-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-greeting {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .welcome-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .welcome-stat-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .welcome-stat-label {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .welcome-tags {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .welcome-tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .dashboard-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Key Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-card {
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .metric-card.completed {
+            background: var(--success-light);
+            border-left-color: var(--success);
+        }
+
+        .metric-card.ongoing {
+            background: var(--info-light);
+            border-left-color: var(--info);
+        }
+
+        .metric-card.due {
+            background: var(--warning-light);
+            border-left-color: var(--warning);
+        }
+
+        .metric-card.overdue {
+            background: #fecaca;
+            border-left-color: var(--danger);
+        }
+
+        .metric-card.goal {
+            background: #e0e7ff;
+            border-left-color: var(--primary);
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-change {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Efficiency Tracker */
+        .efficiency-score {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .task-distribution {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .distribution-bar {
+            flex: 1;
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        .distribution-bar.completed { background: var(--success); }
+        .distribution-bar.ongoing { background: var(--info); }
+        .distribution-bar.overdue { background: var(--danger); }
+
+        .distribution-legend {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .legend-color {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Calendar */
+        .calendar-day {
+            margin-bottom: 1rem;
+        }
+
+        .calendar-date {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .calendar-task {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            background: var(--secondary);
+        }
+
+        .task-priority {
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .priority-high { background: #fecaca; color: var(--danger); }
+        .priority-medium { background: var(--warning-light); color: var(--warning); }
+        .priority-low { background: var(--success-light); color: var(--success); }
+
+        .calendar-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        /* Quick Actions */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.1);
+        }
+
+        .action-icon {
+            font-size: 1.5rem;
+        }
+
+        .action-label {
+            font-size: 0.75rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .today-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .action-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .pro-tip {
+            background: var(--info-light);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: var(--info);
+        }
+
+        /* Team Activity */
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .activity-badge {
+            background: var(--secondary);
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .team-momentum {
+            background: var(--info-light);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            color: var(--info);
+            margin-top: 1rem;
+        }
+
+        /* Focus Area */
+        .focus-timer {
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .timer-display {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timer-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .priority-task {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            background: var(--secondary);
+        }
+
+        .focus-progress {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .welcome-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span style="font-size:1.7em;">👑</span>
+                    <span>TaskCrown</span>
+                </div>
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-title">Navigation</div>
+                    <a href="employee-home.html" class="nav-item active">
+                        <span>🏠</span>
+                        <span>Home</span>
+                    </a>
+                    <a href="employee-dashboard.html" class="nav-item">
+                        <span>📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="tasks.html" class="nav-item">
+                        <span>✅</span>
+                        <span>My Tasks</span>
+                    </a>
+                    <a href="my-calender.html" class="nav-item">
+                        <span>📅</span>
+                        <span>My Calendar</span>
+                    </a>
+                    <a href="team-overview.html" class="nav-item">
+                        <span>👥</span>
+                        <span>Team Overview</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Tools</div>
+                    <a href="employee-analytics.html" class="nav-item">
+                        <span>📊</span>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="request-help.html" class="nav-item">
+                        <span>❓</span>
+                        <span>Request Help</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span>📚</span>
+                        <span>Resources</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span>🧠</span>
+                        <span>AI Assistant</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Account</div>
+                    <a href="#" class="nav-item">
+                        <span>👑</span>
+                        <span>Crown Stats</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span>🔔</span>
+                        <span>Notifications</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span>⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="user-profile">
+                <div class="user-info">
+                    <div class="user-avatar">👨‍💻</div>
+                    <div class="user-details">
+                        <h3>Madhava Sharma</h3>
+                        <p>Senior Developer</p>
+                    </div>
+                </div>
+                <div class="user-stats">
+                    <div class="crown-count">
+                        <span>👑</span>
+                        <span>247</span>
+                    </div>
+                    <div class="level-badge">Gold</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Header -->
+                <div class="header">
+                    <h1>Dashboard</h1>
+                </div>
+
+                <!-- Welcome Banner -->
+                <div class="welcome-banner">
+                    <div class="welcome-header">
+                        <span>🌤️</span>
+                        <span class="welcome-greeting">Good Afternoon, Madhava</span>
+                    </div>
+                    <p class="welcome-subtitle">Ready to conquer your tasks today?</p>
+                    
+                    <div class="welcome-stats">
+                        <div class="welcome-stat">
+                            <span>👑</span>
+                            <div>
+                                <div class="welcome-stat-value">247 Crowns</div>
+                                <div class="welcome-stat-label">Gold Level</div>
+                            </div>
+                        </div>
+                        <div class="welcome-stat">
+                            <span>🔥</span>
+                            <div>
+                                <div class="welcome-stat-value">5 Day Streak</div>
+                                <div class="welcome-stat-label">Keep it up!</div>
+                            </div>
+                        </div>
+                        <div class="welcome-stat">
+                            <span>📈</span>
+                            <div>
+                                <div class="welcome-stat-value">+12% This Week</div>
+                                <div class="welcome-stat-label">Productivity</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="welcome-tags">
+                        <span class="welcome-tag">Senior Developer</span>
+                        <span class="welcome-tag">Top Performer</span>
+                        <span class="welcome-tag">On Track</span>
+                    </div>
+                </div>
+
+                <!-- Dashboard Grid -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-main">
+                        <!-- Key Metrics -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Key Metrics</h3>
+                                <a href="#" class="card-link">View Details</a>
+                            </div>
+                            <div class="metrics-grid">
+                                <div class="metric-card completed">
+                                    <div class="metric-value">12</div>
+                                    <div class="metric-label">Completed Tasks</div>
+                                    <div class="metric-change">✅ +3 today</div>
+                                </div>
+                                <div class="metric-card ongoing">
+                                    <div class="metric-value">8</div>
+                                    <div class="metric-label">Ongoing Tasks</div>
+                                    <div class="metric-change">⏰ 2 in progress</div>
+                                </div>
+                                <div class="metric-card due">
+                                    <div class="metric-value">3</div>
+                                    <div class="metric-label">Due Today</div>
+                                    <div class="metric-change">📅 High priority</div>
+                                </div>
+                                <div class="metric-card overdue">
+                                    <div class="metric-value">1</div>
+                                    <div class="metric-label">Overdue</div>
+                                    <div class="metric-change">⚠️ Needs attention</div>
+                                </div>
+                                <div class="metric-card goal">
+                                    <div class="metric-value">48%</div>
+                                    <div class="metric-label">Weekly Goal</div>
+                                    <div class="metric-change">🎯 12/25 completed</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Efficiency Tracker -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">📊 Efficiency Tracker</h3>
+                            </div>
+                            <div class="efficiency-score">82%</div>
+                            <div>Overall Score</div>
+                            
+                            <div style="margin: 1rem 0;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Task Completion Rate</span>
+                                    <span>75%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin: 1rem 0;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Weekly Goal Progress</span>
+                                    <span>12/25 tasks</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 48%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="task-distribution">
+                                <div class="distribution-bar completed"></div>
+                                <div class="distribution-bar ongoing"></div>
+                                <div class="distribution-bar overdue"></div>
+                            </div>
+                            
+                            <div class="distribution-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: var(--success);"></div>
+                                    <span>Completed: 12</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: var(--info);"></div>
+                                    <span>Ongoing: 8</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: var(--danger);"></div>
+                                    <span>Overdue: 1</span>
+                                </div>
+                            </div>
+                            
+                            <div class="pro-tip">
+                                💡 Focus on clearing overdue tasks to boost your efficiency score.
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">⚡ Quick Actions</h3>
+                            </div>
+                            <div class="quick-actions-grid">
+                                <div class="action-btn">
+                                    <div class="action-icon">➕</div>
+                                    <div class="action-label">Add New Task</div>
+                                </div>
+                                <div class="action-btn">
+                                    <div class="action-icon">❓</div>
+                                    <div class="action-label">Request Help</div>
+                                </div>
+                                <div class="action-btn">
+                                    <div class="action-icon">🏆</div>
+                                    <div class="action-label">Leaderboard</div>
+                                </div>
+                                <div class="action-btn">
+                                    <div class="action-icon">✅</div>
+                                    <div class="action-label">Mark Complete</div>
+                                </div>
+                                <div class="action-btn">
+                                    <div class="action-icon">🎤</div>
+                                    <div class="action-label">Voice Log</div>
+                                </div>
+                                <div class="action-btn">
+                                    <div class="action-icon">⏱️</div>
+                                    <div class="action-label">Focus Mode</div>
+                                </div>
+                            </div>
+                            
+                            <div class="today-actions">
+                                <span>Today's Actions</span>
+                                <div class="action-stats">
+                                    <span>✅ 3 completed</span>
+                                    <span>👥 2 helped</span>
+                                </div>
+                            </div>
+                            
+                            <div class="pro-tip">
+                                ⚡ Use keyboard shortcuts: Press 'T' for new task, 'H' for help, 'F' for focus mode!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-sidebar">
+                        <!-- Daily Streak -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">🔥 Daily Streak</h3>
+                            </div>
+                            <div style="text-align: center; margin-bottom: 1rem;">
+                                <div style="font-size: 2rem; font-weight: 700; color: var(--warning);">5 days</div>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Last 7 days</div>
+                                <div style="display: flex; gap: 0.25rem;">
+                                    <div style="width: 20px; height: 20px; background: var(--warning); border-radius: 50%;"></div>
+                                    <div style="width: 20px; height: 20px; background: var(--warning); border-radius: 50%;"></div>
+                                    <div style="width: 20px; height: 20px; background: var(--warning); border-radius: 50%;"></div>
+                                    <div style="width: 20px; height: 20px; background: var(--warning); border-radius: 50%;"></div>
+                                    <div style="width: 20px; height: 20px; background: var(--warning); border-radius: 50%;"></div>
+                                    <div style="width: 20px; height: 20px; background: var(--border); border-radius: 50%;"></div>
+                                    <div style="width: 20px; height: 20px; background: var(--border); border-radius: 50%;"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 0.5rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Goal: 7 days</span>
+                                    <span>5/7</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 71%"></div>
+                                </div>
+                            </div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                                2 more days to reach your goal!
+                            </div>
+                        </div>
+
+                        <!-- Calendar Snapshot -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">📅 Calendar Snapshot</h3>
+                                <a href="#" class="card-link">View Full Calendar</a>
+                            </div>
+                            
+                            <div class="calendar-day">
+                                <div class="calendar-date">Today (Oct 31)</div>
+                                <div class="calendar-task">
+                                    <span>⏰</span>
+                                    <div style="flex: 1;">
+                                        <div>Review client presentation</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Due: 2:00 PM</div>
+                                    </div>
+                                    <span class="task-priority priority-high">high</span>
+                                </div>
+                                <div class="calendar-task">
+                                    <span>⏰</span>
+                                    <div style="flex: 1;">
+                                        <div>Team standup meeting</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Due: 9:30 AM</div>
+                                    </div>
+                                    <span class="task-priority priority-medium">medium</span>
+                                </div>
+                            </div>
+                            
+                            <div class="calendar-day">
+                                <div class="calendar-date">Tomorrow (Nov 1)</div>
+                                <div class="calendar-task">
+                                    <span>🔵</span>
+                                    <div style="flex: 1;">Sprint planning session</div>
+                                    <span class="task-priority priority-medium">medium</span>
+                                </div>
+                                <div class="calendar-task">
+                                    <span>🔵</span>
+                                    <div style="flex: 1;">Code review with team</div>
+                                    <span class="task-priority priority-low">low</span>
+                                </div>
+                            </div>
+                            
+                            <div class="calendar-actions">
+                                <button class="btn btn-primary">Add Event</button>
+                                <button class="btn btn-secondary">Schedule Task</button>
+                            </div>
+                        </div>
+
+                        <!-- Team Activity -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">👥 Team Activity</h3>
+                                <a href="#" class="card-link">View All</a>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-avatar">👨‍💻</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">You earned 3 crowns today</div>
+                                    <div class="activity-time">2 min ago</div>
+                                </div>
+                                <div class="activity-badge">+3 crowns</div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-avatar">👩‍🎨</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Riya Sharma completed 3 tasks</div>
+                                    <div class="activity-time">15 min ago</div>
+                                </div>
+                                <div class="activity-badge">Designer</div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-avatar">👨‍💼</div>
+                                <div class="activity-content">
+                                    <div class="activity-text">Arjun Singh helped Akash with Client Report</div>
+                                    <div class="activity-time">1 hour ago</div>
+                                </div>
+                                <div class="activity-badge">DevOps</div>
+                            </div>
+                            
+                            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>24 Tasks Today</span>
+                                    <span>8 Collaborations</span>
+                                </div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                                    47 Crowns Earned
+                                </div>
+                            </div>
+                            
+                            <div class="team-momentum">
+                                ⚡ Your team is 15% more productive than last week
+                            </div>
+                        </div>
+
+                        <!-- Focus Area -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">🎯 Focus Area</h3>
+                            </div>
+                            
+                            <div style="margin-bottom: 1rem;">
+                                <div style="font-weight: 600; margin-bottom: 0.5rem;">Today's Priority Tasks:</div>
+                                <div class="priority-task">
+                                    <input type="checkbox">
+                                    <div style="flex: 1;">Review client presentation</div>
+                                    <span class="task-priority priority-high">High</span>
+                                </div>
+                                <div class="priority-task">
+                                    <input type="checkbox">
+                                    <div style="flex: 1;">Team standup meeting</div>
+                                    <span class="task-priority priority-medium">Med</span>
+                                </div>
+                                <div class="priority-task">
+                                    <input type="checkbox">
+                                    <div style="flex: 1;">Update project documentation</div>
+                                    <span class="task-priority priority-low">Low</span>
+                                </div>
+                            </div>
+                            
+                            <div class="focus-timer">
+                                <div class="timer-display">25:00</div>
+                                <div class="timer-label">Pomodoro Session</div>
+                                <button class="btn btn-primary">Start Focus Session</button>
+                            </div>
+                            
+                            <div class="focus-progress">
+                                <span>🏆</span>
+                                <span>Focus Sessions</span>
+                                <div style="flex: 1;">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 50%"></div>
+                                    </div>
+                                </div>
+                                <span>2/4 completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (mobileMenuBtn && sidebar) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                });
+            }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 1024) {
+                    if (!sidebar.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                        sidebar.classList.remove('open');
+                    }
+                }
+            });
+
+            // Quick action buttons
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const action = this.querySelector('.action-label').textContent;
+                    console.log('Action clicked:', action);
+                    // Add specific functionality for each action
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
