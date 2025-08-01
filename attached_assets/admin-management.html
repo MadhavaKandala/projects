@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #f1f5f9;
+            --background: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            height: calc(100vh - 12rem);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(139, 92, 246, 0.05));
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+            height: calc(100% - 5rem);
+            overflow-y: auto;
+        }
+
+        /* Search and Filters */
+        .search-container {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            transition: var(--transition);
+            background: var(--background);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--background);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Employee List */
+        .employee-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .employee-item {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--background);
+        }
+
+        .employee-item:hover {
+            background: var(--secondary);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .employee-item.active {
+            background: var(--secondary);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .employee-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .employee-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .employee-details h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .employee-details p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .employee-meta {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .employee-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+
+        .crown-count {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .action-btn {
+            width: 1.75rem;
+            height: 1.75rem;
+            border: none;
+            background: var(--secondary);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-active {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .badge-leave {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .badge-disabled {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .badge-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .badge-tier {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-platinum { background: rgba(168, 85, 247, 0.1); color: #8b5cf6; }
+        .badge-gold { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .badge-silver { background: rgba(107, 114, 128, 0.1); color: #6b7280; }
+        .badge-bronze { background: rgba(251, 146, 60, 0.1); color: #fb923c; }
+
+        /* Profile Panel */
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-info {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .profile-avatar {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .profile-details h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-details p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .profile-stats {
+            text-align: right;
+        }
+
+        .performance-score {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Performance Grid */
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .performance-card {
+            text-align: center;
+            padding: 1rem;
+            background: var(--secondary);
+            border-radius: var(--radius);
+        }
+
+        .performance-card .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .performance-card .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .performance-card.active .value { color: var(--primary); }
+        .performance-card.warning .value { color: var(--warning); }
+        .performance-card.danger .value { color: var(--danger); }
+
+        /* Progress Bar */
+        .progress-container {
+            margin: 1rem 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: var(--secondary);
+            border-radius: 0.25rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #8b5cf6);
+            transition: width 0.5s ease;
+        }
+
+        /* Activity Timeline */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .activity-icon {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 0.125rem;
+        }
+
+        .activity-icon.completed { background: var(--success); }
+        .activity-icon.assigned { background: var(--primary); }
+        .activity-icon.reward { background: var(--warning); }
+        .activity-icon.issue { background: var(--danger); }
+
+        .activity-content p {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-content .time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Admin Actions */
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .admin-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            background: var(--background);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+
+        .admin-btn:hover {
+            background: var(--secondary);
+            border-color: var(--primary);
+        }
+
+        .admin-btn.danger {
+            color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .admin-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        /* AI Suggestions */
+        .ai-suggestions {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(139, 92, 246, 0.05));
+            padding: 1rem;
+            border-radius: var(--radius);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .ai-suggestions h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-suggestions .suggestion {
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .suggestion.warning { color: var(--warning); }
+        .suggestion.danger { color: var(--danger); }
+        .suggestion.success { color: var(--success); }
+
+        /* Section Dividers */
+        .section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            margin: 1.5rem 0;
+        }
+
+        /* Icons */
+        .icon {
+            width: 1rem;
+            height: 1rem;
+            fill: currentColor;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .performance-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        /* Scrollbar Styling */
+        .card-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .card-content::-webkit-scrollbar-track {
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+
+        .card-content::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .card-content::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div>
+                    <h1>Employee Management Panel</h1>
+                    <p>Manage employee profiles, productivity, and performance with advanced analytics</p>
+                </div>
+                <button class="add-btn">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M17 7h-4V3a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v4H3a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h4v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4h4a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1z"/>
+                    </svg>
+                    Add Employee
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Left Panel - Employee Directory -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="m22 21-3-3m2.5 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                        </svg>
+                        Employee Directory
+                    </div>
+                    
+                    <!-- Search Bar -->
+                    <div class="search-container">
+                        <svg class="icon search-icon" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="text" class="search-input" placeholder="Search employees..." id="searchInput">
+                    </div>
+                    
+                    <!-- Filters -->
+                    <div class="filters">
+                        <select class="filter-select" id="teamFilter">
+                            <option value="all">All Teams</option>
+                            <option value="Design">Design</option>
+                            <option value="Frontend">Frontend</option>
+                            <option value="Backend">Backend</option>
+                            <option value="QA">QA</option>
+                        </select>
+                        
+                        <select class="filter-select" id="statusFilter">
+                            <option value="all">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="On Leave">On Leave</option>
+                            <option value="Disabled">Disabled</option>
+                        </select>
+                        
+                        <select class="filter-select" id="sortFilter">
+                            <option value="name">Alphabetical</option>
+                            <option value="joined">Recently Joined</option>
+                            <option value="crowns">Highest Crowns</option>
+                            <option value="performance">Top Performers</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="card-content">
+                    <div class="employee-list" id="employeeList">
+                        <!-- Employee items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Employee Profile -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        Employee Profile
+                    </div>
+                </div>
+                
+                <div class="card-content" id="profileContent">
+                    <!-- Profile content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock employee data
+        const employees = [
+            {
+                id: 1,
+                name: "Riya Sharma",
+                role: "UI Designer",
+                team: "Design",
+                email: "riya.sharma@company.com",
+                status: "Active",
+                crowns: 247,
+                joinedDate: "2023-01-15",
+                tier: "Gold",
+                performance: 92,
+                activeTasks: 8,
+                pendingReviews: 3,
+                overdue: 1,
+                recentActivity: [
+                    { type: "completed", text: "Completed task: Login Page Redesign", time: "2 hrs ago" },
+                    { type: "assigned", text: "Added to Project 'Delta'", time: "Yesterday" },
+                    { type: "reward", text: "Earned 3 Crowns", time: "July 28" },
+                ]
+            },
+            {
+                id: 2,
+                name: "Arjun Patel",
+                role: "Senior Developer",
+                team: "Frontend",
+                email: "arjun.patel@company.com",
+                status: "Active",
+                crowns: 384,
+                joinedDate: "2022-08-20",
+                tier: "Platinum",
+                performance: 95,
+                activeTasks: 12,
+                pendingReviews: 2,
+                overdue: 0,
+                recentActivity: [
+                    { type: "completed", text: "Completed task: API Integration", time: "1 hr ago" },
+                    { type: "reward", text: "Earned 5 Crowns", time: "Today" },
+                    { type: "assigned", text: "Added to Project 'Alpha'", time: "2 days ago" },
+                ]
+            },
+            {
+                id: 3,
+                name: "Priya Singh",
+                role: "QA Engineer",
+                team: "QA",
+                email: "priya.singh@company.com",
+                status: "On Leave",
+                crowns: 156,
+                joinedDate: "2023-03-10",
+                tier: "Silver",
+                performance: 76,
+                activeTasks: 5,
+                pendingReviews: 1,
+                overdue: 2,
+                recentActivity: [
+                    { type: "issue", text: "Missed task deadline", time: "July 26" },
+                    { type: "completed", text: "Completed task: Bug Testing", time: "July 25" },
+                    { type: "assigned", text: "Added to Project 'Beta'", time: "July 24" },
+                ]
+            },
+            {
+                id: 4,
+                name: "Karan Mehta",
+                role: "Junior Developer",
+                team: "Backend",
+                email: "karan.mehta@company.com",
+                status: "Active",
+                crowns: 98,
+                joinedDate: "2023-06-01",
+                tier: "Bronze",
+                performance: 82,
+                activeTasks: 6,
+                pendingReviews: 4,
+                overdue: 0,
+                recentActivity: [
+                    { type: "completed", text: "Completed task: Database Schema", time: "3 hrs ago" },
+                    { type: "reward", text: "Earned 2 Crowns", time: "Today" },
+                    { type: "assigned", text: "Added to Project 'Gamma'", time: "Yesterday" },
+                ]
+            },
+            {
+                id: 5,
+                name: "Sneha Reddy",
+                role: "Product Designer",
+                team: "Design",
+                email: "sneha.reddy@company.com",
+                status: "Active",
+                crowns: 312,
+                joinedDate: "2022-11-03",
+                tier: "Gold",
+                performance: 89,
+                activeTasks: 9,
+                pendingReviews: 1,
+                overdue: 0,
+                recentActivity: [
+                    { type: "completed", text: "Completed task: User Research", time: "4 hrs ago" },
+                    { type: "reward", text: "Earned 4 Crowns", time: "Today" },
+                    { type: "assigned", text: "Added to Project 'Echo'", time: "Yesterday" },
+                ]
+            },
+            {
+                id: 6,
+                name: "Rahul Kumar",
+                role: "DevOps Engineer",
+                team: "Backend",
+                email: "rahul.kumar@company.com",
+                status: "Active",
+                crowns: 278,
+                joinedDate: "2022-12-15",
+                tier: "Gold",
+                performance: 91,
+                activeTasks: 7,
+                pendingReviews: 3,
+                overdue: 0,
+                recentActivity: [
+                    { type: "completed", text: "Completed task: Server Optimization", time: "1 hr ago" },
+                    { type: "reward", text: "Earned 3 Crowns", time: "Today" },
+                    { type: "assigned", text: "Added to Project 'Infrastructure'", time: "2 days ago" },
+                ]
+            }
+        ];
+
+        let currentEmployee = employees[0];
+        let filteredEmployees = [...employees];
+
+        // Initialize the app
+        function init() {
+            renderEmployeeList();
+            renderProfile(currentEmployee);
+            setupEventListeners();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+            document.getElementById('teamFilter').addEventListener('change', handleFilter);
+            document.getElementById('statusFilter').addEventListener('change', handleFilter);
+            document.getElementById('sortFilter').addEventListener('change', handleSort);
+        }
+
+        // Handle search
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            filteredEmployees = employees.filter(emp => 
+                emp.name.toLowerCase().includes(searchTerm) ||
+                emp.role.toLowerCase().includes(searchTerm) ||
+                emp.email.toLowerCase().includes(searchTerm)
+            );
+            applyFilters();
+        }
+
+        // Handle filters
+        function handleFilter() {
+            const teamFilter = document.getElementById('teamFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            filteredEmployees = employees.filter(emp => {
+                const matchesTeam = teamFilter === 'all' || emp.team === teamFilter;
+                const matchesStatus = statusFilter === 'all' || emp.status === statusFilter;
+                return matchesTeam && matchesStatus;
+            });
+            
+            // Also apply search if there's a search term
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (searchTerm) {
+                filteredEmployees = filteredEmployees.filter(emp => 
+                    emp.name.toLowerCase().includes(searchTerm) ||
+                    emp.role.toLowerCase().includes(searchTerm) ||
+                    emp.email.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderEmployeeList();
+        }
+
+        // Handle sorting
+        function handleSort() {
+            const sortBy = document.getElementById('sortFilter').value;
+            
+            filteredEmployees.sort((a, b) => {
+                switch (sortBy) {
+                    case 'name':
+                        return a.name.localeCompare(b.name);
+                    case 'joined':
+                        return new Date(b.joinedDate) - new Date(a.joinedDate);
+                    case 'crowns':
+                        return b.crowns - a.crowns;
+                    case 'performance':
+                        return b.performance - a.performance;
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderEmployeeList();
+        }
+
+        // Apply all filters
+        function applyFilters() {
+            handleFilter();
+            handleSort();
+        }
+
+        // Get status badge HTML
+        function getStatusBadge(status) {
+            const statusClass = {
+                'Active': 'badge-active',
+                'On Leave': 'badge-leave',
+                'Disabled': 'badge-disabled'
+            };
+            
+            return `<span class="badge ${statusClass[status] || 'badge-outline'}">${status}</span>`;
+        }
+
+        // Get tier badge HTML
+        function getTierBadge(tier, crowns) {
+            const tierClass = {
+                'Platinum': 'badge-platinum',
+                'Gold': 'badge-gold',
+                'Silver': 'badge-silver',
+                'Bronze': 'badge-bronze'
+            };
+            
+            return `
+                <div class="badge-tier ${tierClass[tier]}">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="m11.562 3.266.871.52a1 1 0 0 0 1.134 0l.871-.52a1 1 0 0 1 1.516.294L16.8 4.9a1 1 0 0 0 .832.445l1.036-.055a1 1 0 0 1 1.066.98l.055 1.036a1 1 0 0 0 .445.832l1.34.846a1 1 0 0 1 .294 1.516l-.52.871a1 1 0 0 0 0 1.134l.52.871a1 1 0 0 1-.294 1.516L20.234 15.1a1 1 0 0 0-.445.832l-.055 1.036a1 1 0 0 1-.98 1.066l-1.036.055a1 1 0 0 0-.832.445l-.846 1.34a1 1 0 0 1-1.516.294l-.871-.52a1 1 0 0 0-1.134 0l-.871.52a1 1 0 0 1-1.516-.294L7.2 19.1a1 1 0 0 0-.832-.445l-1.036.055a1 1 0 0 1-1.066-.98L4.211 16.694a1 1 0 0 0-.445-.832l-1.34-.846a1 1 0 0 1-.294-1.516l.52-.871a1 1 0 0 0 0-1.134l-.52-.871a1 1 0 0 1 .294-1.516L3.766 8.9a1 1 0 0 0 .445-.832l.055-1.036a1 1 0 0 1 .98-1.066l1.036-.055a1 1 0 0 0 .832-.445l.846-1.34a1 1 0 0 1 1.516-.294Z"/>
+                    </svg>
+                    ${tier}: ${crowns}
+                </div>
+            `;
+        }
+
+        // Get initials
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('');
+        }
+
+        // Render employee list
+        function renderEmployeeList() {
+            const listContainer = document.getElementById('employeeList');
+            
+            listContainer.innerHTML = filteredEmployees.map(employee => `
+                <div class="employee-item ${currentEmployee.id === employee.id ? 'active' : ''} fade-in" 
+                     onclick="selectEmployee(${employee.id})">
+                    <div class="employee-header">
+                        <div class="employee-info">
+                            <div class="avatar">${getInitials(employee.name)}</div>
+                            <div class="employee-details">
+                                <h3>${employee.name}</h3>
+                                <p>${employee.role}</p>
+                                <div class="employee-meta">
+                                    <span class="badge badge-outline">${employee.team}</span>
+                                    ${getStatusBadge(employee.status)}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="employee-actions">
+                            <div class="crown-count">
+                                <svg class="icon" viewBox="0 0 24 24" fill="#f59e0b">
+                                    <path d="m11.562 3.266.871.52a1 1 0 0 0 1.134 0l.871-.52a1 1 0 0 1 1.516.294L16.8 4.9a1 1 0 0 0 .832.445l1.036-.055a1 1 0 0 1 1.066.98l.055 1.036a1 1 0 0 0 .445.832l1.34.846a1 1 0 0 1 .294 1.516l-.52.871a1 1 0 0 0 0 1.134l.52.871a1 1 0 0 1-.294 1.516L20.234 15.1a1 1 0 0 0-.445.832l-.055 1.036a1 1 0 0 1-.98 1.066l-1.036.055a1 1 0 0 0-.832.445l-.846 1.34a1 1 0 0 1-1.516.294l-.871-.52a1 1 0 0 0-1.134 0l-.871.52a1 1 0 0 1-1.516-.294L7.2 19.1a1 1 0 0 0-.832-.445l-1.036.055a1 1 0 0 1-1.066-.98L4.211 16.694a1 1 0 0 0-.445-.832l-1.34-.846a1 1 0 0 1-.294-1.516l.52-.871a1 1 0 0 0 0-1.134l-.52-.871a1 1 0 0 1 .294-1.516L3.766 8.9a1 1 0 0 0 .445-.832l.055-1.036a1 1 0 0 1 .98-1.066l1.036-.055a1 1 0 0 0 .832-.445l.846-1.34a1 1 0 0 1 1.516-.294Z"/>
+                                </svg>
+                                ${employee.crowns}
+                            </div>
+                            <div class="action-buttons">
+                                <button class="action-btn" onclick="event.stopPropagation(); viewEmployee(${employee.id})">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                                <button class="action-btn" onclick="event.stopPropagation(); editEmployee(${employee.id})">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                        <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                    </svg>
+                                </button>
+                                <button class="action-btn" onclick="event.stopPropagation(); viewTasks(${employee.id})">
+                                    <svg class="icon" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12,6 12,12 16,14"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Select employee
+        function selectEmployee(id) {
+            currentEmployee = employees.find(emp => emp.id === id);
+            renderEmployeeList();
+            renderProfile(currentEmployee);
+        }
+
+        // Render profile
+        function renderProfile(employee) {
+            const profileContainer = document.getElementById('profileContent');
+            
+            const performanceIcon = employee.performance >= 90 ? 
+                `<svg class="icon" viewBox="0 0 24 24" fill="#f59e0b"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>` :
+                employee.performance >= 80 ?
+                `<svg class="icon" viewBox="0 0 24 24" fill="#10b981"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>` :
+                `<svg class="icon" viewBox="0 0 24 24" fill="#ef4444"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>`;
+
+            profileContainer.innerHTML = `
+                <div class="profile-header fade-in">
+                    <div class="profile-info">
+                        <div class="profile-avatar">${getInitials(employee.name)}</div>
+                        <div class="profile-details">
+                            <h2>${employee.name}</h2>
+                            <p>${employee.role}</p>
+                            <div class="profile-meta">
+                                <span>📍 ${employee.team}</span>
+                                <span>📅 Joined ${new Date(employee.joinedDate).toLocaleDateString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-stats">
+                        ${getStatusBadge(employee.status)}
+                        ${getTierBadge(employee.tier, employee.crowns)}
+                        <div class="performance-score">
+                            ${performanceIcon}
+                            <span>${employee.performance}% Performance</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3>
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/>
+                        </svg>
+                        Performance Summary
+                    </h3>
+                    
+                    <div class="performance-grid">
+                        <div class="performance-card active">
+                            <div class="value">${employee.activeTasks}</div>
+                            <div class="label">Active Tasks</div>
+                        </div>
+                        <div class="performance-card warning">
+                            <div class="value">${employee.pendingReviews}</div>
+                            <div class="label">Pending Reviews</div>
+                        </div>
+                        <div class="performance-card danger">
+                            <div class="value">${employee.overdue}</div>
+                            <div class="label">Overdue</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <span>Weekly Goal Progress</span>
+                            <span>${employee.performance}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${employee.performance}%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="section">
+                    <h3>
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12,6 12,12 16,14"/>
+                        </svg>
+                        Activity Timeline
+                    </h3>
+                    
+                    <div class="activity-list">
+                        ${employee.recentActivity.map(activity => `
+                            <div class="activity-item">
+                                <div class="activity-icon ${activity.type}"></div>
+                                <div class="activity-content">
+                                    <p>${activity.text}</p>
+                                    <div class="time">${activity.time}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="section">
+                    <h3>
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                        Admin Actions
+                    </h3>
+                    
+                    <div class="admin-actions">
+                        <button class="admin-btn" onclick="editRole(${employee.id})">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            Edit Role/Team
+                        </button>
+                        <button class="admin-btn" onclick="transferTasks(${employee.id})">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="m22 21-3-3m2.5 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                            </svg>
+                            Transfer Tasks
+                        </button>
+                        <button class="admin-btn danger" onclick="disableAccount(${employee.id})">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                            </svg>
+                            Disable Account
+                        </button>
+                        <button class="admin-btn" onclick="viewTaskHistory(${employee.id})">
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12,6 12,12 16,14"/>
+                            </svg>
+                            View Task History
+                        </button>
+                    </div>
+                </div>
+
+                <div class="ai-suggestions">
+                    <h4>💡 AI Suggestions</h4>
+                    ${employee.overdue > 0 ? `<div class="suggestion danger">⚠️ This employee has ${employee.overdue} overdue task(s).</div>` : ''}
+                    ${employee.performance < 80 ? `<div class="suggestion warning">📉 Performance dropped - Consider a check-in.</div>` : ''}
+                    ${employee.performance >= 90 ? `<div class="suggestion success">🌟 Top 10% performer - Great job!</div>` : ''}
+                    ${employee.pendingReviews > 3 ? `<div class="suggestion warning">📋 High review workload - Consider redistribution.</div>` : ''}
+                </div>
+            `;
+        }
+
+        // Action functions
+        function viewEmployee(id) {
+            selectEmployee(id);
+            alert(`Viewing details for employee ID: ${id}`);
+        }
+
+        function editEmployee(id) {
+            alert(`Editing employee ID: ${id}`);
+        }
+
+        function viewTasks(id) {
+            alert(`Viewing tasks for employee ID: ${id}`);
+        }
+
+        function editRole(id) {
+            alert(`Editing role/team for employee ID: ${id}`);
+        }
+
+        function transferTasks(id) {
+            alert(`Transferring tasks for employee ID: ${id}`);
+        }
+
+        function disableAccount(id) {
+            if (confirm(`Are you sure you want to disable account for employee ID: ${id}?`)) {
+                alert(`Account disabled for employee ID: ${id}`);
+            }
+        }
+
+        function viewTaskHistory(id) {
+            alert(`Viewing task history for employee ID: ${id}`);
+        }
+
+        // Initialize the application
+        init();
+    </script>
+</body>
+</html>
