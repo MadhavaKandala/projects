@@ -8,7 +8,6 @@ const loginBtn = document.getElementById('loginBtn');
 const loadingSpinner = document.getElementById('loadingSpinner');
 const passwordToggle = document.getElementById('passwordToggle');
 const rememberMeCheckbox = document.getElementById('rememberMe');
-const googleBtn = document.getElementById('googleBtn');
 const forgotPasswordBtn = document.getElementById('forgotPassword');
 const roleTabs = document.querySelectorAll('.role-tab');
 const roleSubtitle = document.getElementById('roleSubtitle');
@@ -70,9 +69,6 @@ function setupEventListeners() {
   // Form submission
   loginForm.addEventListener('submit', handleFormSubmit);
 
-  // Google sign-in
-  googleBtn.addEventListener('click', handleGoogleLogin);
-
   // Forgot password
   forgotPasswordBtn.addEventListener('click', handleForgotPassword);
 
@@ -113,11 +109,11 @@ function updateRoleUI() {
   // Update subtitle
   roleSubtitle.textContent = config.subtitle;
   
-  // Update email placeholder
-  emailInput.placeholder = config.email;
+  // Update email placeholder to be more generic
+  emailInput.placeholder = 'Enter your email';
   
-  // Update button text
-  btnText.textContent = `Sign in as ${selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1)}`;
+  // Update button text to be generic
+  btnText.textContent = 'Sign In';
   
   // Update form validation
   validateForm();
@@ -242,7 +238,7 @@ async function handleFormSubmit(e) {
       setTimeout(() => {
         const redirectUrl = getRedirectUrl(selectedRole);
         window.location.href = redirectUrl;
-      }, 1000);
+      }, 500);
       
     }
   } catch (error) {
@@ -253,52 +249,24 @@ async function handleFormSubmit(e) {
 
 // Simulate login API call
 async function performLogin(formData) {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  // Simulate API delay - reduced for faster demo experience
+  await new Promise(resolve => setTimeout(resolve, 300));
   
-  const config = roleConfig[formData.role];
-  
-  // Check if credentials match demo
-  if (formData.email === config.demoEmail && formData.password === config.demoPassword) {
+  // Accept any dummy details for demo purposes
+  if (formData.email && formData.password) {
     return { success: true, message: 'Login successful' };
   } else {
-    throw new Error('Invalid email or password');
+    throw new Error('Please enter both email and password');
   }
 }
 
 // Get redirect URL based on role
 function getRedirectUrl(role) {
-  const urls = {
-    admin: 'employee-codes.html',
-    employee: 'employee-dashboard.html',
-    personal: 'employee-dashboard.html' // For now, personal users also go to employee dashboard
-  };
-  return urls[role] || 'employee-codes.html';
+  // All roles redirect to employee-home.html for demo purposes
+  return 'employee-home.html';
 }
 
-// Google sign-in
-function handleGoogleLogin() {
-  if (isLoading) return;
-  
-  setLoadingState(true);
-  
-  // Simulate Google OAuth
-  setTimeout(() => {
-    showNotification(`Google sign-in successful! Redirecting to ${selectedRole} dashboard...`, 'success');
-    
-    // Set login status
-    localStorage.setItem('taskCrown_loggedIn', 'true');
-    localStorage.setItem('taskCrown_role', selectedRole);
-    localStorage.setItem('taskCrown_googleLogin', 'true');
-    
-    // Redirect
-    setTimeout(() => {
-      const redirectUrl = getRedirectUrl(selectedRole);
-      window.location.href = redirectUrl;
-    }, 1000);
-    
-  }, 1500);
-}
+
 
 // Forgot password
 function handleForgotPassword() {
@@ -334,13 +302,11 @@ function setLoadingState(loading) {
     loginBtn.disabled = true;
     emailInput.disabled = true;
     passwordInput.disabled = true;
-    googleBtn.disabled = true;
   } else {
     loginBtn.classList.remove('loading');
     loginBtn.disabled = false;
     emailInput.disabled = false;
     passwordInput.disabled = false;
-    googleBtn.disabled = false;
   }
 }
 
