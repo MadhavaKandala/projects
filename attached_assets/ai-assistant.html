@@ -6,37 +6,63 @@
     <title>AI Assistant - TaskCrown</title>
     <style>
         :root {
-            --background: 240 10% 98%;
-            --foreground: 240 10% 3.9%;
+            --background: 60 9% 98%; /* #fefefc */
+            --foreground: 240 100% 15%; /* #08144f */
             --card: 0 0% 100%;
             --card-border: 240 6% 90%;
-            --primary: 210 100% 70%;
-            --primary-foreground: 0 0% 100%;
+            --primary: 240 100% 15%; /* #08144f */
+            --primary-foreground: 60 9% 98%; /* #fefefc */
+            --accent: 199 100% 66%; /* #42c4ff */
+            --accent-foreground: 240 100% 15%; /* #08144f */
             --muted: 240 4.8% 95.9%;
             --muted-foreground: 240 3.8% 46.1%;
             --border: 240 5.9% 90%;
             --radius: 0.75rem;
             --transition: all 0.3s ease;
+            --sidebar-background: 60 9% 98%; /* #fefefc */
+            --sidebar-foreground: 240 100% 15%; /* #08144f */
+            --sidebar-border: 240 5.9% 90%;
+            
+            /* TaskCrown Specific Colors */
+            --primary-light: #fefefc;
+            --primary-dark: #08144f;
+            --accent-blue: #42c4ff;
+            --text-light: #fefefc;
+            --text-dark: #08144f;
+            --bg-light: #f8fafc;
+            --bg-dark: #000000;
+            --card-light: rgba(254, 254, 252, 0.9);
+            --card-dark: rgba(0, 0, 0, 0.9);
+            --border-light: rgba(8, 20, 79, 0.1);
+            --border-dark: rgba(254, 254, 252, 0.1);
+            
+            /* Crown Colors */
+            --crown-gold: 45 100% 65%;
         }
 
         /* Dark theme variables */
         [data-theme="dark"] {
             --background: 240 10% 3.9%;
-            --foreground: 240 10% 98%;
+            --foreground: 60 9% 98%; /* #fefefc */
             --surface: 240 7% 8%;
             --card: 240 10% 6%;
-            --card-foreground: 240 10% 98%;
+            --card-foreground: 60 9% 98%; /* #fefefc */
             --card-border: 240 6% 15%;
+            --primary: 199 100% 66%; /* #42c4ff */
+            --primary-foreground: 240 10% 3.9%;
+            --accent: 199 100% 66%; /* #42c4ff */
+            --accent-foreground: 240 10% 3.9%;
             --muted: 240 4.8% 8%;
             --muted-foreground: 240 3.8% 60%;
-            --accent: 240 4.8% 8%;
-            --accent-foreground: 240 5.9% 90%;
             --border: 240 6% 15%;
             --input: 240 6% 15%;
             --sidebar-background: 240 10% 6%;
-            --sidebar-foreground: 240 10% 98%;
+            --sidebar-foreground: 60 9% 98%; /* #fefefc */
             --sidebar-border: 240 6% 15%;
             --gradient-surface: linear-gradient(135deg, #1e293b, #334155);
+            --shadow-soft: 0 2px 8px hsl(60 9% 98% / 0.05);
+            --shadow-medium: 0 4px 16px hsl(60 9% 98% / 0.1);
+            --shadow-strong: 0 8px 32px hsl(60 9% 98% / 0.15);
         }
 
         * {
@@ -59,11 +85,15 @@
         .sidebar {
             width: 280px;
             background: hsl(var(--sidebar-background, 240 5% 96%));
+            backdrop-filter: blur(20px);
             border-right: 1px solid hsl(var(--sidebar-border, var(--border)));
             padding: 1.5rem;
-            position: fixed;
-            height: 100vh;
             overflow-y: auto;
+            transition: var(--transition);
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
         }
 
         .sidebar-header {
@@ -76,7 +106,7 @@
         .logo {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #42c4ff, #08144f);
+            background: var(--gradient-primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -87,7 +117,7 @@
         .brand-name {
             font-weight: 700;
             font-size: 1.25rem;
-            background: linear-gradient(135deg, #42c4ff, #08144f);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -109,20 +139,23 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.75rem;
-            border-radius: var(--radius);
+            border-radius: calc(var(--radius) - 2px);
+            color: var(--text-dark);
             text-decoration: none;
-            color: hsl(var(--foreground));
             transition: var(--transition);
             margin-bottom: 0.25rem;
         }
 
         .nav-item:hover {
-            background: hsl(var(--muted));
+            background: rgba(66, 196, 255, 0.1);
+            color: var(--accent-blue);
         }
 
         .nav-item.active {
-            background: hsl(var(--primary));
-            color: hsl(var(--primary-foreground));
+            background: rgba(66, 196, 255, 0.15);
+            color: var(--accent-blue);
+            font-weight: 500;
+            border-left: 3px solid var(--accent-blue);
         }
 
         .nav-icon {
@@ -130,9 +163,30 @@
         }
 
         .user-profile {
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid hsl(var(--border));
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-profile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 6rem;
+            height: 6rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(3rem, -3rem);
+        }
+
+        .user-profile.collapsed {
+            padding: 1rem;
+            text-align: center;
         }
 
         .user-info {
@@ -145,17 +199,17 @@
         .user-avatar {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #42c4ff, #08144f);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
         }
 
         .user-details h3 {
-            font-size: 0.875rem;
             font-weight: 600;
+            font-size: 1rem;
         }
 
         .user-details p {
@@ -163,17 +217,51 @@
             color: hsl(var(--muted-foreground));
         }
 
+        .user-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .crown-count {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .level-badge {
+            background: hsl(var(--crown-gold));
+            color: black;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
         .main-content {
             flex: 1;
-            margin-left: 280px;
-            padding: 2rem;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .header {
-            margin-bottom: 2rem;
+            background: hsl(var(--card));
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid hsl(var(--border));
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         .header h1 {
@@ -218,6 +306,8 @@
             border: 1px solid hsl(var(--card-border));
             border-radius: var(--radius);
             overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            backdrop-filter: blur(10px);
         }
 
         .chat-header {
@@ -237,7 +327,7 @@
         .ai-avatar {
             width: 24px;
             height: 24px;
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            background: var(--gradient-primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -282,12 +372,12 @@
         }
 
         .message.user .message-avatar {
-            background: linear-gradient(135deg, #42c4ff, #08144f);
+            background: var(--gradient-primary);
             color: white;
         }
 
         .message.assistant .message-avatar {
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            background: var(--gradient-primary);
             color: white;
         }
 
@@ -297,6 +387,8 @@
             border-radius: var(--radius);
             font-size: 0.875rem;
             line-height: 1.5;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid hsl(var(--border));
         }
 
         .message.user .message-content {
@@ -378,17 +470,20 @@
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(5px);
         }
 
         .quick-action:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-medium);
+            border-color: hsl(var(--primary));
         }
 
         .quick-action-icon {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            background: var(--gradient-primary);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -572,16 +667,21 @@
             border: 1px solid #fde68a;
         }
 
+        @media (max-width: 1024px) {
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+            .grid-5 { grid-template-columns: repeat(3, 1fr); }
+        }
+
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: var(--transition);
+            .grid-2, .grid-3, .grid-5 { grid-template-columns: 1fr; }
+            .sidebar { 
+                width: 100%; 
+                position: fixed; 
+                z-index: 1000; 
+                transform: translateX(-100%); 
             }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
+            .sidebar.open { transform: translateX(0); }
+            .content {
                 padding: 1rem;
             }
             .message {
@@ -660,13 +760,20 @@
                     </div>
             </nav>
 
-            <div class="user-profile">
+            <div class="user-profile" id="userProfile">
                 <div class="user-info">
                     <div class="user-avatar">👨‍💻</div>
                     <div class="user-details">
                         <h3>Madhava Sharma</h3>
                         <p>Senior Developer</p>
                     </div>
+                </div>
+                <div class="user-stats">
+                    <div class="crown-count">
+                        <span class="crown-shimmer">👑</span>
+                        <span>247</span>
+                    </div>
+                    <div class="level-badge">Gold</div>
                 </div>
             </div>
         </aside>
@@ -676,13 +783,14 @@
             <div class="header">
                 <h1>AI Assistant</h1>
                 <div class="ai-status">
-                    <div class="status-dot"></div>
-                    <span class="status-text">AI Assistant is online and ready to help</span>
+                    <div class="status-dot" id="statusDot"></div>
+                    <span class="status-text" id="statusText">AI Assistant is online and ready to help</span>
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="quick-actions">
+            <div class="content">
+                <!-- Quick Actions -->
+                <div class="quick-actions">
                 <div class="quick-action" onclick="sendQuickMessage('Help me break down this complex task into smaller steps')">
                     <div class="quick-action-icon">📋</div>
                     <div class="quick-action-title">Task Breakdown</div>
@@ -784,6 +892,7 @@
                         
                         <div id="apiStatus" class="api-status"></div>
                     </div>
+                </div>
                 </div>
             </div>
         </main>
@@ -915,6 +1024,14 @@
             apiKeyInput.value = chatbotConfig.getApiKey() || '';
             
             updateProviderInfo();
+            
+            // Show status that API key is configured
+            if (chatbotConfig.getApiKey()) {
+                showApiStatus('✅ API key is configured and ready to use!', 'success');
+            } else {
+                showApiStatus('⚠️ Please configure your API key to start chatting', 'error');
+            }
+            
             modal.classList.add('open');
         }
 
@@ -954,6 +1071,9 @@
             chatbotConfig.setApiKey(apiKey);
             
             showApiStatus('Settings saved successfully!', 'success');
+            
+            // Update status indicator
+            updateStatusIndicator();
             
             setTimeout(() => {
                 closeChatbotSettings();
@@ -1006,14 +1126,34 @@
             }
         });
 
+        // Update status indicator
+        function updateStatusIndicator() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const apiKey = chatbotConfig.getApiKey();
+            
+            if (apiKey) {
+                statusDot.style.backgroundColor = '#10b981';
+                statusText.textContent = '✅ AI Assistant is online and ready to help';
+            } else {
+                statusDot.style.backgroundColor = '#f59e0b';
+                statusText.textContent = '⚠️ Please configure API key in settings';
+            }
+        }
+
         // Initialize chat
         document.addEventListener('DOMContentLoaded', function() {
             chatInput.focus();
             
+            // Update status indicator
+            updateStatusIndicator();
+            
             // Check if API key is configured
             const apiKey = chatbotConfig.getApiKey();
-            if (!apiKey) {
-                addMessage('Welcome! Please configure your AI provider API key in the settings to start chatting.', 'assistant');
+            if (apiKey) {
+                addMessage('Hello! I\'m your AI assistant, ready to help you with tasks, problem-solving, code reviews, and learning. How can I assist you today?', 'assistant');
+            } else {
+                addMessage('Welcome! Your API key is already configured. I\'m ready to help you with tasks, problem-solving, code reviews, and learning. How can I assist you today?', 'assistant');
             }
             
             // Check for pre-filled message from team member chat

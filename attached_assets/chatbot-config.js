@@ -255,4 +255,7 @@ Be concise, helpful, and professional. If you don't know something, say so rathe
 }
 
 // Global chatbot instance
-window.chatbotConfig = new ChatbotConfig(); 
+window.chatbotConfig = new ChatbotConfig();
+
+// Initialize with the provided API key
+window.chatbotConfig.setApiKey('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'); 

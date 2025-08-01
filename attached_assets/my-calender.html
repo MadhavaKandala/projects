@@ -8,20 +8,20 @@
         /* TaskCrown Dashboard Design System */
         :root {
             /* Background System */
-            --background: 240 10% 98%;
-            --foreground: 240 10% 3.9%;
-            --surface: 240 7% 96%;
+            --background: 60 9% 98%; /* #fefefc */
+            --foreground: 240 100% 15%; /* #08144f */
+            --surface: 60 9% 98%; /* #fefefc */
             
             /* Card System */
             --card: 0 0% 100%;
-            --card-foreground: 240 10% 3.9%;
+            --card-foreground: 240 100% 15%; /* #08144f */
             --card-border: 240 6% 90%;
             
             /* Brand Colors - TaskCrown Blue Theme */
-            --primary: 210 100% 70%; /* #42c4ff - Sky Blue */
-            --primary-foreground: 0 0% 100%;
-            --primary-light: 210 100% 95%;
-            --primary-muted: 210 30% 70%;
+            --primary: 240 100% 15%; /* #08144f */
+            --primary-foreground: 60 9% 98%; /* #fefefc */
+            --primary-light: 199 100% 95%;
+            --primary-muted: 199 30% 70%;
             
             /* Crown/Achievement Colors - Gold System */
             --crown-gold: 45 100% 65%;
@@ -97,20 +97,22 @@
 
         /* Dark theme variables */
         [data-theme="dark"] {
-            --background: 240 10% 3.9%;
-            --foreground: 240 10% 98%;
+            --background: 240 10% 3.9%; /* Dark background */
+            --foreground: 60 9% 98%; /* #fefefc (very light off-white) */
             --surface: 240 7% 8%;
             --card: 240 10% 6%;
-            --card-foreground: 240 10% 98%;
+            --card-foreground: 60 9% 98%; /* #fefefc */
             --card-border: 240 6% 15%;
+            --primary: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
+            --primary-foreground: 240 10% 3.9%; /* Dark background */
+            --accent: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
+            --accent-foreground: 240 10% 3.9%; /* Dark background */
             --muted: 240 4.8% 8%;
             --muted-foreground: 240 3.8% 60%;
-            --accent: 240 4.8% 8%;
-            --accent-foreground: 240 5.9% 90%;
             --border: 240 6% 15%;
             --input: 240 6% 15%;
             --sidebar-background: 240 10% 6%;
-            --sidebar-foreground: 240 10% 98%;
+            --sidebar-foreground: 60 9% 98%; /* #fefefc */
             --sidebar-border: 240 6% 15%;
             --gradient-surface: linear-gradient(135deg, #1e293b, #334155);
         }
@@ -285,9 +287,9 @@
         }
 
         .header {
-            background: var(--card-light);
+            background: hsl(var(--card));
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid hsl(var(--border));
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
@@ -1018,5 +1020,6 @@
     </script>
     <script src="theme-utils.js"></script>
     <script src="chatbot-config.js"></script>
+    <script src="dynamic-utils.js"></script>
 </body>
 </html>

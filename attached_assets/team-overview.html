@@ -284,9 +284,9 @@
         }
 
         .header {
-            background: var(--card-light);
+            background: hsl(var(--card));
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid hsl(var(--border));
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
@@ -309,9 +309,9 @@
 
         /* Card Styles */
         .card {
-            background: var(--card-light);
+            background: hsl(var(--card));
             backdrop-filter: blur(20px);
-            border: 1px solid var(--border-light);
+            border: 1px solid hsl(var(--card-border));
             border-radius: var(--radius);
             padding: 1.5rem;
             box-shadow: var(--shadow-soft);
@@ -628,25 +628,7 @@
                     </a>
                 </div>
 
-                <div class="nav-section">
-                    <div class="nav-title">Task Management</div>
-                    <a href="personal.html" class="nav-item">
-                        <span class="nav-icon">👤</span>
-                        <span>Personal</span>
-                    </a>
-                    <a href="high_priority.html" class="nav-item">
-                        <span class="nav-icon">🚨</span>
-                        <span>High Priority</span>
-                    </a>
-                    <a href="pending_tasks.html" class="nav-item">
-                        <span class="nav-icon">⏳</span>
-                        <span>Pending Tasks</span>
-                    </a>
-                    <a href="completed_this_week.html" class="nav-item">
-                        <span class="nav-icon">✅</span>
-                        <span>Completed This Week</span>
-                    </a>
-                </div>
+
 
                 <div class="nav-section">
                     <div class="nav-title">Tools</div>
@@ -942,6 +924,7 @@
     </script>
     <script src="theme-utils.js"></script>
     <script src="chatbot-config.js"></script>
+    <script src="dynamic-utils.js"></script>
     <script>
         // Function to open chat with team member
         function openChatWithMember(memberName) {

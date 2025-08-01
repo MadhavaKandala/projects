@@ -6,30 +6,57 @@
     <title>Settings - TaskCrown</title>
     <style>
         :root {
-            --background: 240 10% 98%;
-            --foreground: 240 10% 3.9%;
+            --background: 60 9% 98%; /* #fefefc */
+            --foreground: 240 100% 15%; /* #08144f */
             --card: 0 0% 100%;
             --card-border: 240 6% 90%;
-            --primary: 210 100% 70%;
-            --primary-foreground: 0 0% 100%;
+            --primary: 240 100% 15%; /* #08144f */
+            --primary-foreground: 60 9% 98%; /* #fefefc */
+            --accent: 199 100% 66%; /* #42c4ff */
+            --accent-foreground: 240 100% 15%; /* #08144f */
             --muted: 240 4.8% 95.9%;
             --muted-foreground: 240 3.8% 46.1%;
             --border: 240 5.9% 90%;
             --radius: 0.75rem;
             --transition: all 0.3s ease;
+            --sidebar-background: 60 9% 98%; /* #fefefc */
+            --sidebar-foreground: 240 100% 15%; /* #08144f */
+            --sidebar-border: 240 5.9% 90%;
+            
+            /* TaskCrown Specific Colors */
+            --primary-light: #fefefc;
+            --primary-dark: #08144f;
+            --accent-blue: #42c4ff;
+            --text-light: #fefefc;
+            --text-dark: #08144f;
+            --bg-light: #f8fafc;
+            --bg-dark: #000000;
+            --card-light: rgba(254, 254, 252, 0.9);
+            --card-dark: rgba(0, 0, 0, 0.9);
+            --border-light: rgba(8, 20, 79, 0.1);
+            --border-dark: rgba(254, 254, 252, 0.1);
+            
+            /* Crown Colors */
+            --crown-gold: 45 100% 65%;
         }
 
         /* Dark theme variables */
         [data-theme="dark"] {
-            --background: 240 10% 3.9%;
-            --foreground: 240 10% 98%;
+            --background: 240 10% 3.9%; /* Dark background */
+            --foreground: 60 9% 98%; /* #fefefc (very light off-white) */
+            --primary: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
+            --primary-foreground: 240 10% 3.9%; /* Dark background */
+            --accent: 199 100% 66%; /* #42c4ff (bright cyan/sky blue) */
+            --accent-foreground: 240 10% 3.9%; /* Dark background */
             --card: 240 10% 6%;
+            --card-foreground: 60 9% 98%; /* #fefefc */
             --card-border: 240 6% 15%;
-            --primary: 210 100% 70%;
-            --primary-foreground: 0 0% 100%;
             --muted: 240 4.8% 8%;
             --muted-foreground: 240 3.8% 60%;
             --border: 240 6% 15%;
+            --sidebar-background: 240 10% 6%;
+            --sidebar-foreground: 60 9% 98%; /* #fefefc */
+            --sidebar-border: 240 6% 15%;
         }
 
         * {
@@ -51,12 +78,16 @@
 
         .sidebar {
             width: 280px;
-            background: hsl(var(--card));
-            border-right: 1px solid hsl(var(--border));
+            background: hsl(var(--sidebar-background, 240 5% 96%));
+            backdrop-filter: blur(20px);
+            border-right: 1px solid hsl(var(--sidebar-border, var(--border)));
             padding: 1.5rem;
-            position: fixed;
-            height: 100vh;
             overflow-y: auto;
+            transition: var(--transition);
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
         }
 
         .sidebar-header {
@@ -123,9 +154,30 @@
         }
 
         .user-profile {
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px solid hsl(var(--border));
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-profile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 6rem;
+            height: 6rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(3rem, -3rem);
+        }
+
+        .user-profile.collapsed {
+            padding: 1rem;
+            text-align: center;
         }
 
         .user-info {
@@ -138,12 +190,12 @@
         .user-avatar {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #42c4ff, #08144f);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
         }
 
         .user-details h3 {
@@ -156,14 +208,51 @@
             color: hsl(var(--muted-foreground));
         }
 
+        .user-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .crown-count {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .level-badge {
+            background: hsl(var(--crown-gold));
+            color: black;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
         .main-content {
             flex: 1;
-            margin-left: 280px;
-            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .header {
-            margin-bottom: 2rem;
+            background: hsl(var(--card));
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid hsl(var(--border));
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         .header h1 {
@@ -399,16 +488,21 @@
             display: none;
         }
 
+        @media (max-width: 1024px) {
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+            .grid-5 { grid-template-columns: repeat(3, 1fr); }
+        }
+
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: var(--transition);
+            .grid-2, .grid-3, .grid-5 { grid-template-columns: 1fr; }
+            .sidebar { 
+                width: 100%; 
+                position: fixed; 
+                z-index: 1000; 
+                transform: translateX(-100%); 
             }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0;
+            .sidebar.open { transform: translateX(0); }
+            .content {
                 padding: 1rem;
             }
             .button-group {
@@ -484,13 +578,20 @@
                 </div>
             </nav>
 
-            <div class="user-profile">
+            <div class="user-profile" id="userProfile">
                 <div class="user-info">
                     <div class="user-avatar">👨‍💻</div>
                     <div class="user-details">
                         <h3>Madhava Sharma</h3>
                         <p>Senior Developer</p>
                     </div>
+                </div>
+                <div class="user-stats">
+                    <div class="crown-count">
+                        <span class="crown-shimmer">👑</span>
+                        <span>247</span>
+                    </div>
+                    <div class="level-badge">Gold</div>
                 </div>
             </div>
         </aside>
@@ -502,7 +603,8 @@
                 <p>Manage your account preferences and settings</p>
             </div>
 
-            <div class="settings-container">
+            <div class="content">
+                <div class="settings-container">
                 <!-- Alert Messages -->
                 <div id="alert-container"></div>
 
@@ -816,13 +918,17 @@
 
          function applyTheme(darkMode) {
              if (darkMode) {
+                 localStorage.setItem('theme', 'dark');
                  document.documentElement.setAttribute('data-theme', 'dark');
              } else {
+                 localStorage.setItem('theme', 'light');
                  document.documentElement.removeAttribute('data-theme');
              }
              
-             // Save theme preference globally
-             localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+             // Apply theme variables
+             if (window.applyThemeVariables) {
+                 window.applyThemeVariables(darkMode ? 'dark' : 'light');
+             }
          }
 
         function changePassword() {
@@ -902,10 +1008,14 @@
              if (savedTheme === 'dark') {
                  document.getElementById('dark-mode').checked = true;
                  applyTheme(true);
+             } else {
+                 document.getElementById('dark-mode').checked = false;
+                 applyTheme(false);
              }
          });
     </script>
     <script src="theme-utils.js"></script>
     <script src="chatbot-config.js"></script>
+    <script src="dynamic-utils.js"></script>
 </body>
 </html> 
