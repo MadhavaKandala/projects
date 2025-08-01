@@ -262,8 +262,8 @@ async function performLogin(formData) {
 
 // Get redirect URL based on role
 function getRedirectUrl(role) {
-  // All roles redirect to employee-home.html for demo purposes
-  return 'employee-home.html';
+  // All roles redirect to employee-dashboard.html for demo purposes
+  return 'employee-dashboard.html';
 }
 
 
