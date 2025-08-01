@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Analytics Dashboard - TaskCrown</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-light: #fefefc;
+            --primary-dark: #08144f;
+            --accent-blue: #42c4ff;
+            --text-light: #fefefc;
+            --text-dark: #08144f;
+            --bg-light: #f8fafc;
+            --bg-dark: #000000;
+            --card-light: rgba(254, 254, 252, 0.9);
+            --card-dark: rgba(0, 0, 0, 0.9);
+            --border-light: rgba(8, 20, 79, 0.1);
+            --border-dark: rgba(254, 254, 252, 0.1);
+            --primary: #8b5cf6;
+            --primary-light-old: #c4b5fd;
+            --secondary: #f1f5f9;
+            --success: #059669;
+            --success-light: #a7f3d0;
+            --warning: #f59e0b;
+            --warning-light: #fde68a;
+            --danger: #dc2626;
+            --info: #0ea5e9;
+            --info-light: #bae6fd;
+            --background: #fafafa;
+            --card-bg: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            
+            /* Additional variables for dashboard navigation */
+            --muted-foreground: 240 3.8% 46.1%;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0, 0.2, 1);
+            --radius: 0.75rem;
+            --gradient-primary: linear-gradient(135deg, #42c4ff, #08144f);
+            --crown-gold: 45 100% 65%;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e2e8f0 50%, var(--bg-light) 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: all 0.3s ease;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--card-light);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            z-index: 40;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: hsl(var(--muted-foreground));
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: calc(var(--radius) - 2px);
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(66, 196, 255, 0.1);
+            color: var(--accent-blue);
+        }
+
+        .nav-item.active {
+            background: rgba(66, 196, 255, 0.15);
+            color: var(--accent-blue);
+            font-weight: 500;
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .nav-icon {
+            width: 1rem;
+            height: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* User Profile */
+        .user-profile {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-profile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 6rem;
+            height: 6rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(3rem, -3rem);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .user-details h3 {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-details p {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        .user-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .crown-count {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .level-badge {
+            background: hsl(var(--crown-gold));
+            color: black;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 50;
+            background: var(--card-light);
+            border: 1px solid var(--border-light);
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            display: none;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-menu-btn svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+            transition: margin-left 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .success { color: var(--success); }
+        .warning { color: var(--warning); }
+        .danger { color: var(--danger); }
+        .info { color: var(--info); }
+
+        .tabs {
+            margin-bottom: 32px;
+        }
+
+        .tab-list {
+            display: flex;
+            background: var(--secondary);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab-button.active {
+            background: white;
+            box-shadow: var(--shadow);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 16px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .skill-item {
+            margin-bottom: 16px;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .skill-name {
+            font-weight: 500;
+        }
+
+        .skill-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .goal-item {
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .goal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .goal-title {
+            font-weight: 600;
+        }
+
+        .goal-meta {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .badge {
+            padding: 4px 8px;
+            background: var(--secondary);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .feedback-item {
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid;
+            margin-bottom: 12px;
+        }
+
+        .feedback-positive {
+            background: var(--success-light);
+            border-left-color: var(--success);
+        }
+
+        .feedback-improvement {
+            background: var(--info-light);
+            border-left-color: var(--info);
+        }
+
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .rating-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 4px;
+        }
+
+        .star {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .star.filled {
+            background: var(--success);
+        }
+
+        .star.empty {
+            background: var(--border);
+        }
+
+        .time-stat {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .time-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .time-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Logo -->
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span style="font-size:1.7em;">👑</span>
+                    <span>TaskCrown</span>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-title">Navigation</div>
+                    <a href="home.html" class="nav-item">
+                        <span class="nav-icon">🏠</span>
+                        <span>Home</span>
+                    </a>
+                    <a href="employee-dashboard.html" class="nav-item">
+                        <span class="nav-icon">📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="tasks.html" class="nav-item">
+                        <span class="nav-icon">✅</span>
+                        <span>My Tasks</span>
+                    </a>
+                    <a href="my-calender.html" class="nav-item">
+                        <span class="nav-icon">📅</span>
+                        <span>My Calendar</span>
+                    </a>
+                    <a href="team-overview.html" class="nav-item">
+                        <span class="nav-icon">👥</span>
+                        <span>Team Overview</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Tools</div>
+                    <a href="employee-analytics.html" class="nav-item active">
+                        <span class="nav-icon">📊</span>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">❓</span>
+                        <span>Request Help</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">📚</span>
+                        <span>Resources</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">🧠</span>
+                        <span>AI Assistant</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Account</div>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">👑</span>
+                        <span>Crown Stats</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">🔔</span>
+                        <span>Notifications</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="user-profile" id="userProfile">
+                <div class="user-info">
+                    <div class="user-avatar">👨‍💻</div>
+                    <div class="user-details">
+                        <h3>Madhava Sharma</h3>
+                        <p>Senior Developer</p>
+                    </div>
+                </div>
+                <div class="user-stats">
+                    <div class="crown-count">
+                        <span class="crown-shimmer">👑</span>
+                        <span>247</span>
+                    </div>
+                    <div class="level-badge">Gold</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Header -->
+                <div class="header">
+                    <div>
+                        <h1>Analytics Dashboard</h1>
+                        <p>Track your productivity and performance</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="exportReport()">
+                        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Export Report
+                    </button>
+                </div>
+
+        <!-- Task Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Assigned</h3>
+                <div class="stat-value">
+                    <span class="stat-number">45</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Completed</h3>
+                <div class="stat-value">
+                    <svg class="icon success" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="stat-number success">38</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>In Progress</h3>
+                <div class="stat-value">
+                    <svg class="icon info" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="stat-number info">5</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Overdue</h3>
+                <div class="stat-value">
+                    <svg class="icon danger" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="stat-number danger">2</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Reopened</h3>
+                <div class="stat-value">
+                    <svg class="icon warning" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="stat-number warning">1</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab-list">
+                <button class="tab-button active" onclick="switchTab('overview')">Overview</button>
+                <button class="tab-button" onclick="switchTab('time')">Time Analysis</button>
+                <button class="tab-button" onclick="switchTab('skills')">Skills & Goals</button>
+                <button class="tab-button" onclick="switchTab('feedback')">Feedback</button>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                                </svg>
+                                Task Type Breakdown
+                            </h3>
+                            <p class="card-description">Distribution of your completed tasks</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="taskTypeChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Weekly Progress
+                            </h3>
+                            <p class="card-description">Tasks completed per day this week</p>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="weeklyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Time Analysis Tab -->
+            <div id="time" class="tab-content">
+                <div class="grid grid-3">
+                    <div class="card time-stat">
+                        <h3 class="card-title">Average Completion Time</h3>
+                        <div class="time-value" style="color: var(--primary);">2.3h</div>
+                        <p class="time-label">Per task average</p>
+                    </div>
+                    <div class="card time-stat">
+                        <h3 class="card-title">Daily Productive Hours</h3>
+                        <div class="time-value" style="color: var(--success);">6.2h</div>
+                        <p class="time-label">Hours per day</p>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Most Time-Consuming</h3>
+                        <div style="margin-top: 16px;">
+                            <div style="font-weight: 600; margin-bottom: 8px;">Payment Gateway Integration</div>
+                            <div style="color: var(--text-secondary); font-size: 0.875rem;">8.5 hours - Recent task</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills & Goals Tab -->
+            <div id="skills" class="tab-content">
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Skill-based Contribution</h3>
+                            <p class="card-description">Your expertise areas and task distribution</p>
+                        </div>
+                        <div id="skillsContent">
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">UI/UX</span>
+                                    <div class="skill-stats">
+                                        <span>15 tasks</span>
+                                        <span style="font-weight: 600;">33%</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 33%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Backend</span>
+                                    <div class="skill-stats">
+                                        <span>12 tasks</span>
+                                        <span style="font-weight: 600;">27%</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 27%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Testing</span>
+                                    <div class="skill-stats">
+                                        <span>8 tasks</span>
+                                        <span style="font-weight: 600;">18%</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 18%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">Documentation</span>
+                                    <div class="skill-stats">
+                                        <span>6 tasks</span>
+                                        <span style="font-weight: 600;">13%</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 13%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-header">
+                                    <span class="skill-name">DevOps</span>
+                                    <div class="skill-stats">
+                                        <span>4 tasks</span>
+                                        <span style="font-weight: 600;">9%</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 9%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                                </svg>
+                                Goal Tracking
+                            </h3>
+                            <p class="card-description">Your current objectives and progress</p>
+                        </div>
+                        <div>
+                            <div class="goal-item">
+                                <div class="goal-header">
+                                    <div>
+                                        <div class="goal-title">Complete Q4 Feature Development</div>
+                                        <div class="goal-meta">12 tasks linked</div>
+                                    </div>
+                                    <span class="badge">Due: Dec 31, 2024</span>
+                                </div>
+                                <div class="skill-header" style="margin-bottom: 8px;">
+                                    <span>Progress</span>
+                                    <span style="font-weight: 600;">75%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div class="goal-item">
+                                <div class="goal-header">
+                                    <div>
+                                        <div class="goal-title">Improve Code Quality Score</div>
+                                        <div class="goal-meta">8 tasks linked</div>
+                                    </div>
+                                    <span class="badge">Due: Nov 30, 2024</span>
+                                </div>
+                                <div class="skill-header" style="margin-bottom: 8px;">
+                                    <span>Progress</span>
+                                    <span style="font-weight: 600;">60%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Tab -->
+            <div id="feedback" class="tab-content">
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                                </svg>
+                                Performance Rating
+                            </h3>
+                            <p class="card-description">Based on 15 completed tasks</p>
+                        </div>
+                        <div class="rating-display">
+                            <div class="rating-number">4.6</div>
+                            <div>
+                                <div class="rating-stars">
+                                    <div class="star filled"></div>
+                                    <div class="star filled"></div>
+                                    <div class="star filled"></div>
+                                    <div class="star filled"></div>
+                                    <div class="star filled"></div>
+                                </div>
+                                <p style="margin-top: 8px; font-size: 0.875rem; color: var(--text-secondary);">Excellent performance</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                </svg>
+                                Recent Feedback
+                            </h3>
+                            <p class="card-description">Latest comments from your manager</p>
+                        </div>
+                        <div>
+                            <h4 style="font-weight: 600; color: var(--success); margin-bottom: 12px;">Positive Feedback</h4>
+                            <div class="feedback-item feedback-positive">
+                                <p>"Excellent work on the user authentication module!"</p>
+                            </div>
+                            <div class="feedback-item feedback-positive">
+                                <p>"Great attention to detail in the UI components."</p>
+                            </div>
+                            <div class="feedback-item feedback-positive">
+                                <p>"Keep up the consistent quality in code reviews."</p>
+                            </div>
+
+                            <h4 style="font-weight: 600; color: var(--info); margin: 24px 0 12px 0;">Areas for Improvement</h4>
+                            <div class="feedback-item feedback-improvement">
+                                <p>Consider breaking down large tasks into smaller chunks</p>
+                            </div>
+                            <div class="feedback-item feedback-improvement">
+                                <p>Add more unit tests for better coverage</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Export functionality
+        function exportReport() {
+            const reportData = {
+                employee: "Current User",
+                period: "November 2024",
+                taskStats: {
+                    total: 45,
+                    completed: 38,
+                    inProgress: 5,
+                    overdue: 2,
+                    reopened: 1
+                },
+                averageRating: 4.6,
+                exportDate: new Date().toLocaleDateString()
+            };
+            
+            // Create and download JSON file
+            const dataStr = JSON.stringify(reportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `analytics-report-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Initialize charts when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Task Type Pie Chart
+            const taskTypeCtx = document.getElementById('taskTypeChart').getContext('2d');
+            new Chart(taskTypeCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Bug Fixes', 'Feature Development', 'Research', 'Meetings', 'Support'],
+                    datasets: [{
+                        data: [12, 18, 8, 4, 3],
+                        backgroundColor: [
+                            '#dc2626',
+                            '#8b5cf6',
+                            '#0ea5e9',
+                            '#f59e0b',
+                            '#059669'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Weekly Progress Line Chart
+            const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+            new Chart(weeklyCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [
+                        {
+                            label: 'Completed',
+                            data: [3, 4, 2, 5, 4, 1, 0],
+                            borderColor: '#059669',
+                            backgroundColor: 'rgba(5, 150, 105, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Pending',
+                            data: [2, 1, 3, 1, 2, 0, 1],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        // Add some interactivity to progress bars
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 300);
+            });
+        }
+
+        // Animate progress bars when switching to skills tab
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(animateProgressBars, 500);
+        });
+
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (mobileMenuBtn && sidebar) {
+                mobileMenuBtn.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                });
+            }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth <= 1024) {
+                    if (!sidebar.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                        sidebar.classList.remove('open');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
