@@ -254,5 +254,10 @@ Be concise, helpful, and professional. If you don't know something, say so rathe
     }
 }
 
+
+
+
+
+
 // Global chatbot instance
 window.chatbotConfig = new ChatbotConfig(); 
