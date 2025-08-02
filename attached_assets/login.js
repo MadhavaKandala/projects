@@ -263,12 +263,12 @@ async function performLogin(formData) {
 // Get redirect URL based on role
 function getRedirectUrl(role) {
   if (role === 'personal') {
-    return 'personal.html';
+    return 'personal/personal.html';
   } else if (role === 'employee') {
-    return 'employee-dashboard.html';
+    return 'employee/employee-dashboard.html';
   } else {
     // Admin role
-    return 'employee-dashboard.html';
+    return 'admin/index.html';
   }
 }
 

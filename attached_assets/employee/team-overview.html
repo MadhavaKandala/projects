@@ -662,10 +662,7 @@
                         <span class="nav-icon">📚</span>
                         <span>Resources</span>
                     </a>
-                    <a href="ai-assistant.html" class="nav-item">
-                        <span class="nav-icon">🧠</span>
-                        <span>AI Assistant</span>
-                    </a>
+
                 </div>
 
                                     <div class="nav-section">
@@ -941,7 +938,7 @@
 
     </script>
     <script src="theme-utils.js"></script>
-    <script src="chatbot-config.js"></script>
+
     <script src="dynamic-utils.js"></script>
     <script>
         // Function to open chat with team member
@@ -949,7 +946,8 @@
             // Navigate to AI Assistant page with a pre-filled message
             const message = `I'd like to chat with ${memberName} about our project. Can you help me prepare for this conversation?`;
             localStorage.setItem('prefill_chat_message', message);
-            window.location.href = 'ai-assistant.html';
+            // AI Assistant functionality removed
+            alert('AI Assistant feature is currently unavailable');
         }
 
         // Ensure theme is properly applied on page load

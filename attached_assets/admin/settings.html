@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskCrown Admin Portal - Settings</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-crown"></i>
+                    <span>TaskCrown</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="employees.html" class="nav-item">
+                    <i class="fas fa-users"></i>
+                    <span>Employees</span>
+                </a>
+                <a href="tasks.html" class="nav-item">
+                    <i class="fas fa-tasks"></i>
+                    <span>Task Management</span>
+                </a>
+                <a href="calender.html" class="nav-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Calendar</span>
+                </a>
+                <a href="settings.html" class="nav-item active">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="admin-profile">
+                    <img src="assets/imgs/admin-avatar.jpg" alt="Admin" class="admin-avatar">
+                    <div class="admin-info">
+                        <span class="admin-name">Admin User</span>
+                        <span class="admin-role">System Administrator</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search settings..." class="search-input">
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="notification-wrapper">
+                        <button class="notification-btn" id="notificationBtn">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                        <div class="notification-dropdown" id="notificationDropdown">
+                            <div class="notification-header">
+                                <h3>Notifications</h3>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="theme-toggle" id="themeToggle">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Settings Content -->
+            <main class="content-area">
+                <div class="page-header">
+                    <div class="header-content">
+                        <h1>Settings</h1>
+                        <p>Configure system preferences and administrative options</p>
+                    </div>
+                </div>
+
+                <!-- Settings Navigation -->
+                <div class="settings-container">
+                    <div class="settings-nav">
+                        <button class="settings-nav-item active" data-section="general">
+                            <i class="fas fa-cog"></i>
+                            General
+                        </button>
+                        <button class="settings-nav-item" data-section="appearance">
+                            <i class="fas fa-palette"></i>
+                            Appearance
+                        </button>
+                        <button class="settings-nav-item" data-section="notifications">
+                            <i class="fas fa-bell"></i>
+                            Notifications
+                        </button>
+                        <button class="settings-nav-item" data-section="security">
+                            <i class="fas fa-shield-alt"></i>
+                            Security
+                        </button>
+                        <button class="settings-nav-item" data-section="crown-system">
+                            <i class="fas fa-crown"></i>
+                            Crown System
+                        </button>
+                        <button class="settings-nav-item" data-section="integrations">
+                            <i class="fas fa-plug"></i>
+                            Integrations
+                        </button>
+                        <button class="settings-nav-item" data-section="backup">
+                            <i class="fas fa-database"></i>
+                            Backup & Data
+                        </button>
+                    </div>
+
+                    <div class="settings-content">
+                        <!-- General Settings -->
+                        <div class="settings-section active" id="general">
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <h3>General Settings</h3>
+                                </div>
+                                <div class="settings-form">
+                                    <div class="form-group">
+                                        <label>Company Name</label>
+                                        <input type="text" value="TaskCrown Inc." class="form-control">
+                                    </div>
+                                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Time Zone</label>
+                                            <select class="form-control">
+                                                <option>UTC-8 (Pacific Time)</option>
+                                                <option>UTC-5 (Eastern Time)</option>
+                                                <option>UTC+0 (Greenwich Time)</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date Format</label>
+                                            <select class="form-control">
+                                                <option>MM/DD/YYYY</option>
+                                                <option>DD/MM/YYYY</option>
+                                                <option>YYYY-MM-DD</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Default Language</label>
+                                        <select class="form-control">
+                                            <option>English (US)</option>
+                                            <option>English (UK)</option>
+                                            <option>Spanish</option>
+                                            <option>French</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button class="btn-primary">Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Appearance Settings -->
+                        <div class="settings-section" id="appearance">
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <h3>Appearance Settings</h3>
+                                </div>
+                                <div class="settings-form">
+                                    <div class="form-group">
+                                        <label>Theme</label>
+                                        <div class="theme-options">
+                                            <div class="theme-option">
+                                                <input type="radio" name="theme" value="light" id="light-theme" checked>
+                                                <label for="light-theme" class="theme-card light">
+                                                    <div class="theme-preview"></div>
+                                                    <span>Light</span>
+                                                </label>
+                                            </div>
+                                            <div class="theme-option">
+                                                <input type="radio" name="theme" value="dark" id="dark-theme">
+                                                <label for="dark-theme" class="theme-card dark">
+                                                    <div class="theme-preview"></div>
+                                                    <span>Dark</span>
+                                                </label>
+                                            </div>
+                                            <div class="theme-option">
+                                                <input type="radio" name="theme" value="auto" id="auto-theme">
+                                                <label for="auto-theme" class="theme-card auto">
+                                                    <div class="theme-preview"></div>
+                                                    <span>Auto</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Accent Color</label>
+                                        <div class="color-options">
+                                            <input type="color" value="#42c4ff" class="color-picker">
+                                            <span class="color-label">Choose accent color</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="reduce-motion" checked>
+                                            <label for="reduce-motion">Reduce motion effects</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button class="btn-primary">Save Changes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notification Settings -->
+                        <div class="settings-section" id="notifications">
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <h3>Notification Preferences</h3>
+                                </div>
+                                <div class="settings-form">
+                                    <div class="notification-category">
+                                        <h4>Task Notifications</h4>
+                                        <div class="notification-options">
+                                            <div class="checkbox-group">
+                                                <input type="checkbox" id="task-assigned" checked>
+                                                <label for="task-assigned">Task assigned to me</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input type="checkbox" id="task-completed" checked>
+                                                <label for="task-completed">Task completed by team member</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input type="checkbox" id="task-overdue">
+                                                <label for="task-overdue">Task overdue alerts</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="notification-category">
+                                        <h4>Crown System</h4>
+                                        <div class="notification-options">
+                                            <div class="checkbox-group">
+                                                <input type="checkbox" id="crown-awarded" checked>
+                                                <label for="crown-awarded">Crown awarded notifications</label>
+                                            </div>
+                                            <div class="checkbox-group">
+                                                <input type="checkbox" id="leaderboard-update">
+                                                <label for="leaderboard-update">Leaderboard updates</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button class="btn-primary">Save Preferences</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional sections would continue here -->
+                        <div class="settings-section" id="security">
+                            <div class="dashboard-card">
+                                <div class="card-header">
+                                    <h3>Security Settings</h3>
+                                </div>
+                                <div class="settings-form">
+                                    <div class="form-group">
+                                        <label>Password Requirements</label>
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="require-2fa" checked>
+                                            <label for="require-2fa">Require two-factor authentication</label>
+                                        </div>
+                                        <div class="checkbox-group">
+                                            <input type="checkbox" id="complex-passwords" checked>
+                                            <label for="complex-passwords">Enforce complex passwords</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label>Session Timeout</label>
+                                        <select class="form-control">
+                                            <option>30 minutes</option>
+                                            <option>1 hour</option>
+                                            <option>4 hours</option>
+                                            <option>8 hours</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-actions">
+                                        <button class="btn-primary">Update Security</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="settings.js"></script>
+</body>
+</html>
