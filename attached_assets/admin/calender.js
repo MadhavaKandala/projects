@@ -181,10 +181,10 @@ function renderEventItem(event) {
                 </div>
             </div>
             <div class="event-actions">
-                <button class="btn-icon" onclick="editEvent(${event.id})" title="Edit Event">
+                <button class="btn-icon" onclick="editEvent(${event.id})" aria-label="Edit Event" title="Edit Event">
                     <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn-icon danger" onclick="deleteEvent(${event.id})" title="Delete Event">
+                <button class="btn-icon danger" onclick="deleteEvent(${event.id})" aria-label="Delete Event" title="Delete Event">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>

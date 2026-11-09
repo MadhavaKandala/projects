@@ -182,10 +182,10 @@ function renderListView(visibleTasks) {
             </td>
             <td>
                 <div class="task-actions">
-                    <button class="btn-icon" onclick="editTask(${task.id})" title="Edit Task">
+                    <button class="btn-icon" onclick="editTask(${task.id})" aria-label="Edit Task" title="Edit Task">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn-icon" onclick="deleteTask(${task.id})" title="Delete Task">
+                    <button class="btn-icon" onclick="deleteTask(${task.id})" aria-label="Delete Task" title="Delete Task">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>

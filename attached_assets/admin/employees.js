@@ -146,13 +146,13 @@ function renderEmployees(employeeList) {
             </div>
             
             <div class="employee-actions">
-                <button class="btn-icon" onclick="editEmployee(${employee.id})" title="Edit Employee">
+                <button class="btn-icon" onclick="editEmployee(${employee.id})" aria-label="Edit Employee" title="Edit Employee">
                     <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn-icon" onclick="awardCrown(${employee.id})" title="Award Crown">
+                <button class="btn-icon" onclick="awardCrown(${employee.id})" aria-label="Award Crown" title="Award Crown">
                     <i class="fas fa-crown"></i>
                 </button>
-                <button class="btn-icon danger" onclick="removeEmployee(${employee.id})" title="Remove Employee">
+                <button class="btn-icon danger" onclick="removeEmployee(${employee.id})" aria-label="Remove Employee" title="Remove Employee">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
