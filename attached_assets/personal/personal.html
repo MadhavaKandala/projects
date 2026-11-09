@@ -1,58 +1,56 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personal Dashboard - Task Crown</title>
+  <title>Your workday | Task Crown</title>
   <link rel="stylesheet" href="personal.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../crown.css">
+  <link rel="stylesheet" href="workspace.css">
 </head>
-<body>
-  <nav class="navbar">
-    <div class="navbar-left">
-      <div class="logo">
-        <span class="logo-icon">👑</span>
-        <span class="logo-text">Task Crown</span>
+<body class="personal-workspace personal-overview">
+  <a class="personal-skip" href="#content">Skip to content</a>
+  <header class="personal-nav">
+    <div class="personal-nav-inner">
+      <div class="personal-nav-top">
+        <a class="personal-brand" href="../../index.html">
+          <span class="personal-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l4 4 4-6 4 6 4-4-2 11H6L4 6Zm3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span>Task Crown</span>
+        </a>
+        <div class="personal-nav-right">
+          <span class="personal-demo">Sample workspace</span>
+          <a class="personal-switch" href="../login.html">Switch workspace <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
+      <nav class="personal-tabs" aria-label="Personal workspace">
+        <a class="personal-tab" href="personal.html" aria-current="page">Overview</a>
+        <a class="personal-tab" href="pending_tasks.html">Pending</a>
+        <a class="personal-tab" href="high_priority.html">Priority</a>
+        <a class="personal-tab" href="completed_this_week.html">Completed</a>
+        <a class="personal-tab" href="productivity_score.html">Productivity</a>
+        <a class="personal-tab" href="team.html">Team</a>
+      </nav>
     </div>
-    <div class="navbar-center">
-      <a href="personal.html" class="nav-link active">Dashboard</a>
-      <a href="pending_tasks.html" class="nav-link">Pending Tasks</a>
-      <a href="high_priority.html" class="nav-link">High Priority</a>
-      <a href="completed_this_week.html" class="nav-link">Completed</a>
-      <a href="productivity_score.html" class="nav-link">Productivity</a>
-    </div>
-    <div class="navbar-right">
-      <div class="time-display">
-        <span class="current-time"></span>
-        <span class="current-date"></span>
-      </div>
-      <button class="profile-btn">
-        <span class="profile-avatar">👤</span>
-      </button>
-      <button class="logout-btn" onclick="logout()">
-        <span class="logout-icon">🚪</span>
-        <span class="logout-text">Logout</span>
-      </button>
-    </div>
-  </nav>
+  </header>
 
-  <main class="main-content">
+  <main class="main-content" id="content">
     <div class="page-header">
       <div class="header-content">
-        <h1 class="greeting-text">Welcome back, Madhava! 👋</h1>
-        <p class="greeting-subtitle">Here's what's on your plate today</p>
+        <div class="personal-kicker">01 / Personal workspace</div>
+        <h1>Your workday</h1>
+        <p>Set your priorities, review your tasks, and make room for focused work.</p>
+        <div class="personal-clock"><span class="current-time"></span><span class="current-date"></span></div>
       </div>
       <div class="header-stats">
         <div class="stat-card">
-          <div class="stat-number" id="tasksToday">12</div>
+          <div class="stat-number" id="tasksToday">3</div>
           <div class="stat-label">Tasks Today</div>
         </div>
         <div class="stat-card">
-          <div class="stat-number" id="completionRate">85%</div>
+          <div class="stat-number" id="completionRate">33%</div>
           <div class="stat-label">Completion Rate</div>
         </div>
         <div class="stat-card">
@@ -64,39 +62,42 @@
 
     <div class="dashboard-grid">
       <div class="quick-actions">
-        <h2>⚡ Quick Actions</h2>
+        <h2>Quick Actions</h2>
         <div class="action-buttons">
           <button class="action-btn primary" onclick="addNewTask()">
-            <span class="btn-icon">➕</span>
+            <span class="btn-icon" aria-hidden="true">+</span>
             Add New Task
           </button>
           <button class="action-btn stuck-mode" onclick="activateStuckMode()">
-            <span class="btn-icon">🧠</span>
-            Stuck Mode™
+            Stuck Mode
           </button>
           <button class="action-btn secondary" onclick="startFocusTimer()">
-            <span class="btn-icon">🎯</span>
             Focus Timer
           </button>
         </div>
       </div>
 
       <div class="today-tasks">
-        <h2>📅 Today's Tasks</h2>
-        <div class="task-list" id="taskList">
-          <!-- Dynamic task content will be loaded here -->
-        </div>
+        <h2>Today's Tasks</h2>
+        <div class="task-list" id="taskList"></div>
+        <template id="taskRow">
+          <div class="task-item">
+            <label class="task-checkbox"><input type="checkbox"></label>
+            <div class="task-content"><h4></h4><p></p></div>
+            <div class="task-meta"><span class="priority-badge"></span><span class="due-time"></span></div>
+          </div>
+        </template>
       </div>
 
       <div class="recent-activity">
-        <h2>🔄 Recent Activity</h2>
-        <div class="activity-list" id="activityList">
-          <!-- Dynamic activity content will be loaded here -->
+        <h2>Recent Activity</h2>
+        <div class="activity-list" id="activityList" aria-live="polite">
+          <div class="activity-item"><div class="activity-content"><p>Completed weekly team standup.</p></div></div>
         </div>
       </div>
 
       <div class="productivity-overview">
-        <h2>📊 This Week's Progress</h2>
+        <h2>This Week's Progress</h2>
         <div class="progress-stats">
           <div class="progress-item">
             <div class="progress-label">Tasks Completed</div>
@@ -116,16 +117,17 @@
       </div>
     </div>
   </main>
+  <footer class="personal-footer"><span>Task Crown · Personal</span><span>Sample workspace</span></footer>
 
   <!-- Add Task Modal -->
-  <div id="taskModal" class="modal">
+  <dialog id="taskModal" class="modal" aria-labelledby="taskModalTitle">
     <div class="modal-content">
-      <span class="close" onclick="closeTaskModal()">&times;</span>
-      <h2>Add New Task</h2>
+      <button type="button" class="close" onclick="closeTaskModal()" aria-label="Close task form">&times;</button>
+      <h2 id="taskModalTitle">Add New Task</h2>
       <form id="taskForm">
         <div class="form-group">
           <label for="taskTitle">Task Title</label>
-          <input type="text" id="taskTitle" required>
+          <input type="text" id="taskTitle" maxlength="120" required autofocus>
         </div>
         <div class="form-group">
           <label for="taskDescription">Description</label>
@@ -146,13 +148,13 @@
         <button type="submit" class="btn-primary">Add Task</button>
       </form>
     </div>
-  </div>
+  </dialog>
 
   <!-- Focus Timer Modal -->
-  <div id="timerModal" class="modal">
+  <dialog id="timerModal" class="modal" aria-labelledby="timerModalTitle">
     <div class="modal-content">
-      <span class="close" onclick="closeTimerModal()">&times;</span>
-      <h2>Focus Timer</h2>
+      <button type="button" class="close" onclick="closeTimerModal()" aria-label="Close focus timer">&times;</button>
+      <h2 id="timerModalTitle">Focus Timer</h2>
       <div class="timer-display">
         <div class="timer-circle">
           <span id="timerDisplay">25:00</span>
@@ -164,11 +166,11 @@
         <button onclick="resetTimer()" id="resetBtn">Reset</button>
       </div>
       <div class="timer-settings">
-        <label>Duration (minutes):</label>
+        <label for="timerDuration">Duration (minutes):</label>
         <input type="number" id="timerDuration" value="25" min="1" max="120">
       </div>
     </div>
-  </div>
+  </dialog>
 
   <script>
     // Global state for dynamic functionality
@@ -200,8 +202,6 @@
         }
       ],
       stats: {
-        tasksToday: 12,
-        completionRate: 85,
         focusHours: 6.5
       }
     };
@@ -209,14 +209,13 @@
     // Initialize dashboard
     document.addEventListener('DOMContentLoaded', function() {
       updateDateTime();
+      dashboardState.tasks.forEach(appendTask);
       updateStats();
       setupEventListeners();
       
       // Update time every second
       setInterval(updateDateTime, 1000);
       
-      // Update stats every 30 seconds
-      setInterval(updateStats, 30000);
     });
 
     function setupEventListeners() {
@@ -224,7 +223,11 @@
       const timerDuration = document.getElementById('timerDuration');
       if (timerDuration) {
         timerDuration.addEventListener('change', function(e) {
-          timerState.duration = parseInt(e.target.value);
+          if (!e.target.validity.valid || !e.target.value) {
+            e.target.value = timerState.duration;
+            return;
+          }
+          timerState.duration = e.target.valueAsNumber;
           resetTimer();
         });
       }
@@ -235,36 +238,33 @@
         taskForm.addEventListener('submit', function(e) {
           e.preventDefault();
           
+          const titleInput = document.getElementById('taskTitle');
+          const title = titleInput.value.trim();
+          if (!title) {
+            titleInput.focus();
+            return;
+          }
+          const dueDate = document.getElementById('taskDueDate').value;
           const newTask = {
             id: Date.now(),
-            title: document.getElementById('taskTitle').value,
+            title,
             description: document.getElementById('taskDescription').value,
             priority: document.getElementById('taskPriority').value,
-            dueDate: document.getElementById('taskDueDate').value,
+            dueDate,
             completed: false,
-            dueTime: 'Due today'
+            dueTime: dueDate ? new Date(dueDate).toLocaleDateString() : 'No deadline'
           };
           
           dashboardState.tasks.push(newTask);
-          dashboardState.stats.tasksToday++;
-          
-          showNotification(`✅ Task "${newTask.title}" added successfully!`);
+          appendTask(newTask);
+          updateStats();
+          recordActivity(`Added ${newTask.title}.`);
           closeTaskModal();
         });
       }
 
-      // Close modals when clicking outside
-      window.onclick = function(event) {
-        const taskModal = document.getElementById('taskModal');
-        const timerModal = document.getElementById('timerModal');
-        
-        if (event.target === taskModal) {
-          closeTaskModal();
-        }
-        if (event.target === timerModal) {
-          closeTimerModal();
-        }
-      }
+      document.getElementById('taskModal').addEventListener('close', () => taskForm.reset());
+      document.getElementById('timerModal').addEventListener('close', resetTimer);
     }
 
     // Time and date functions
@@ -289,52 +289,48 @@
         });
       }
 
-      // Update greeting based on time
-      updateGreeting(now);
     }
 
-    function updateGreeting(now) {
-      const hour = now.getHours();
-      const greetingElement = document.querySelector('.greeting-text');
-      const subtitleElement = document.querySelector('.greeting-subtitle');
-      
-      let greeting = '';
-      let subtitle = '';
-      
-      if (hour < 12) {
-        greeting = 'Good Morning, Madhava! 🌅';
-        subtitle = 'Ready to tackle today\'s challenges?';
-      } else if (hour < 17) {
-        greeting = 'Good Afternoon, Madhava! ☀️';
-        subtitle = 'Keep up the great work!';
-      } else {
-        greeting = 'Good Evening, Madhava! 🌙';
-        subtitle = 'Wrapping up for the day?';
-      }
-      
-      if (greetingElement) greetingElement.textContent = greeting;
-      if (subtitleElement) subtitleElement.textContent = subtitle;
+    function appendTask(task) {
+      const row = document.getElementById('taskRow').content.cloneNode(true);
+      const checkbox = row.querySelector('input');
+      const content = row.querySelector('.task-content');
+      const priority = row.querySelector('.priority-badge');
+      const deadline = row.querySelector('.due-time');
+      checkbox.checked = task.completed;
+      checkbox.setAttribute('aria-label', `Mark ${task.title} complete`);
+      content.classList.toggle('completed', task.completed);
+      content.querySelector('h4').textContent = task.title;
+      content.querySelector('p').textContent = task.description;
+      priority.classList.add(task.priority);
+      priority.textContent = task.priority;
+      deadline.textContent = task.completed ? 'Completed' : task.dueTime;
+      checkbox.addEventListener('change', () => {
+        task.completed = checkbox.checked;
+        content.classList.toggle('completed', task.completed);
+        deadline.textContent = task.completed ? 'Completed' : task.dueTime;
+        updateStats();
+        recordActivity(`${task.completed ? 'Completed' : 'Reopened'} ${task.title}.`);
+      });
+      document.getElementById('taskList').append(row);
+    }
+
+    function recordActivity(message) {
+      const entry = document.createElement('div');
+      entry.className = 'activity-item';
+      entry.textContent = message;
+      const list = document.getElementById('activityList');
+      list.prepend(entry);
+      if (list.children.length > 3) list.lastElementChild.remove();
     }
 
     // Stats management functions
     function updateStats() {
-      // Simulate real-time updates
-      dashboardState.stats.tasksToday += Math.floor(Math.random() * 2);
-      dashboardState.stats.completionRate += (Math.random() - 0.5) * 2;
-      dashboardState.stats.focusHours += (Math.random() * 0.1);
-      
-      // Keep values in reasonable ranges
-      dashboardState.stats.completionRate = Math.max(70, Math.min(100, dashboardState.stats.completionRate));
-      dashboardState.stats.focusHours = Math.min(12, dashboardState.stats.focusHours);
-      
-      // Update DOM
-      const tasksTodayElement = document.getElementById('tasksToday');
-      const completionRateElement = document.getElementById('completionRate');
-      const focusHoursElement = document.getElementById('focusHours');
-      
-      if (tasksTodayElement) tasksTodayElement.textContent = Math.round(dashboardState.stats.tasksToday);
-      if (completionRateElement) completionRateElement.textContent = Math.round(dashboardState.stats.completionRate) + '%';
-      if (focusHoursElement) focusHoursElement.textContent = dashboardState.stats.focusHours.toFixed(1) + 'h';
+      const count = dashboardState.tasks.length;
+      const completed = dashboardState.tasks.filter(task => task.completed).length;
+      document.getElementById('tasksToday').textContent = count;
+      document.getElementById('completionRate').textContent = `${Math.round(completed / count * 100)}%`;
+      document.getElementById('focusHours').textContent = `${dashboardState.stats.focusHours.toFixed(1)}h`;
     }
 
     // Timer state
@@ -347,12 +343,11 @@
 
     // Quick action functions
     function addNewTask() {
-      document.getElementById('taskModal').style.display = 'block';
+      document.getElementById('taskModal').showModal();
     }
 
     function closeTaskModal() {
-      document.getElementById('taskModal').style.display = 'none';
-      document.getElementById('taskForm').reset();
+      document.getElementById('taskModal').close();
     }
 
     function activateStuckMode() {
@@ -360,19 +355,17 @@
     }
 
     function startFocusTimer() {
-      document.getElementById('timerModal').style.display = 'block';
+      document.getElementById('timerModal').showModal();
     }
 
     function closeTimerModal() {
-      document.getElementById('timerModal').style.display = 'none';
-      resetTimer();
+      document.getElementById('timerModal').close();
     }
 
     // Timer functions
     function startTimer() {
       if (!timerState.isRunning) {
         timerState.isRunning = true;
-        timerState.timeLeft = timerState.duration * 60;
         
         document.getElementById('startBtn').disabled = true;
         document.getElementById('pauseBtn').disabled = false;
@@ -434,6 +427,8 @@
       
       // Add to stats
       dashboardState.stats.focusHours += timerState.duration / 60;
+      updateStats();
+      recordActivity('Completed a focus session.');
       
       // Remove floating timer
       removeFloatingTimer();
@@ -503,7 +498,7 @@
       `;
       
       floatingTimer.addEventListener('click', function() {
-        document.getElementById('timerModal').style.display = 'block';
+        if (!document.getElementById('timerModal').open) startFocusTimer();
       });
       
       floatingTimer.addEventListener('mouseenter', function() {
@@ -560,23 +555,6 @@
       }, 3000);
     }
 
-    // Logout function
-    function logout() {
-      const confirmLogout = confirm('Are you sure you want to logout?');
-      if (confirmLogout) {
-        // Clear any stored user data
-        localStorage.removeItem('userRole');
-        localStorage.removeItem('userSettings');
-        
-        // Show logout message
-        alert('Logging out...');
-        
-        // Redirect to home page after a short delay
-        setTimeout(() => {
-          window.location.href = '../home.html';
-        }, 1000);
-      }
-    }
   </script>
 
   <style>

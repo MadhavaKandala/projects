@@ -458,71 +458,43 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="../crown.css">
+    <link rel="stylesheet" href="employee.css">
 </head>
-<body>
+<body class="employee-page">
+    <a href="#main-content" class="employee-skip">Skip to content</a>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">👑</div>
-                <div class="brand-name">TaskCrown</div>
+            <div class="employee-rail-head">
+                <a href="employee-dashboard.html" class="employee-brand">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 5 4 4-6 4 6 5-4-2 11H5zm3 14h12"/></svg>
+                    <span><strong>Task Crown</strong><small>Employee workspace</small></span>
+                </a>
+                <button class="employee-menu" type="button" aria-expanded="false" aria-controls="employee-nav" hidden>Menu</button>
             </div>
-
-            <nav>
+            <span class="employee-demo">Demo workspace</span>
+            <nav id="employee-nav" aria-label="Employee workspace">
                 <div class="nav-section">
-                    <div class="nav-title">Navigation</div>
-                    <a href="employee-dashboard.html" class="nav-item">
-                        <span class="nav-icon">📊</span>
-                        <span>Dashboard</span>
-                    </a>
-                    <a href="tasks.html" class="nav-item">
-                        <span class="nav-icon">✅</span>
-                        <span>My Tasks</span>
-                    </a>
-                    <a href="my-calender.html" class="nav-item">
-                        <span class="nav-icon">📅</span>
-                        <span>My Calendar</span>
-                    </a>
-                    <a href="team-overview.html" class="nav-item">
-                        <span class="nav-icon">👥</span>
-                        <span>Team Overview</span>
-                    </a>
+                    <div class="nav-title">Workspace</div>
+                    <a href="employee-dashboard.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h6v6H3zm12 0h6v6h-6zM3 15h6v6H3zm12 0h6v6h-6z"/></svg><span>Overview</span></a>
+                    <a href="tasks.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12M3 6l1 1 2-2M3 12l1 1 2-2M3 18l1 1 2-2"/></svg><span>My tasks</span></a>
+                    <a href="my-calender.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18v15H3zM8 3v5m8-5v5M3 11h18"/></svg><span>Calendar</span></a>
+                    <a href="team-overview.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m13-6a4 4 0 0 1 4 4v2M13 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0zm3-3a3 3 0 0 1 0 6"/></svg><span>Team</span></a>
                 </div>
-
                 <div class="nav-section">
                     <div class="nav-title">Tools</div>
-                    <a href="employee-analytics.html" class="nav-item">
-                        <span class="nav-icon">📊</span>
-                        <span>Analytics</span>
-                    </a>
-                    <a href="request-help.html" class="nav-item">
-                        <span class="nav-icon">❓</span>
-                        <span>Request Help</span>
-                    </a>
-                    <a href="employee-resources.html" class="nav-item">
-                        <span class="nav-icon">📚</span>
-                        <span>Resources</span>
-                    </a>
-
+                    <a href="employee-analytics.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v16h16M8 16v-4m5 4V8m5 8V5"/></svg><span>Analytics</span></a>
+                    <a href="request-help.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0zm-10-2a2 2 0 0 1 4 0c0 1-2 2-2 3m0 3h.01"/></svg><span>Request help</span></a>
+                    <a href="employee-resources.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6v14M3 5h5l4 2 4-2h5v13h-5l-4 2-4-2H3z"/></svg><span>Resources</span></a>
                 </div>
-
-                                    <div class="nav-section">
-                        <div class="nav-title">Account</div>
-                        <a href="crown-stats.html" class="nav-item active">
-                            <span class="nav-icon">👑</span>
-                            <span>Crown Stats</span>
-                        </a>
-                        <a href="notifications.html" class="nav-item">
-                            <span class="nav-icon">🔔</span>
-                            <span>Notifications</span>
-                        </a>
-                        <a href="settings.html" class="nav-item">
-                            <span class="nav-icon">⚙️</span>
-                            <span>Settings</span>
-                        </a>
-                    </div>
+                <div class="nav-section">
+                    <div class="nav-title">Account</div>
+                    <a href="crown-stats.html" class="nav-item active" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 5 4 4-6 4 6 5-4-2 11H5zm3 14h12"/></svg><span>Crown stats</span></a>
+                    <a href="notifications.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0v6l-2 3h16l-2-3zm-8 12h4"/></svg><span>Notifications</span></a>
+                    <a href="settings.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16M8 4v4m8 2v4m-6 2v4"/></svg><span>Settings</span></a>
+                </div>
             </nav>
-
             <div class="user-profile">
                 <div class="user-info">
                     <div class="user-avatar">👨‍💻</div>
@@ -532,12 +504,13 @@
                     </div>
                 </div>
             </div>
+            <a href="../login.html" class="employee-exit">Switch workspace <span aria-hidden="true">↗</span></a>
         </aside>
 
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" id="main-content" tabindex="-1">
             <div class="header">
-                <h1>Crown Stats</h1>
+                <h1><span class="employee-eyebrow" aria-hidden="true">Employee / Account</span>Crown Stats</h1>
                 <p>Track your achievements and performance</p>
             </div>
 

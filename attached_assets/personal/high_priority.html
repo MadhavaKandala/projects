@@ -3,42 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>High Priority Tasks - Task Crown</title>
+  <title>High-priority tasks | Task Crown</title>
   <link rel="stylesheet" href="high_priority.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../crown.css">
+  <link rel="stylesheet" href="workspace.css">
 </head>
-<body>
-  <nav class="navbar">
-    <div class="navbar-left">
-      <div class="logo">
-        <span class="logo-icon">👑</span>
-        <span class="logo-text">Task Crown</span>
+<body class="personal-workspace">
+  <a class="personal-skip" href="#content">Skip to content</a>
+  <header class="personal-nav">
+    <div class="personal-nav-inner">
+      <div class="personal-nav-top">
+        <a class="personal-brand" href="../../index.html">
+          <span class="personal-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l4 4 4-6 4 6 4-4-2 11H6L4 6Zm3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span>Task Crown</span>
+        </a>
+        <div class="personal-nav-right">
+          <span class="personal-demo">Sample workspace</span>
+          <a class="personal-switch" href="../login.html">Switch workspace <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
+      <nav class="personal-tabs" aria-label="Personal workspace">
+        <a class="personal-tab" href="personal.html">Overview</a>
+        <a class="personal-tab" href="pending_tasks.html">Pending</a>
+        <a class="personal-tab" href="high_priority.html" aria-current="page">Priority</a>
+        <a class="personal-tab" href="completed_this_week.html">Completed</a>
+        <a class="personal-tab" href="productivity_score.html">Productivity</a>
+        <a class="personal-tab" href="team.html">Team</a>
+      </nav>
     </div>
-    <div class="navbar-center">
-      <a href="personal.html" class="nav-link">Dashboard</a>
-      <a href="pending_tasks.html" class="nav-link">Pending Tasks</a>
-      <a href="high_priority.html" class="nav-link active">High Priority</a>
-      <a href="completed_this_week.html" class="nav-link">Completed</a>
-      <a href="productivity_score.html" class="nav-link">Productivity</a>
-    </div>
-    <div class="navbar-right">
-      <button class="profile-btn">
-        <span class="profile-avatar">👤</span>
-      </button>
-      <button class="logout-btn" onclick="logout()">
-        <span class="logout-icon">🚪</span>
-        <span class="logout-text">Logout</span>
-      </button>
-    </div>
-  </nav>
+  </header>
 
-  <main class="main-content">
+  <main class="main-content" id="content">
     <div class="page-header">
-      <div class="header-icon">🚨</div>
       <div class="header-content">
-        <h1>High Priority Tasks</h1>
-        <p>Focus on what matters most. <span class="highlight">3 urgent tasks</span> need your attention.</p>
+        <div class="personal-kicker">03 / Personal workspace</div>
+        <h1>High-priority tasks</h1>
+        <p>Review urgent work, its deadlines, and its progress.</p>
       </div>
     </div>
 
@@ -53,10 +54,10 @@
         <div class="task-meta">
           <span class="task-time">⏰ 2 hours remaining</span>
           <div class="task-progress">
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 75%"></div>
-            </div>
-            <span>75%</span>
+            <button type="button" class="progress-control" aria-label="Advance progress for Complete API Integration">
+              <span class="progress-bar"><span class="progress-fill" style="width: 75%"></span></span>
+            </button>
+            <span class="progress-percent">75%</span>
           </div>
         </div>
       </div>
@@ -71,10 +72,10 @@
         <div class="task-meta">
           <span class="task-time">⏰ 1 day remaining</span>
           <div class="task-progress">
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 40%"></div>
-            </div>
-            <span>40%</span>
+            <button type="button" class="progress-control" aria-label="Advance progress for Review Security Audit">
+              <span class="progress-bar"><span class="progress-fill" style="width: 40%"></span></span>
+            </button>
+            <span class="progress-percent">40%</span>
           </div>
         </div>
       </div>
@@ -89,10 +90,10 @@
         <div class="task-meta">
           <span class="task-time">⏰ 2 days remaining</span>
           <div class="task-progress">
-            <div class="progress-bar">
-              <div class="progress-fill" style="width: 10%"></div>
-            </div>
-            <span>10%</span>
+            <button type="button" class="progress-control" aria-label="Advance progress for Prepare Sprint Presentation">
+              <span class="progress-bar"><span class="progress-fill" style="width: 10%"></span></span>
+            </button>
+            <span class="progress-percent">10%</span>
           </div>
         </div>
       </div>
@@ -107,7 +108,7 @@
         </button>
         <button class="action-btn secondary">
           <span class="btn-icon">🆘</span>
-          Send SOS Alert
+          Try SOS Alert
         </button>
         <button class="action-btn secondary">
           <span class="btn-icon">📅</span>
@@ -116,6 +117,7 @@
       </div>
     </div>
   </main>
+  <footer class="personal-footer"><span>Task Crown · Personal</span><span>Sample workspace</span></footer>
 
   <script>
     // Dynamic task management
@@ -135,7 +137,7 @@
 
     function setupTaskInteractions() {
       // Add click handlers for progress bars
-      document.querySelectorAll('.progress-bar').forEach((bar, index) => {
+      document.querySelectorAll('.progress-control').forEach((bar, index) => {
         bar.addEventListener('click', function() {
           updateTaskProgress(index + 1);
         });
@@ -152,7 +154,7 @@
       if (task) {
         task.progress = Math.min(100, task.progress + 10);
         const progressBar = document.querySelectorAll('.progress-fill')[taskId - 1];
-        const progressText = document.querySelectorAll('.task-progress span')[taskId - 1];
+        const progressText = document.querySelectorAll('.progress-percent')[taskId - 1];
         
         if (progressBar) {
           progressBar.style.width = task.progress + '%';
@@ -175,7 +177,7 @@
         if (task.progress < 100 && Math.random() < 0.3) {
           task.progress = Math.min(100, task.progress + Math.floor(Math.random() * 5));
           const progressBar = document.querySelectorAll('.progress-fill')[index];
-          const progressText = document.querySelectorAll('.task-progress span')[index];
+          const progressText = document.querySelectorAll('.progress-percent')[index];
           
           if (progressBar) {
             progressBar.style.width = task.progress + '%';
@@ -200,22 +202,22 @@
     }
 
     function sendSOSAlert() {
-      showNotification('🆘 SOS Alert sent to team! Help is on the way.');
+      showNotification('Sample SOS alert queued.');
       
       // Simulate team response
       setTimeout(() => {
-        showNotification('👥 Team member Sarah is available to help!');
+        showNotification('Sample reply: Sarah is available to help.');
       }, 2000);
     }
 
     function scheduleFocusTime() {
       const duration = prompt('How many hours of focus time do you need?', '2');
       if (duration) {
-        showNotification(`📅 Focus time scheduled for ${duration} hours`);
+        showNotification(`Sample focus block: ${duration} hours.`);
         
         // Add to calendar (simulated)
         setTimeout(() => {
-          showNotification('✅ Focus time added to your calendar');
+          showNotification('Sample focus block previewed.');
         }, 1000);
       }
     }
@@ -247,23 +249,6 @@
       }, 3000);
     }
 
-    // Logout function
-    function logout() {
-      const confirmLogout = confirm('Are you sure you want to logout?');
-      if (confirmLogout) {
-        // Clear any stored user data
-        localStorage.removeItem('userRole');
-        localStorage.removeItem('userSettings');
-        
-        // Show logout message
-        alert('Logging out...');
-        
-        // Redirect to home page after a short delay
-        setTimeout(() => {
-          window.location.href = '../home.html';
-        }, 1000);
-      }
-    }
   </script>
 
   <style>

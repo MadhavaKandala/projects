@@ -1,290 +1,72 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Task Crown - Productivity App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Task Crown is an interactive task management demo for personal, team, and admin workflows.">
+  <meta name="theme-color" content="#f7f6f1">
+  <title>Task Crown — Make the next move</title>
+  <link rel="icon" href="attached_assets/crown.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #29398a 0%, #7839b0 100%);
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* Animated background particles */
-    body::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: 
-        radial-gradient(circle at 20% 80%, rgba(94, 123, 250, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(166, 108, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(94, 123, 250, 0.05) 0%, transparent 50%);
-      animation: float 20s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      33% { transform: translateY(-20px) rotate(1deg); }
-      66% { transform: translateY(10px) rotate(-1deg); }
-    }
-
-    .loader {
-      text-align: center;
-      position: relative;
-      z-index: 10;
-      animation: fadeInUp 0.8s ease-out;
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .logo {
-      font-size: 4rem;
-      margin-bottom: 24px;
-      position: relative;
-      display: inline-block;
-    }
-
-    .logo::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 120px;
-      height: 120px;
-      background: linear-gradient(135deg, rgba(94, 123, 250, 0.2), rgba(166, 108, 255, 0.2));
-      border-radius: 50%;
-      filter: blur(20px);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.5;
-      }
-      50% {
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 0.8;
-      }
-    }
-
-    .logo-emoji {
-      position: relative;
-      z-index: 2;
-      animation: crownFloat 3s ease-in-out infinite;
-    }
-
-    @keyframes crownFloat {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      25% { transform: translateY(-5px) rotate(2deg); }
-      75% { transform: translateY(3px) rotate(-1deg); }
-    }
-
-    .text {
-      font-size: 1.3rem;
-      font-weight: 500;
-      opacity: 0.9;
-      margin-bottom: 16px;
-      letter-spacing: 0.5px;
-    }
-
-    .subtitle {
-      font-size: 1rem;
-      opacity: 0.7;
-      font-weight: 400;
-      margin-bottom: 32px;
-    }
-
-    .loading-bar {
-      width: 200px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 2px;
-      margin: 0 auto;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .loading-progress {
-      height: 100%;
-      background: linear-gradient(90deg, #5e7bfa, #a66cff);
-      border-radius: 2px;
-      animation: loading 2s ease-in-out infinite;
-      position: relative;
-    }
-
-    .loading-progress::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-      animation: shimmer 1.5s ease-in-out infinite;
-    }
-
-    @keyframes loading {
-      0% { width: 0%; }
-      50% { width: 70%; }
-      100% { width: 100%; }
-    }
-
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .features-preview {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      margin-top: 32px;
-      opacity: 0;
-      animation: fadeInUp 0.8s ease-out 0.3s forwards;
-    }
-
-    .feature-badge {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 20px;
-      padding: 8px 16px;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: rgba(255, 255, 255, 0.9);
-      transition: all 0.3s ease;
-    }
-
-    .feature-badge:hover {
-      background: rgba(255, 255, 255, 0.15);
-      transform: translateY(-2px);
-    }
-
-    /* Responsive design */
-    @media (max-width: 768px) {
-      .logo {
-        font-size: 3rem;
-      }
-      
-      .text {
-        font-size: 1.1rem;
-      }
-      
-      .subtitle {
-        font-size: 0.9rem;
-      }
-      
-      .features-preview {
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-      }
-      
-      .loading-bar {
-        width: 150px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .logo {
-        font-size: 2.5rem;
-      }
-      
-      .text {
-        font-size: 1rem;
-      }
-      
-      .subtitle {
-        font-size: 0.8rem;
-      }
-    }
-
-    /* Accessibility */
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
-  <script>
-    // Enhanced loading experience with progress tracking
-    let progress = 0;
-    const progressBar = document.querySelector('.loading-progress');
-    
-    const updateProgress = () => {
-      progress += Math.random() * 15;
-      if (progress > 100) progress = 100;
-      
-      if (progressBar) {
-        progressBar.style.width = progress + '%';
-      }
-      
-      if (progress < 100) {
-        setTimeout(updateProgress, 200 + Math.random() * 300);
-      } else {
-        // Redirect after completion
-        setTimeout(() => {
-          window.location.href = './attached_assets/home.html';
-        }, 500);
-      }
-    };
-
-    // Start progress when page loads
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(updateProgress, 500);
-    });
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="attached_assets/crown.css">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="loader">
-    <div class="logo">
-      <span class="logo-emoji">👑</span>
-    </div>
-    <div class="text">Loading Task Crown...</div>
-    <div class="subtitle">Your productivity journey starts here</div>
-    <div class="loading-bar">
-      <div class="loading-progress"></div>
-    </div>
-    <div class="features-preview">
-      <div class="feature-badge">🚀 Stuck Mode™ AI</div>
-      <div class="feature-badge">👥 Team Collaboration</div>
-      <div class="feature-badge">⚡ Smart Suggestions</div>
-    </div>
-  </div>
+<body class="crown-site">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+    <a class="wordmark" href="./"><img src="attached_assets/crown.svg" alt="" width="34" height="34">Task Crown</a>
+    <nav aria-label="Main navigation">
+      <a href="#workspaces">Workspaces</a>
+      <a class="top-action" href="attached_assets/login.html">Open demo <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main id="main" class="wrap">
+    <section class="hero" aria-labelledby="main-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> The task management demo</p>
+        <h1 id="main-title">Make the<br>next move<span>.</span></h1>
+        <p class="hero-description">Plan your day, see what the team is working on, and keep assignments moving.</p>
+        <div class="hero-actions">
+          <a class="button" href="attached_assets/login.html">Choose a workspace <span aria-hidden="true">↗</span></a>
+          <a class="quiet-link" href="#workspaces">Compare views <span aria-hidden="true">↓</span></a>
+        </div>
+        <p class="hero-note">Open to anyone. Starts with sample data.</p>
+      </div>
+      <div class="hero-scene" aria-label="Preview of a Task Crown workspace">
+        <div class="scene-label"><span>FIG. 01</span><span>THE DAILY BRIEF</span></div>
+        <svg class="scene-grid" viewBox="0 0 490 520" preserveAspectRatio="xMidYMid slice" fill="none" aria-hidden="true">
+          <path d="M-37 390 384-31M-6 424 423-5M27 457 456 28M61 490 490 61M94 523 523 94M127 556 556 127M160 589 589 160" stroke="currentColor"/>
+          <circle cx="245" cy="257" r="181" stroke="currentColor"/><circle cx="245" cy="257" r="222" stroke="currentColor"/>
+          <path d="M245 18v482M18 257h454" stroke="currentColor" stroke-dasharray="2 6"/>
+        </svg>
+        <div class="brief">
+          <div class="brief-top"><img src="attached_assets/crown.svg" width="25" height="25" alt=""><span>Personal workspace</span><span class="brief-sample">SAMPLE</span></div>
+          <p class="brief-kicker">THE LIST / 01</p>
+          <h2>Today’s work</h2>
+          <div class="brief-progress"><span>2 of 4 complete</span><span>50%</span></div>
+          <div class="brief-track" aria-hidden="true"><span></span></div>
+          <ul class="brief-list">
+            <li><span class="check checked" aria-hidden="true">✓</span><span>Write the handoff notes</span><small>Done</small></li>
+            <li><span class="check checked" aria-hidden="true">✓</span><span>Review the sprint board</span><small>Done</small></li>
+            <li><span class="check" aria-hidden="true"></span><span>Send the design proof</span><small class="next">Next</small></li>
+            <li><span class="check" aria-hidden="true"></span><span>Outline Friday’s review</span><small>Later</small></li>
+          </ul>
+        </div>
+        <div class="scene-label scene-foot"><span>01 / 03 WORKSPACES</span><span>↗</span></div>
+      </div>
+    </section>
+
+    <section class="workspace-index" id="workspaces" aria-labelledby="workspaces-title">
+      <div class="index-heading"><p class="eyebrow">01 / The workspace index</p><h2 id="workspaces-title">Three ways to work.</h2></div>
+      <div class="index-list">
+        <a class="index-link" href="attached_assets/personal/personal.html"><span class="index-number">01</span><div><h3>Personal</h3><p>Organize your tasks by priority and review what you’ve completed.</p></div><span class="index-arrow" aria-hidden="true">↗</span></a>
+        <a class="index-link" href="attached_assets/employee/employee-dashboard.html"><span class="index-number">02</span><div><h3>Team member</h3><p>Check assignments, the team calendar, resources, and notifications.</p></div><span class="index-arrow" aria-hidden="true">↗</span></a>
+        <a class="index-link" href="attached_assets/admin/index.html"><span class="index-number">03</span><div><h3>Admin</h3><p>Review team activity and manage sample employees, tasks, and events.</p></div><span class="index-arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer wrap"><span>Task Crown</span><span>Interactive demo · Sample data</span></footer>
 </body>
 </html>

@@ -2,187 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TaskCrown Login - Your Competitive Task Manager</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f1">
+  <title>Choose a workspace | Task Crown</title>
+  <link rel="icon" href="crown.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="login.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="crown.css">
+  <link rel="stylesheet" href="../style.css">
 </head>
-<body>
-  <div class="login-container">
-    <!-- Background Beams -->
-    <div class="background-beams">
-      <svg class="beams-svg" width="100%" height="100%" viewBox="0 0 696 316" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path class="beam-path" d="M-380 -189C-380 -189 -312 216 152 343C616 470 684 875 684 875" stroke="url(#gradient-0)" stroke-opacity="0.4" stroke-width="0.5"/>
-        <path class="beam-path" d="M-373 -197C-373 -197 -305 208 159 335C623 462 691 867 691 867" stroke="url(#gradient-1)" stroke-opacity="0.4" stroke-width="0.5"/>
-        <path class="beam-path" d="M-366 -205C-366 -205 -298 200 166 327C630 454 698 859 698 859" stroke="url(#gradient-2)" stroke-opacity="0.4" stroke-width="0.5"/>
-        <path class="beam-path" d="M-359 -213C-359 -213 -291 192 173 319C637 446 705 851 705 851" stroke="url(#gradient-3)" stroke-opacity="0.4" stroke-width="0.5"/>
-        <path class="beam-path" d="M-352 -221C-352 -221 -284 184 180 311C644 438 712 843 712 843" stroke="url(#gradient-4)" stroke-opacity="0.4" stroke-width="0.5"/>
-        
-        <defs>
-          <linearGradient id="gradient-0" x1="0%" x2="0%" y1="0%" y2="0%">
-            <stop stop-color="#FFD700" stop-opacity="0"/>
-            <stop stop-color="#FFD700"/>
-            <stop offset="32.5%" stop-color="#FFA500"/>
-            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
-          </linearGradient>
-          <linearGradient id="gradient-1" x1="0%" x2="0%" y1="0%" y2="0%">
-            <stop stop-color="#FFD700" stop-opacity="0"/>
-            <stop stop-color="#FFD700"/>
-            <stop offset="32.5%" stop-color="#FFA500"/>
-            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
-          </linearGradient>
-          <linearGradient id="gradient-2" x1="0%" x2="0%" y1="0%" y2="0%">
-            <stop stop-color="#FFD700" stop-opacity="0"/>
-            <stop stop-color="#FFD700"/>
-            <stop offset="32.5%" stop-color="#FFA500"/>
-            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
-          </linearGradient>
-          <linearGradient id="gradient-3" x1="0%" x2="0%" y1="0%" y2="0%">
-            <stop stop-color="#FFD700" stop-opacity="0"/>
-            <stop stop-color="#FFD700"/>
-            <stop offset="32.5%" stop-color="#FFA500"/>
-            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
-          </linearGradient>
-          <linearGradient id="gradient-4" x1="0%" x2="0%" y1="0%" y2="0%">
-            <stop stop-color="#FFD700" stop-opacity="0"/>
-            <stop stop-color="#FFD700"/>
-            <stop offset="32.5%" stop-color="#FFA500"/>
-            <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-      </svg>
+<body class="crown-site">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+    <a class="wordmark" href="../"><img src="crown.svg" alt="" width="34" height="34">Task Crown</a>
+    <nav aria-label="Main navigation"><a href="../">Back to home <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main id="main" class="wrap chooser">
+    <div>
+      <p class="eyebrow"><span></span> Interactive demo</p>
+      <h1>Choose a workspace<span>.</span></h1>
+      <p class="hero-description">Each view starts with sample data. Try the tools without creating an account.</p>
     </div>
-
-    <!-- Login Form -->
-    <div class="login-content">
-      <!-- Logo and Branding -->
-      <div class="brand-section">
-        <div class="logo-container">
-          <div class="glow-effect"></div>
-          <div class="logo-crown">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
-          </div>
-        </div>
-        <h1 class="brand-title">TaskCrown</h1>
-        <p class="brand-subtitle">Your Competitive Task Manager</p>
-      </div>
-
-      <!-- Login Card -->
-      <div class="login-card">
-        <div class="card-header">
-          <h2 class="card-title">Welcome Back</h2>
-          
-          <!-- Role Switcher -->
-          <div class="role-switcher">
-            <div class="role-tabs">
-              <button class="role-tab active" data-role="admin">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                <span>Admin</span>
-              </button>
-              <button class="role-tab" data-role="employee">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                </svg>
-                <span>Employee</span>
-              </button>
-              <button class="role-tab" data-role="personal">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
-                <span>Personal</span>
-              </button>
-            </div>
-          </div>
-          
-          <p class="role-subtitle" id="roleSubtitle">Manage your organization</p>
-        </div>
-
-        <div class="card-content">
-
-          <!-- Login Form -->
-          <form class="login-form" id="loginForm">
-            <div class="form-group">
-              <label for="email" class="form-label">Email</label>
-              <div class="input-wrapper">
-                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <path d="M22 6l-10 7L2 6"/>
-                </svg>
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  placeholder="Enter your email"
-                  required
-                >
-              </div>
-              <span class="error-message" id="emailError"></span>
-            </div>
-
-            <div class="form-group">
-              <div class="password-header">
-                <label for="password" class="form-label">Password</label>
-                <button type="button" class="forgot-password" id="forgotPassword">Forgot password?</button>
-              </div>
-              <div class="input-wrapper">
-                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z"/>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                </svg>
-                <input 
-                  type="password" 
-                  id="password" 
-                  name="password" 
-                  placeholder="Enter your password"
-                  required
-                >
-                <button type="button" class="password-toggle" id="passwordToggle">
-                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                    <circle cx="12" cy="12" r="3"/>
-                  </svg>
-                </button>
-              </div>
-              <span class="error-message" id="passwordError"></span>
-            </div>
-
-            <div class="form-options">
-              <label class="checkbox-wrapper">
-                <input type="checkbox" id="rememberMe">
-                <span class="checkmark"></span>
-                Remember me
-              </label>
-            </div>
-
-            <button type="submit" class="login-btn" id="loginBtn">
-              <span class="btn-text">Sign In</span>
-              <div class="loading-spinner" id="loadingSpinner">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 12a9 9 0 11-6.219-8.56"/>
-                </svg>
-              </div>
-            </button>
-          </form>
-        </div>
-      </div>
-
-      <!-- Back to Home -->
-      <a href="home.html" class="back-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
-        Back to Home
-      </a>
-    </div>
-  </div>
-
-  <script src="login.js"></script>
+    <nav class="index-list" aria-label="Choose a workspace">
+      <a class="index-link" href="personal/personal.html"><span class="index-number">01</span><div><h2>Personal</h2><p>Make a list, set priorities, and finish what’s next.</p></div><span class="index-arrow" aria-hidden="true">↗</span></a>
+      <a class="index-link" href="employee/employee-dashboard.html"><span class="index-number">02</span><div><h2>Team member</h2><p>Follow your assignments and see what the team has planned.</p></div><span class="index-arrow" aria-hidden="true">↗</span></a>
+      <a class="index-link" href="admin/index.html"><span class="index-number">03</span><div><h2>Admin</h2><p>Review the team, assign tasks, and manage events.</p></div><span class="index-arrow" aria-hidden="true">↗</span></a>
+    </nav>
+  </main>
+  <footer class="site-footer wrap"><span>Task Crown</span><span>Interactive demo · Sample data</span></footer>
 </body>
-</html> 
+</html>

@@ -1,8 +1,9 @@
 // TaskCrown Admin Portal JavaScript
 
 // Global state
-let currentTheme = localStorage.getItem('theme') || 'light';
+let currentTheme = localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
 let sidebarOpen = false;
+let modalTrigger;
 
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -11,12 +12,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize all app functionality
 function initializeApp() {
+    const workspaceName = localStorage.getItem('taskCrownAdminName');
+    if (workspaceName) document.querySelector('.logo small').textContent = workspaceName;
     setupTheme();
     setupSidebar();
     setupNotifications();
     setupModals();
-    setupSearch();
     updateActiveNavigation();
+    const modalId = { '#add-employee': 'addEmployeeModal', '#new-task': 'createTaskModal' }[window.location.hash];
+    if (modalId) openModal(modalId);
 }
 
 // Theme Management
@@ -45,12 +49,16 @@ function updateThemeIcon() {
     const themeToggle = document.getElementById('themeToggle');
     if (themeToggle) {
         const icon = themeToggle.querySelector('i');
+        themeToggle.setAttribute('aria-label', currentTheme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
         if (currentTheme === 'dark') {
             icon.className = 'fas fa-moon';
         } else {
             icon.className = 'fas fa-sun';
         }
     }
+    document.querySelectorAll('[data-theme-option]').forEach(button => {
+        button.setAttribute('aria-pressed', button.dataset.themeOption === currentTheme);
+    });
 }
 
 // Sidebar Management
@@ -92,8 +100,10 @@ function toggleSidebar() {
     
     if (sidebarOpen) {
         sidebar.classList.add('open');
+        document.getElementById('mobileMenuBtn').setAttribute('aria-expanded', 'true');
+        document.getElementById('sidebarToggle').focus();
     } else {
-        sidebar.classList.remove('open');
+        closeSidebar();
     }
 }
 
@@ -101,6 +111,9 @@ function closeSidebar() {
     const sidebar = document.getElementById('sidebar');
     sidebarOpen = false;
     sidebar.classList.remove('open');
+    const button = document.getElementById('mobileMenuBtn');
+    button.setAttribute('aria-expanded', 'false');
+    if (sidebar.contains(document.activeElement) && button.getClientRects().length) button.focus();
 }
 
 // Notifications Management
@@ -111,13 +124,14 @@ function setupNotifications() {
     if (notificationBtn && notificationDropdown) {
         notificationBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            notificationDropdown.classList.toggle('show');
+            notificationBtn.setAttribute('aria-expanded', notificationDropdown.classList.toggle('show'));
         });
         
         // Close notifications when clicking outside
         document.addEventListener('click', function(e) {
             if (!notificationDropdown.contains(e.target)) {
                 notificationDropdown.classList.remove('show');
+                notificationBtn.setAttribute('aria-expanded', 'false');
             }
         });
     }
@@ -136,6 +150,7 @@ function setupModals() {
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             closeAllModals();
+            if (sidebarOpen) closeSidebar();
         }
     });
 }
@@ -143,126 +158,29 @@ function setupModals() {
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
+        modalTrigger = document.activeElement;
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-label', modal.querySelector('.modal-header h3').textContent);
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
+        document.querySelector('.admin-container').inert = true;
+        (modal.querySelector('input:not([type="hidden"]), select') || modal.querySelector('button')).focus();
     }
 }
 
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
-    if (modal) {
+    if (modal?.classList.contains('show')) {
         modal.classList.remove('show');
         document.body.style.overflow = '';
+        document.querySelector('.admin-container').inert = false;
+        modalTrigger?.focus();
     }
 }
 
 function closeAllModals() {
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
-        modal.classList.remove('show');
-    });
-    document.body.style.overflow = '';
-}
-
-// Search Functionality
-function setupSearch() {
-    const searchInput = document.querySelector('.search-input');
-    if (searchInput) {
-        searchInput.addEventListener('input', handleSearch);
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch(this.value);
-            }
-        });
-    }
-}
-
-function handleSearch(e) {
-    const query = e.target.value.toLowerCase();
-    
-    // Debounce search
-    clearTimeout(window.searchTimeout);
-    window.searchTimeout = setTimeout(() => {
-        if (query.length > 2) {
-            showSearchSuggestions(query);
-        } else {
-            hideSearchSuggestions();
-        }
-    }, 300);
-}
-
-function showSearchSuggestions(query) {
-    // Mock search suggestions
-    const suggestions = [
-        { type: 'employee', name: 'Sarah Johnson', subtitle: 'Marketing Manager' },
-        { type: 'task', name: 'Q4 Campaign Review', subtitle: 'Due in 2 days' },
-        { type: 'team', name: 'Development Team', subtitle: '8 members' }
-    ].filter(item => 
-        item.name.toLowerCase().includes(query) || 
-        item.subtitle.toLowerCase().includes(query)
-    );
-    
-    // Create and show suggestions dropdown
-    let dropdown = document.querySelector('.search-suggestions');
-    if (!dropdown) {
-        dropdown = document.createElement('div');
-        dropdown.className = 'search-suggestions';
-        document.querySelector('.search-container').appendChild(dropdown);
-    }
-    
-    dropdown.innerHTML = suggestions.map(item => `
-        <div class="search-suggestion" onclick="selectSearchResult('${item.type}', '${item.name}')">
-            <div class="suggestion-icon">
-                <i class="fas fa-${getSearchIcon(item.type)}"></i>
-            </div>
-            <div class="suggestion-content">
-                <div class="suggestion-name">${item.name}</div>
-                <div class="suggestion-subtitle">${item.subtitle}</div>
-            </div>
-        </div>
-    `).join('');
-    
-    dropdown.style.display = 'block';
-}
-
-function hideSearchSuggestions() {
-    const dropdown = document.querySelector('.search-suggestions');
-    if (dropdown) {
-        dropdown.style.display = 'none';
-    }
-}
-
-function getSearchIcon(type) {
-    const icons = {
-        employee: 'user',
-        task: 'tasks',
-        team: 'users'
-    };
-    return icons[type] || 'search';
-}
-
-function selectSearchResult(type, name) {
-    console.log('Selected:', type, name);
-    hideSearchSuggestions();
-    
-    // Navigate to appropriate page
-    switch(type) {
-        case 'employee':
-            window.location.href = 'employees.html';
-            break;
-        case 'task':
-            window.location.href = 'tasks.html';
-            break;
-        case 'team':
-            window.location.href = 'employees.html';
-            break;
-    }
-}
-
-function performSearch(query) {
-    console.log('Performing search for:', query);
-    hideSearchSuggestions();
-    // Implement full search functionality
+    document.querySelectorAll('.modal.show').forEach(modal => closeModal(modal.id));
 }
 
 // Navigation Management
@@ -271,11 +189,10 @@ function updateActiveNavigation() {
     const navItems = document.querySelectorAll('.nav-item');
     
     navItems.forEach(item => {
-        item.classList.remove('active');
-        const href = item.getAttribute('href');
-        if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-            item.classList.add('active');
-        }
+        const active = item.getAttribute('href') === currentPage;
+        item.classList.toggle('active', active);
+        if (active) item.setAttribute('aria-current', 'page');
+        else item.removeAttribute('aria-current');
     });
 }
 
@@ -300,12 +217,14 @@ function showToast(message, type = 'info') {
     toast.innerHTML = `
         <div class="toast-content">
             <i class="fas fa-${getToastIcon(type)}"></i>
-            <span>${message}</span>
+            <span></span>
         </div>
         <button class="toast-close" onclick="this.parentElement.remove()">
             <i class="fas fa-times"></i>
         </button>
     `;
+    toast.setAttribute('role', 'status');
+    toast.querySelector('.toast-content span').textContent = message;
     
     // Add to page
     let toastContainer = document.querySelector('.toast-container');
@@ -333,6 +252,16 @@ function getToastIcon(type) {
         info: 'info-circle'
     };
     return icons[type] || 'info-circle';
+}
+
+function escapeHtml(value) {
+    const span = document.createElement('span');
+    span.textContent = value ?? '';
+    return span.innerHTML.replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+}
+
+function avatarInitials(name) {
+    return escapeHtml(name.trim().split(/\s+/).slice(0, 2).map(word => word[0]).join('').toUpperCase());
 }
 
 function formatDate(date) {

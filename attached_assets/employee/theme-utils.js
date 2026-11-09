@@ -220,6 +220,27 @@ function applyTheme(theme) {
 // Apply theme on page load
 document.addEventListener('DOMContentLoaded', function() {
     applyThemeFromStorage();
+
+    const menu = document.querySelector('.employee-menu');
+    const navigation = document.getElementById('employee-nav');
+    if (menu && navigation) {
+        const mobile = window.matchMedia('(max-width: 860px)');
+        function setMenuOpen(open) {
+            menu.setAttribute('aria-expanded', String(open));
+            navigation.hidden = mobile.matches && !open;
+        }
+
+        menu.hidden = false;
+        setMenuOpen(false);
+        mobile.addEventListener('change', () => setMenuOpen(false));
+        menu.addEventListener('click', () => setMenuOpen(menu.getAttribute('aria-expanded') === 'false'));
+        menu.closest('.sidebar').addEventListener('keydown', event => {
+            if (event.key === 'Escape' && mobile.matches && !navigation.hidden) {
+                setMenuOpen(false);
+                menu.focus();
+            }
+        });
+    }
     
     // Set up theme toggle button if it exists
     const themeToggle = document.getElementById('theme-toggle');
@@ -254,4 +275,4 @@ if (document.readyState === 'loading') {
 // Export functions for global use
 window.applyTheme = applyTheme;
 window.toggleTheme = toggleTheme;
-window.applyThemeFromStorage = applyThemeFromStorage; 
+window.applyThemeFromStorage = applyThemeFromStorage;

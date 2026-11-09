@@ -1,0 +1,18 @@
+:root {
+  --tc-paper: #f7f6f1;
+  --tc-white: #fffefa;
+  --tc-ink: #171c2d;
+  --tc-muted: #535969;
+  --tc-line: #deded7;
+  --tc-blue: #2947d6;
+  --tc-blue-dark: #1c329f;
+  --tc-wash: #edf0fd;
+  --tc-font: 'DM Sans', system-ui, sans-serif;
+  --tc-mono: ui-monospace, 'Cascadia Code', Consolas, monospace;
+}
+
+:focus-visible { outline: 2px solid #4865f1; outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

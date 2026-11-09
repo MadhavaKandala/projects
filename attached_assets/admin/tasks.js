@@ -94,15 +94,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Render tasks based on current view
 function renderTasks() {
+    const priority = document.getElementById('priorityFilter').value;
+    const assignee = document.getElementById('assigneeFilter').value;
+    const visibleTasks = tasks.filter(task =>
+        (priority === 'all' || task.priority === priority) &&
+        (assignee === 'all' || task.assignee === getAssigneeName(assignee))
+    );
     if (currentView === 'kanban') {
-        renderKanbanView();
+        renderKanbanView(visibleTasks);
     } else {
-        renderListView();
+        renderListView(visibleTasks);
     }
 }
 
 // Render kanban board
-function renderKanbanView() {
+function renderKanbanView(visibleTasks) {
     const todoContainer = document.getElementById('todoTasks');
     const inProgressContainer = document.getElementById('inProgressTasks');
     const reviewContainer = document.getElementById('reviewTasks');
@@ -117,17 +123,17 @@ function renderKanbanView() {
     
     // Group tasks by status
     const tasksByStatus = {
-        'todo': tasks.filter(task => task.status === 'todo'),
-        'in-progress': tasks.filter(task => task.status === 'in-progress'),
-        'review': tasks.filter(task => task.status === 'review'),
-        'completed': tasks.filter(task => task.status === 'completed')
+        'todo': visibleTasks.filter(task => task.status === 'todo'),
+        'in-progress': visibleTasks.filter(task => task.status === 'in-progress'),
+        'review': visibleTasks.filter(task => task.status === 'review'),
+        'completed': visibleTasks.filter(task => task.status === 'completed')
     };
     
     // Render tasks in each column
     Object.keys(tasksByStatus).forEach(status => {
         const container = document.getElementById(getContainerId(status));
         if (container) {
-            container.innerHTML = tasksByStatus[status].map(task => createTaskCard(task)).join('');
+            container.innerHTML = tasksByStatus[status].map(createTaskCard).join('') || '<p class="empty-state">No tasks here.</p>';
         }
     });
     
@@ -136,25 +142,25 @@ function renderKanbanView() {
 }
 
 // Render list view
-function renderListView() {
+function renderListView(visibleTasks) {
     const tableBody = document.getElementById('taskTableBody');
     if (!tableBody) return;
     
-    tableBody.innerHTML = tasks.map(task => `
+    tableBody.innerHTML = visibleTasks.map(task => `
         <tr class="task-row" data-task-id="${task.id}">
             <td>
                 <div class="task-title-cell">
-                    <h4>${task.title}</h4>
-                    <p class="task-description">${task.description}</p>
+                    <h4>${escapeHtml(task.title)}</h4>
+                    <p class="task-description">${escapeHtml(task.description)}</p>
                     <div class="task-tags">
-                        ${task.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        ${task.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
                     </div>
                 </div>
             </td>
             <td>
                 <div class="assignee-cell">
-                    <img src="${task.assigneeAvatar}" alt="${task.assignee}" class="assignee-avatar">
-                    <span>${task.assignee}</span>
+                    <span class="initial-avatar" aria-hidden="true">${avatarInitials(task.assignee)}</span>
+                    <span>${escapeHtml(task.assignee)}</span>
                 </div>
             </td>
             <td>
@@ -185,30 +191,30 @@ function renderListView() {
                 </div>
             </td>
         </tr>
-    `).join('');
+    `).join('') || '<tr><td colspan="7" class="empty-state">No tasks match these filters.</td></tr>';
 }
 
 // Create task card for kanban view
 function createTaskCard(task) {
     return `
-        <div class="task-card" data-task-id="${task.id}" draggable="true">
+        <div class="task-card" data-task-id="${task.id}">
             <div class="task-header">
                 <span class="priority-badge ${task.priority}">${formatPriority(task.priority)}</span>
                 <div class="task-actions">
-                    <button class="btn-icon small" onclick="editTask(${task.id})">
+                    <button class="btn-icon small" onclick="editTask(${task.id})" aria-label="Edit task">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="btn-icon small" onclick="deleteTask(${task.id})">
+                    <button class="btn-icon small" onclick="deleteTask(${task.id})" aria-label="Delete task">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
             </div>
             
-            <h4 class="task-title">${task.title}</h4>
-            <p class="task-description">${task.description}</p>
+            <h4 class="task-title">${escapeHtml(task.title)}</h4>
+            <p class="task-description">${escapeHtml(task.description)}</p>
             
             <div class="task-tags">
-                ${task.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                ${task.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
             </div>
             
             <div class="task-progress">
@@ -220,8 +226,8 @@ function createTaskCard(task) {
             
             <div class="task-footer">
                 <div class="task-assignee">
-                    <img src="${task.assigneeAvatar}" alt="${task.assignee}" class="assignee-avatar">
-                    <span>${task.assignee}</span>
+                    <span class="initial-avatar" aria-hidden="true">${avatarInitials(task.assignee)}</span>
+                    <span>${escapeHtml(task.assignee)}</span>
                 </div>
                 <div class="task-due-date ${isOverdue(task.dueDate) ? 'overdue' : ''}">
                     <i class="fas fa-calendar"></i>
@@ -238,23 +244,12 @@ function setupTaskFilters() {
     const assigneeFilter = document.getElementById('assigneeFilter');
     
     if (priorityFilter) {
-        priorityFilter.addEventListener('change', filterTasks);
+        priorityFilter.addEventListener('change', renderTasks);
     }
     
     if (assigneeFilter) {
-        assigneeFilter.addEventListener('change', filterTasks);
+        assigneeFilter.addEventListener('change', renderTasks);
     }
-}
-
-// Filter tasks
-function filterTasks() {
-    const priorityFilter = document.getElementById('priorityFilter').value;
-    const assigneeFilter = document.getElementById('assigneeFilter').value;
-    
-    // This is a simplified filter - in a real app, you'd filter the tasks array
-    console.log('Filtering tasks:', { priorityFilter, assigneeFilter });
-    // Re-render with filtered tasks
-    renderTasks();
 }
 
 // Setup view toggle
@@ -300,31 +295,33 @@ function handleCreateTask(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const taskData = Object.fromEntries(formData);
+    const existingTask = tasks.find(task => String(task.id) === taskData.taskId);
     
     // Create new task object
     const newTask = {
-        id: tasks.length + 1,
-        title: taskData.title,
+        id: existingTask?.id ?? Date.now(),
+        title: taskData.title.trim(),
         description: taskData.description,
         priority: taskData.priority,
-        status: 'todo',
+        status: taskData.status,
         assignee: getAssigneeName(taskData.assignee),
-        assigneeAvatar: getAssigneeAvatar(taskData.assignee),
         dueDate: taskData.dueDate,
-        progress: 0,
+        progress: taskData.status === 'completed' ? 100 : Math.min(existingTask?.progress ?? 0, 99),
         estimatedHours: parseInt(taskData.estimatedHours) || 0,
         tags: taskData.tags ? taskData.tags.split(',').map(tag => tag.trim()) : []
     };
     
     // Add to tasks array
-    tasks.push(newTask);
+    if (!newTask.title) return showToast('Enter a task title.', 'warning');
+    if (existingTask) Object.assign(existingTask, newTask);
+    else tasks.push(newTask);
     
     // Re-render
     renderTasks();
     
     // Close modal and show success message
     closeModal('createTaskModal');
-    showToast('Task created successfully!', 'success');
+    showToast(existingTask ? 'Task updated.' : 'Task created.', 'success');
     
     // Reset form
     e.target.reset();
@@ -333,11 +330,26 @@ function handleCreateTask(e) {
 // Task actions
 function editTask(id) {
     const task = tasks.find(t => t.id === id);
-    if (task) {
-        console.log('Editing task:', task);
-        // In a real app, you'd populate an edit modal
-        showToast(`Editing task: ${task.title}`, 'info');
+    if (!task) return;
+    const form = document.getElementById('createTaskForm');
+    form.elements.taskId.value = task.id;
+    for (const field of ['title', 'description', 'priority', 'status', 'dueDate', 'estimatedHours']) {
+        form.elements[field].value = task[field] ?? '';
     }
+    form.elements.assignee.value = task.assignee.toLowerCase().replaceAll(' ', '-');
+    form.elements.tags.value = task.tags.join(', ');
+    document.querySelector('#createTaskModal .modal-header h3').textContent = 'Edit task';
+    form.querySelector('[type="submit"]').textContent = 'Save task';
+    openModal('createTaskModal');
+}
+
+function createTask() {
+    const form = document.getElementById('createTaskForm');
+    form.reset();
+    form.elements.taskId.value = '';
+    document.querySelector('#createTaskModal .modal-header h3').textContent = 'Create Task';
+    form.querySelector('[type="submit"]').textContent = 'Create Task';
+    openModal('createTaskModal');
 }
 
 function deleteTask(id) {
@@ -346,7 +358,7 @@ function deleteTask(id) {
         const index = tasks.findIndex(t => t.id === id);
         tasks.splice(index, 1);
         renderTasks();
-        showToast('Task deleted successfully!', 'success');
+        showToast('Task deleted.', 'success');
     }
 }
 
@@ -397,7 +409,8 @@ function isOverdue(dueDate) {
 }
 
 function formatDate(dateString) {
-    const date = new Date(dateString);
+    if (!dateString) return 'No due date';
+    const date = new Date(`${dateString}T00:00:00`);
     return date.toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
@@ -412,13 +425,4 @@ function getAssigneeName(assigneeKey) {
         'emily-davis': 'Emily Davis'
     };
     return assigneeMap[assigneeKey] || 'Unassigned';
-}
-
-function getAssigneeAvatar(assigneeKey) {
-    const avatarMap = {
-        'sarah-johnson': 'assets/imgs/user1.jpg',
-        'michael-chen': 'assets/imgs/user2.jpg',
-        'emily-davis': 'assets/imgs/user3.jpg'
-    };
-    return avatarMap[assigneeKey] || 'assets/imgs/default-avatar.jpg';
 }

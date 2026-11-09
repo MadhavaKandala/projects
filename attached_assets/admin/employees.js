@@ -109,15 +109,15 @@ function renderEmployees(employeeList) {
     grid.innerHTML = employeeList.map(employee => `
         <div class="employee-card" data-department="${employee.department}" data-status="${employee.status}">
             <div class="employee-header">
-                <img src="${employee.avatar}" alt="${employee.firstName}" class="employee-avatar">
+                <span class="initial-avatar" aria-hidden="true">${avatarInitials(`${employee.firstName} ${employee.lastName}`)}</span>
                 <div class="employee-status">
                     <span class="status-badge ${employee.status}">${formatStatus(employee.status)}</span>
                 </div>
             </div>
             
             <div class="employee-info">
-                <h3 class="employee-name">${employee.firstName} ${employee.lastName}</h3>
-                <p class="employee-position">${employee.position}</p>
+                <h3 class="employee-name">${escapeHtml(employee.firstName)} ${escapeHtml(employee.lastName)}</h3>
+                <p class="employee-position">${escapeHtml(employee.position)}</p>
                 <p class="employee-department">${formatDepartment(employee.department)}</p>
             </div>
             
@@ -146,9 +146,6 @@ function renderEmployees(employeeList) {
             </div>
             
             <div class="employee-actions">
-                <button class="btn-icon" onclick="viewEmployee(${employee.id})" title="View Details">
-                    <i class="fas fa-eye"></i>
-                </button>
                 <button class="btn-icon" onclick="editEmployee(${employee.id})" title="Edit Employee">
                     <i class="fas fa-edit"></i>
                 </button>
@@ -160,7 +157,7 @@ function renderEmployees(employeeList) {
                 </button>
             </div>
         </div>
-    `).join('');
+    `).join('') || '<p class="empty-state">No people match these filters.</p>';
 }
 
 // Setup filters
@@ -217,9 +214,9 @@ function handleAddEmployee(e) {
     
     // Create new employee object
     const newEmployee = {
-        id: employees.length + 1,
-        firstName: employeeData.firstName,
-        lastName: employeeData.lastName,
+        id: Date.now(),
+        firstName: employeeData.firstName.trim(),
+        lastName: employeeData.lastName.trim(),
         email: employeeData.email,
         position: employeeData.position,
         department: employeeData.department,
@@ -227,20 +224,20 @@ function handleAddEmployee(e) {
         performance: 75,
         crowns: 0,
         tasksCompleted: 0,
-        avatar: 'assets/imgs/default-avatar.jpg',
         joinDate: employeeData.startDate,
         manager: employeeData.manager
     };
     
     // Add to employees array
+    if (!newEmployee.firstName || !newEmployee.lastName) return showToast('Enter a first and last name.', 'warning');
     employees.push(newEmployee);
     
     // Re-render grid
-    renderEmployees(employees);
+    filterEmployees();
     
     // Close modal and show success message
     closeModal('addEmployeeModal');
-    showToast('Employee added successfully!', 'success');
+    showToast('Employee added.', 'success');
     
     // Reset form
     e.target.reset();
@@ -249,26 +246,21 @@ function handleAddEmployee(e) {
 // Handle edit employee
 function handleEditEmployee(e) {
     e.preventDefault();
-    // Implementation for editing employee
+    const employee = employees.find(item => String(item.id) === e.target.elements.employeeId.value);
+    if (!employee) return;
+    employee.status = e.target.elements.status.value;
+    filterEmployees();
     closeModal('editEmployeeModal');
-    showToast('Employee updated successfully!', 'success');
+    showToast('Employee updated.', 'success');
 }
 
 // Employee actions
-function viewEmployee(id) {
-    const employee = employees.find(emp => emp.id === id);
-    if (employee) {
-        // Navigate to employee detail page or show detailed modal
-        console.log('Viewing employee:', employee);
-        showToast(`Viewing ${employee.firstName} ${employee.lastName}`, 'info');
-    }
-}
-
 function editEmployee(id) {
     const employee = employees.find(emp => emp.id === id);
     if (employee) {
-        // Populate edit form with employee data
-        console.log('Editing employee:', employee);
+        const form = document.getElementById('editEmployeeForm');
+        form.elements.employeeId.value = employee.id;
+        form.elements.status.value = employee.status;
         openModal('editEmployeeModal');
     }
 }
@@ -277,8 +269,8 @@ function awardCrown(id) {
     const employee = employees.find(emp => emp.id === id);
     if (employee) {
         employee.crowns += 1;
-        renderEmployees(employees);
-        showToast(`Crown awarded to ${employee.firstName} ${employee.lastName}!`, 'success');
+        filterEmployees();
+        showToast(`Crown awarded to ${employee.firstName} ${employee.lastName}.`, 'success');
     }
 }
 
@@ -287,8 +279,8 @@ function removeEmployee(id) {
     if (employee && confirm(`Are you sure you want to remove ${employee.firstName} ${employee.lastName}?`)) {
         const index = employees.findIndex(emp => emp.id === id);
         employees.splice(index, 1);
-        renderEmployees(employees);
-        showToast('Employee removed successfully!', 'success');
+        filterEmployees();
+        showToast('Employee removed.', 'success');
     }
 }
 
@@ -313,7 +305,11 @@ function generateEmployeeCSV(employeeList) {
         emp.tasksCompleted
     ]);
     
-    return [headers, ...rows].map(row => row.join(',')).join('\n');
+    return [headers, ...rows].map(row => row.map(value => {
+        let text = String(value);
+        if (/^[\s]*[=+@-]/.test(text)) text = `'${text}`;
+        return `"${text.replaceAll('"', '""')}"`;
+    }).join(',')).join('\n');
 }
 
 // Download CSV file

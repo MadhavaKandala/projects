@@ -3,14 +3,19 @@
 // Calendar data and state
 let currentDate = new Date();
 let currentView = 'month';
+const demoDate = (offset, time) => {
+    const date = new Date();
+    date.setDate(date.getDate() + offset);
+    return `${formatDateForData(date)}T${time}`;
+};
 
 const events = [
     {
         id: 1,
         title: 'Team Standup',
         description: 'Daily team standup meeting',
-        startDate: '2025-01-02T09:00:00',
-        endDate: '2025-01-02T09:30:00',
+        startDate: demoDate(1, '09:00'),
+        endDate: demoDate(1, '09:30'),
         type: 'meeting',
         priority: 'medium',
         location: 'Conference Room A',
@@ -20,8 +25,8 @@ const events = [
         id: 2,
         title: 'Q4 Review Deadline',
         description: 'Final submission deadline for Q4 performance reviews',
-        startDate: '2025-01-15T17:00:00',
-        endDate: '2025-01-15T17:00:00',
+        startDate: demoDate(4, '17:00'),
+        endDate: demoDate(4, '17:00'),
         type: 'deadline',
         priority: 'high',
         location: 'Online',
@@ -31,8 +36,8 @@ const events = [
         id: 3,
         title: 'Product Launch Meeting',
         description: 'Final preparations for product launch',
-        startDate: '2025-01-10T14:00:00',
-        endDate: '2025-01-10T16:00:00',
+        startDate: demoDate(2, '14:00'),
+        endDate: demoDate(2, '16:00'),
         type: 'meeting',
         priority: 'high',
         location: 'Main Conference Room',
@@ -42,8 +47,8 @@ const events = [
         id: 4,
         title: 'Security Training',
         description: 'Mandatory security awareness training',
-        startDate: '2025-01-20T10:00:00',
-        endDate: '2025-01-20T12:00:00',
+        startDate: demoDate(9, '10:00'),
+        endDate: demoDate(9, '12:00'),
         type: 'training',
         priority: 'medium',
         location: 'Training Room B',
@@ -72,10 +77,8 @@ function renderCalendar() {
     
     if (currentView === 'month') {
         renderMonthView();
-    } else if (currentView === 'week') {
-        renderWeekView();
     } else {
-        renderDayView();
+        renderAgendaView(currentView === 'week' ? getWeekStart(currentDate) : currentDate, currentView === 'week' ? 7 : 1);
     }
 }
 
@@ -120,8 +123,8 @@ function renderMonthView() {
                     <div class="day-number">${date.getDate()}</div>
                     <div class="day-events">
                         ${dayEvents.slice(0, 3).map(event => `
-                            <div class="day-event ${event.type} ${event.priority}" title="${event.title}">
-                                ${event.title}
+                            <div class="day-event ${event.type} ${event.priority}" title="${escapeHtml(event.title)}">
+                                ${escapeHtml(event.title)}
                             </div>
                         `).join('')}
                         ${dayEvents.length > 3 ? `<div class="more-events">+${dayEvents.length - 3} more</div>` : ''}
@@ -136,19 +139,34 @@ function renderMonthView() {
     grid.innerHTML = html;
 }
 
+function renderAgendaView(start, days) {
+    const grid = document.getElementById('calendarGrid');
+    grid.className = 'calendar-grid agenda-view';
+    grid.innerHTML = Array.from({ length: days }, (_, index) => {
+        const date = new Date(start);
+        date.setDate(date.getDate() + index);
+        const items = getEventsForDate(date);
+        return `<section><h3>${formatDate(date)}</h3>${items.map(renderEventItem).join('') || '<p class="empty-state">No events scheduled.</p>'}</section>`;
+    }).join('');
+}
+
 // Render upcoming events
 function renderUpcomingEvents() {
     const container = document.getElementById('upcomingEvents');
     if (!container) return;
     
-    const upcoming = getUpcomingEvents(7); // Next 7 days
+    const upcoming = getUpcomingEvents(Number(document.getElementById('eventRange').value));
     
-    container.innerHTML = upcoming.map(event => `
+    container.innerHTML = upcoming.map(renderEventItem).join('') || '<div class="empty-state">No upcoming events.</div>';
+}
+
+function renderEventItem(event) {
+    return `
         <div class="event-item">
             <div class="event-indicator ${event.type}"></div>
             <div class="event-content">
-                <h4 class="event-title">${event.title}</h4>
-                <p class="event-description">${event.description}</p>
+                <h4 class="event-title">${escapeHtml(event.title)}</h4>
+                <p class="event-description">${escapeHtml(event.description)}</p>
                 <div class="event-meta">
                     <span class="event-datetime">
                         <i class="fas fa-calendar"></i>
@@ -157,7 +175,7 @@ function renderUpcomingEvents() {
                     ${event.location ? `
                         <span class="event-location">
                             <i class="fas fa-map-marker-alt"></i>
-                            ${event.location}
+                            ${escapeHtml(event.location)}
                         </span>
                     ` : ''}
                 </div>
@@ -171,7 +189,7 @@ function renderUpcomingEvents() {
                 </button>
             </div>
         </div>
-    `).join('') || '<div class="no-events">No upcoming events</div>';
+    `;
 }
 
 // Setup calendar controls
@@ -183,6 +201,7 @@ function setupCalendarControls() {
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
             if (currentView === 'month') {
+                currentDate.setDate(1);
                 currentDate.setMonth(currentDate.getMonth() - 1);
             } else if (currentView === 'week') {
                 currentDate.setDate(currentDate.getDate() - 7);
@@ -196,6 +215,7 @@ function setupCalendarControls() {
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             if (currentView === 'month') {
+                currentDate.setDate(1);
                 currentDate.setMonth(currentDate.getMonth() + 1);
             } else if (currentView === 'week') {
                 currentDate.setDate(currentDate.getDate() + 7);
@@ -208,12 +228,16 @@ function setupCalendarControls() {
     
     viewBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            viewBtns.forEach(b => b.classList.remove('active'));
+            viewBtns.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', b === this);
+            });
             this.classList.add('active');
             currentView = this.dataset.view;
             renderCalendar();
         });
     });
+    document.getElementById('eventRange').addEventListener('change', renderUpcomingEvents);
 }
 
 // Setup event form
@@ -229,10 +253,13 @@ function handleCreateEvent(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const eventData = Object.fromEntries(formData);
+    const existingEvent = events.find(event => String(event.id) === eventData.eventId);
+    if (!eventData.title.trim()) return showToast('Enter an event title.', 'warning');
+    if (new Date(eventData.endDate) < new Date(eventData.startDate)) return showToast('The event must end after it starts.', 'warning');
     
     const newEvent = {
-        id: events.length + 1,
-        title: eventData.title,
+        id: existingEvent?.id ?? Date.now(),
+        title: eventData.title.trim(),
         description: eventData.description,
         startDate: eventData.startDate,
         endDate: eventData.endDate,
@@ -242,12 +269,14 @@ function handleCreateEvent(e) {
         attendees: eventData.attendees ? eventData.attendees.split(',').map(email => email.trim()) : []
     };
     
-    events.push(newEvent);
+    if (existingEvent) Object.assign(existingEvent, newEvent);
+    else events.push(newEvent);
+    currentDate = new Date(newEvent.startDate);
     renderCalendar();
     renderUpcomingEvents();
     
     closeModal('createEventModal');
-    showToast('Event created successfully!', 'success');
+    showToast(existingEvent ? 'Event updated.' : 'Event created.', 'success');
     e.target.reset();
 }
 
@@ -294,7 +323,7 @@ function isDateToday(date) {
 }
 
 function formatDateForData(date) {
-    return date.toISOString().split('T')[0];
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 }
 
 function formatDate(date) {
@@ -346,9 +375,25 @@ function goToToday() {
 function editEvent(id) {
     const event = events.find(e => e.id === id);
     if (event) {
-        console.log('Editing event:', event);
-        showToast(`Editing event: ${event.title}`, 'info');
+        const form = document.getElementById('createEventForm');
+        form.elements.eventId.value = event.id;
+        for (const field of ['title', 'description', 'startDate', 'endDate', 'type', 'priority', 'location']) {
+            form.elements[field].value = event[field];
+        }
+        form.elements.attendees.value = event.attendees.join(', ');
+        document.querySelector('#createEventModal .modal-header h3').textContent = 'Edit event';
+        form.querySelector('[type="submit"]').textContent = 'Save event';
+        openModal('createEventModal');
     }
+}
+
+function createEvent() {
+    const form = document.getElementById('createEventForm');
+    form.reset();
+    form.elements.eventId.value = '';
+    document.querySelector('#createEventModal .modal-header h3').textContent = 'Create event';
+    form.querySelector('[type="submit"]').textContent = 'Create event';
+    openModal('createEventModal');
 }
 
 function deleteEvent(id) {
@@ -358,6 +403,6 @@ function deleteEvent(id) {
         events.splice(index, 1);
         renderCalendar();
         renderUpcomingEvents();
-        showToast('Event deleted successfully!', 'success');
+        showToast('Event deleted.', 'success');
     }
 }

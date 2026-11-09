@@ -830,11 +830,43 @@
         .hidden { display: none; }
         .block { display: block; }
     </style>
+    <link rel="stylesheet" href="../crown.css">
+    <link rel="stylesheet" href="employee.css">
 </head>
-<body>
+<body class="employee-page">
+    <a href="#main-content" class="employee-skip">Skip to content</a>
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
+            <div class="employee-rail-head">
+                <a href="employee-dashboard.html" class="employee-brand">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 5 4 4-6 4 6 5-4-2 11H5zm3 14h12"/></svg>
+                    <span><strong>Task Crown</strong><small>Employee workspace</small></span>
+                </a>
+                <button class="employee-menu" type="button" aria-expanded="false" aria-controls="employee-nav" hidden>Menu</button>
+            </div>
+            <span class="employee-demo">Demo workspace</span>
+            <nav id="employee-nav" aria-label="Employee workspace">
+                <div class="nav-section">
+                    <div class="nav-title">Workspace</div>
+                    <a href="employee-dashboard.html" class="nav-item active" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h6v6H3zm12 0h6v6h-6zM3 15h6v6H3zm12 0h6v6h-6z"/></svg><span>Overview</span></a>
+                    <a href="tasks.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12M3 6l1 1 2-2M3 12l1 1 2-2M3 18l1 1 2-2"/></svg><span>My tasks</span></a>
+                    <a href="my-calender.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18v15H3zM8 3v5m8-5v5M3 11h18"/></svg><span>Calendar</span></a>
+                    <a href="team-overview.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m13-6a4 4 0 0 1 4 4v2M13 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0zm3-3a3 3 0 0 1 0 6"/></svg><span>Team</span></a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">Tools</div>
+                    <a href="employee-analytics.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v16h16M8 16v-4m5 4V8m5 8V5"/></svg><span>Analytics</span></a>
+                    <a href="request-help.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0zm-10-2a2 2 0 0 1 4 0c0 1-2 2-2 3m0 3h.01"/></svg><span>Request help</span></a>
+                    <a href="employee-resources.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6v14M3 5h5l4 2 4-2h5v13h-5l-4 2-4-2H3z"/></svg><span>Resources</span></a>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-title">Account</div>
+                    <a href="crown-stats.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 7 5 4 4-6 4 6 5-4-2 11H5zm3 14h12"/></svg><span>Crown stats</span></a>
+                    <a href="notifications.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0v6l-2 3h16l-2-3zm-8 12h4"/></svg><span>Notifications</span></a>
+                    <a href="settings.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16M8 4v4m8 2v4m-6 2v4"/></svg><span>Settings</span></a>
+                </div>
+            </nav>
             <div class="user-profile" id="userProfile">
                 <div class="user-info">
                     <div class="user-avatar">👨‍💻</div>
@@ -851,85 +883,24 @@
                     <div class="level-badge">Gold</div>
                 </div>
             </div>
-
-            <nav>
-                <div class="nav-section">
-                    <div class="nav-title">Navigation</div>
-                    <a href="employee-dashboard.html" class="nav-item active">
-                        <span class="nav-icon">📊</span>
-                        <span>Dashboard</span>
-                    </a>
-                    <a href="tasks.html" class="nav-item">
-                        <span class="nav-icon">✅</span>
-                        <span>My Tasks</span>
-                    </a>
-                    <a href="my-calender.html" class="nav-item">
-                        <span class="nav-icon">📅</span>
-                        <span>My Calendar</span>
-                    </a>
-                    <a href="team-overview.html" class="nav-item">
-                        <span class="nav-icon">👥</span>
-                        <span>Team Overview</span>
-                    </a>
-                </div>
-
-
-
-                <div class="nav-section">
-                    <div class="nav-title">Tools</div>
-                    <a href="employee-analytics.html" class="nav-item">
-                        <span class="nav-icon">📊</span>
-                        <span>Analytics</span>
-                    </a>
-                    <a href="request-help.html" class="nav-item">
-                        <span class="nav-icon">❓</span>
-                        <span>Request Help</span>
-                    </a>
-                    <a href="employee-resources.html" class="nav-item">
-                        <span class="nav-icon">📚</span>
-                        <span>Resources</span>
-                    </a>
-
-                </div>
-
-                                    <div class="nav-section">
-                        <div class="nav-title">Account</div>
-                        <a href="crown-stats.html" class="nav-item">
-                            <span class="nav-icon">👑</span>
-                            <span>Crown Stats</span>
-                        </a>
-                        <a href="notifications.html" class="nav-item">
-                            <span class="nav-icon">🔔</span>
-                            <span>Notifications</span>
-                        </a>
-                        <a href="settings.html" class="nav-item">
-                            <span class="nav-icon">⚙️</span>
-                            <span>Settings</span>
-                        </a>
-                        <a href="#" class="nav-item" id="logout-btn" onclick="logout()">
-                            <span class="nav-icon">🚪</span>
-                            <span>Logout</span>
-                        </a>
-                    </div>
-            </nav>
+            <a href="../login.html" class="employee-exit">Switch workspace <span aria-hidden="true">↗</span></a>
         </aside>
 
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" id="main-content" tabindex="-1">
             <header class="header">
-                <h1>Dashboard</h1>
-                <button class="btn btn-outline btn-sm" onclick="toggleSidebar()">☰</button>
+                <h1><span class="employee-eyebrow" aria-hidden="true">Employee / Workspace</span>Work overview</h1>
             </header>
 
             <div class="content">
                 <!-- Top Section - Greeting & Streak -->
                 <div class="grid grid-3 mb-6">
-                    <div class="card greeting-card" style="grid-column: span 2;">
+                    <div class="card greeting-card">
                         <div class="greeting-content">
                             <div class="greeting-header">
                                 <div>
-                                    <h1 class="greeting-title">Good Afternoon, Madhava 🌤️</h1>
-                                    <p class="greeting-subtitle">Ready to conquer your tasks today?</p>
+                                    <h2 class="greeting-title">Your workday at a glance.</h2>
+                                    <p class="greeting-subtitle">See what needs your attention and how your week is shaping up.</p>
                                 </div>
                                 <div class="user-avatar-large">👨‍💻</div>
                             </div>
@@ -1035,7 +1006,7 @@
                 <div class="mb-6">
                     <div class="card-header">
                         <h2 class="card-title">Key Metrics</h2>
-                        <button class="btn btn-outline btn-sm">View Details</button>
+                        <a class="btn btn-outline btn-sm" href="employee-analytics.html">View analytics</a>
                     </div>
                     <div class="metrics-grid">
                         <div class="card metric-card success" onclick="handleMetricClick('completed')">
@@ -1257,41 +1228,9 @@
                         </div>
 
                         <div class="quick-actions-grid mb-4">
-                            <button class="btn action-btn" style="background: hsl(var(--warning)); color: white;" onclick="showNotification('Help request sent to team', 'info')">
-                                <span class="action-icon">❓</span>
-                                <div>
-                                    <p class="action-title">Request Help</p>
-                                    <p class="action-desc">Get team assistance</p>
-                                </div>
-                            </button>
-                            <button class="btn action-btn" style="background: hsl(var(--crown-gold)); color: black;" onclick="showNotification('Opening leaderboard...', 'info')">
-                                <span class="action-icon">🏆</span>
-                                <div>
-                                    <p class="action-title">Leaderboard</p>
-                                    <p class="action-desc">See team rankings</p>
-                                </div>
-                            </button>
-                            <button class="btn action-btn" style="background: hsl(var(--success)); color: white;" onclick="showNotification('Mark tasks as complete in your task list', 'info')">
-                                <span class="action-icon">✅</span>
-                                <div>
-                                    <p class="action-title">Mark Complete</p>
-                                    <p class="action-desc">Complete pending tasks</p>
-                                </div>
-                            </button>
-                            <button class="btn action-btn" style="background: #8b5cf6; color: white;" onclick="showNotification('Voice recording feature coming soon!', 'info')">
-                                <span class="action-icon">🎤</span>
-                                <div>
-                                    <p class="action-title">Voice Log</p>
-                                    <p class="action-desc">Voice task creation</p>
-                                </div>
-                            </button>
-                            <button class="btn action-btn" style="background: #3b82f6; color: white;" onclick="showNotification('Starting 25-minute focus session', 'success')">
-                                <span class="action-icon">⏲️</span>
-                                <div>
-                                    <p class="action-title">Focus Mode</p>
-                                    <p class="action-desc">Start pomodoro timer</p>
-                                </div>
-                            </button>
+                            <a class="btn action-btn" href="request-help.html">Request help <span aria-hidden="true">↗</span></a>
+                            <a class="btn action-btn" href="crown-stats.html">View leaderboard <span aria-hidden="true">↗</span></a>
+                            <a class="btn action-btn" href="tasks.html">Open task board <span aria-hidden="true">↗</span></a>
                         </div>
 
                         <div style="padding-top: 1rem; border-top: 1px solid hsl(var(--border) / 0.5);">
@@ -1554,20 +1493,6 @@
         };
 
         // Sidebar Toggle
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            const mainContent = document.querySelector('.main-content');
-            sidebar.classList.toggle('collapsed');
-            
-            if (sidebar.classList.contains('collapsed')) {
-                mainContent.style.marginLeft = '80px';
-                localStorage.setItem('sidebarCollapsed', 'true');
-            } else {
-                mainContent.style.marginLeft = '280px';
-                localStorage.setItem('sidebarCollapsed', 'false');
-            }
-        }
-
         // AI Assistant
         function toggleAI() {
             const aiAssistant = document.getElementById('aiAssistant');
@@ -1722,8 +1647,6 @@
 
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            showNotification('Welcome back! Your dashboard is ready.', 'success');
-            
             // Set active navigation
             const currentPath = window.location.pathname;
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -2403,15 +2326,6 @@
             const currentTheme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', currentTheme);
             
-            // Load sidebar state
-            const savedSidebarState = localStorage.getItem('sidebarCollapsed');
-            if (savedSidebarState === 'true') {
-                const sidebar = document.querySelector('.sidebar');
-                const mainContent = document.querySelector('.main-content');
-                sidebar.classList.add('collapsed');
-                mainContent.style.marginLeft = '80px';
-            }
-            
             // Initialize search functionality
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
@@ -2439,11 +2353,6 @@
             setInterval(updateRealTimeData, 5000); // Update every 5 seconds
             setInterval(updateDateTime, 1000); // Update time every second
             
-            // Welcome notification
-            setTimeout(() => {
-                showNotification(`Welcome back, ${DashboardState.currentUser.name}! Your dashboard is ready.`, 'success');
-            }, 500);
-            
             // Simulate real-time activities
             setInterval(() => {
                 const activities = [
@@ -2466,100 +2375,8 @@
             // Add dynamic elements to DOM
             addDynamicElements();
             
-            // Add floating clock widget
-            addFloatingClock();
-            
-            // Add floating chatbot button
-            addFloatingChatbot();
         });
         
-        // Add floating clock widget
-        function addFloatingClock() {
-            const floatingClock = document.createElement('div');
-            floatingClock.id = 'floatingClock';
-            floatingClock.style.cssText = `
-                position: fixed;
-                bottom: 100px;
-                right: 20px;
-                background: hsl(var(--card));
-                border: 1px solid hsl(var(--border));
-                border-radius: var(--radius);
-                padding: 1rem;
-                box-shadow: var(--shadow-medium);
-                z-index: 1000;
-                backdrop-filter: blur(10px);
-                min-width: 120px;
-                text-align: center;
-                transition: all 0.3s ease;
-            `;
-            
-            floatingClock.innerHTML = `
-                <div class="current-time" style="font-size: 1.25rem; font-weight: 600; color: hsl(var(--primary)); margin-bottom: 0.25rem;"></div>
-                <div class="current-date-short" style="font-size: 0.75rem; color: hsl(var(--muted-foreground));"></div>
-                <div class="time-greeting" style="font-size: 0.7rem; color: hsl(var(--accent)); margin-top: 0.25rem;"></div>
-            `;
-            
-            // Add hover effect
-            floatingClock.addEventListener('mouseenter', () => {
-                floatingClock.style.transform = 'scale(1.05)';
-                floatingClock.style.boxShadow = 'var(--shadow-strong)';
-            });
-            
-            floatingClock.addEventListener('mouseleave', () => {
-                floatingClock.style.transform = 'scale(1)';
-                floatingClock.style.boxShadow = 'var(--shadow-medium)';
-            });
-            
-            document.body.appendChild(floatingClock);
-        }
-
-        // Add floating chatbot button
-        function addFloatingChatbot() {
-            const floatingChatbot = document.createElement('div');
-            floatingChatbot.id = 'floatingChatbot';
-            floatingChatbot.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background: hsl(var(--primary));
-                color: hsl(var(--primary-foreground));
-                border: none;
-                border-radius: 50%;
-                width: 60px;
-                height: 60px;
-                box-shadow: var(--shadow-medium);
-                z-index: 1001;
-                backdrop-filter: blur(10px);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.5rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            `;
-            
-            floatingChatbot.innerHTML = '🤖';
-            
-            // Add hover effect
-            floatingChatbot.addEventListener('mouseenter', () => {
-                floatingChatbot.style.transform = 'scale(1.1)';
-                floatingChatbot.style.boxShadow = 'var(--shadow-strong)';
-            });
-            
-            floatingChatbot.addEventListener('mouseleave', () => {
-                floatingChatbot.style.transform = 'scale(1)';
-                floatingChatbot.style.boxShadow = 'var(--shadow-medium)';
-            });
-            
-            // Add click event to open AI Assistant
-            floatingChatbot.addEventListener('click', () => {
-                // AI Assistant functionality removed
-            alert('AI Assistant feature is currently unavailable');
-            });
-            
-            document.body.appendChild(floatingChatbot);
-        }
-
         // Add dynamic elements to the dashboard
         function addDynamicElements() {
             // Add time and date display to header
@@ -2578,26 +2395,6 @@
                     <div class="current-date" style="color: hsl(var(--muted-foreground)); font-size: 0.75rem;"></div>
                 `;
                 header.appendChild(timeDisplay);
-            }
-            
-            // Add time display to sidebar
-            const sidebar = document.querySelector('.sidebar');
-            if (sidebar) {
-                const sidebarTimeDisplay = document.createElement('div');
-                sidebarTimeDisplay.style.cssText = `
-                    background: hsl(var(--card));
-                    border: 1px solid hsl(var(--border));
-                    border-radius: var(--radius);
-                    padding: 1rem;
-                    margin-bottom: 1rem;
-                    text-align: center;
-                `;
-                sidebarTimeDisplay.innerHTML = `
-                    <div class="current-time" style="font-size: 1.5rem; font-weight: 600; color: hsl(var(--primary)); margin-bottom: 0.25rem;"></div>
-                    <div class="current-date-short" style="font-size: 0.875rem; color: hsl(var(--muted-foreground));"></div>
-                    <div class="time-greeting" style="font-size: 0.75rem; color: hsl(var(--accent)); margin-top: 0.25rem;"></div>
-                `;
-                sidebar.insertBefore(sidebarTimeDisplay, sidebar.firstChild);
             }
             
             // Add dynamic containers for real-time data
@@ -2689,22 +2486,6 @@
         }
 
         // Logout function
-        function logout() {
-            const confirmLogout = confirm('Are you sure you want to logout?');
-            if (confirmLogout) {
-                // Clear any stored user data
-                localStorage.removeItem('userRole');
-                localStorage.removeItem('userSettings');
-                
-                // Show logout message
-                showNotification('Logging out...', 'info');
-                
-                // Redirect to home page after a short delay
-                setTimeout(() => {
-                    window.location.href = '../home.html';
-                }, 1000);
-            }
-        }
     </script>
     <script src="theme-utils.js"></script>
 

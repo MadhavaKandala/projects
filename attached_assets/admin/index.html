@@ -3,55 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskCrown Admin Portal - Dashboard</title>
+    <title>Team overview · Task Crown Admin</title>
+    <link rel="stylesheet" href="../crown.css">
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="admin-overview">
+    <a class="admin-skip" href="#admin-content">Skip to content</a>
     <div class="admin-container">
         <!-- Sidebar Navigation -->
-        <nav class="sidebar" id="sidebar">
+        <nav class="sidebar" id="sidebar" aria-label="Admin sections">
             <div class="sidebar-header">
-                <div class="logo">
-                    <i class="fas fa-crown"></i>
-                    <span>TaskCrown</span>
-                </div>
-                <button class="sidebar-toggle" id="sidebarToggle">
-                    <i class="fas fa-times"></i>
-                </button>
+                <a class="logo" href="../../index.html"><span class="admin-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7l5 3.5L12 4l4 6.5L21 7l-2 11H5L3 7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span>Task Crown<small>Admin workspace</small></span></a>
+                <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Close navigation">×</button>
             </div>
             
             <div class="nav-menu">
-                <a href="index.html" class="nav-item active">
-                    <i class="fas fa-chart-pie"></i>
-                    <span>Dashboard</span>
+                <p class="nav-label">Workspace</p>
+                <a href="index.html" class="nav-item active" aria-current="page">
+                    <i aria-hidden="true" class="fas fa-chart-pie"></i>
+                    <span>Overview</span>
                 </a>
                 <a href="employees.html" class="nav-item">
-                    <i class="fas fa-users"></i>
+                    <i aria-hidden="true" class="fas fa-users"></i>
                     <span>Employees</span>
                 </a>
                 <a href="tasks.html" class="nav-item">
-                    <i class="fas fa-tasks"></i>
-                    <span>Task Management</span>
+                    <i aria-hidden="true" class="fas fa-tasks"></i>
+                    <span>Task board</span>
                 </a>
                 <a href="calender.html" class="nav-item">
-                    <i class="fas fa-calendar-alt"></i>
+                    <i aria-hidden="true" class="fas fa-calendar-alt"></i>
                     <span>Calendar</span>
                 </a>
                 <a href="settings.html" class="nav-item">
-                    <i class="fas fa-cog"></i>
+                    <i aria-hidden="true" class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
             </div>
             
             <div class="sidebar-footer">
-                <div class="admin-profile">
-                    <img src="assets/imgs/admin-avatar.jpg" alt="Admin" class="admin-avatar">
-                    <div class="admin-info">
-                        <span class="admin-name">Admin User</span>
-                        <span class="admin-role">System Administrator</span>
-                    </div>
-                </div>
+                <a class="workspace-switch" href="../login.html"><span class="workspace-arrow" aria-hidden="true">↗</span><span><strong>Switch workspace</strong><small>Personal · Employee · Admin</small></span></a>
             </div>
         </nav>
 
@@ -60,19 +52,15 @@
             <!-- Top Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <button class="mobile-menu-btn" id="mobileMenuBtn">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <div class="search-container">
-                        <i class="fas fa-search search-icon"></i>
-                        <input type="text" placeholder="Search employees, tasks, or teams..." class="search-input">
-                    </div>
+                    <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">☰</button>
+                    <span class="admin-breadcrumb">Admin <span aria-hidden="true">/</span> Team overview</span>
                 </div>
                 
                 <div class="header-right">
+                    <span class="admin-demo">Sample data</span>
                     <div class="notification-wrapper">
-                        <button class="notification-btn" id="notificationBtn">
-                            <i class="fas fa-bell"></i>
+                        <button type="button" class="notification-btn" id="notificationBtn" aria-label="Notifications" aria-expanded="false" aria-controls="notificationDropdown">
+                            <i aria-hidden="true" class="fas fa-bell"></i>
                             <span class="notification-badge">3</span>
                         </button>
                         <div class="notification-dropdown" id="notificationDropdown">
@@ -102,30 +90,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="notification-footer">
-                                <button class="btn-link">View All Notifications</button>
-                            </div>
                         </div>
                     </div>
                     
-                    <button class="theme-toggle" id="themeToggle">
-                        <i class="fas fa-sun"></i>
+                    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch theme">
+                        <i aria-hidden="true" class="fas fa-sun"></i>
                     </button>
                 </div>
             </header>
 
             <!-- Dashboard Content -->
-            <main class="content-area">
-                <div class="page-header">
-                    <h1>Dashboard Overview</h1>
-                    <p>Monitor your team's performance and system metrics</p>
+            <main class="content-area" id="admin-content" tabindex="-1">
+                <div class="page-header overview-hero"><div class="header-content">
+                    <p class="page-folio">01 / Operations</p>
+                        <h1>Team overview<span aria-hidden="true">.</span></h1>
+                        <p>See what moved, who delivered it, and where work is still open.</p>
+                </div>
+                    <svg class="hero-crown" viewBox="0 0 300 148" fill="none" aria-hidden="true"><path d="M18 118h264M18 76h264M18 34h264M50 14v118M150 14v118M250 14v118" stroke="currentColor" stroke-opacity=".2" stroke-dasharray="2 6"/><path d="m48 48 56 24 46-46 46 46 56-24-25 64H73L48 48Z" stroke="currentColor" stroke-width="1.5"/><path d="m71 61 39 17 40-37 40 37 39-17-18 40H89L71 61Z" stroke="currentColor" stroke-opacity=".55"/><path d="M74 124h152" stroke="currentColor" stroke-width="2"/><circle cx="150" cy="26" r="4" fill="currentColor"/><circle cx="48" cy="48" r="3" fill="currentColor"/><circle cx="252" cy="48" r="3" fill="currentColor"/></svg>
                 </div>
 
                 <!-- Quick Stats Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon blue">
-                            <i class="fas fa-users"></i>
+                            <i aria-hidden="true" class="fas fa-users"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Total Employees</h3>
@@ -136,7 +124,7 @@
                     
                     <div class="stat-card">
                         <div class="stat-icon green">
-                            <i class="fas fa-check-circle"></i>
+                            <i aria-hidden="true" class="fas fa-check-circle"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Completed Tasks</h3>
@@ -147,7 +135,7 @@
                     
                     <div class="stat-card">
                         <div class="stat-icon orange">
-                            <i class="fas fa-clock"></i>
+                            <i aria-hidden="true" class="fas fa-clock"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Pending Tasks</h3>
@@ -158,7 +146,7 @@
                     
                     <div class="stat-card">
                         <div class="stat-icon purple">
-                            <i class="fas fa-crown"></i>
+                            <i aria-hidden="true" class="fas fa-crown"></i>
                         </div>
                         <div class="stat-info">
                             <h3>Crowns Awarded</h3>
@@ -174,45 +162,45 @@
                     <div class="dashboard-card">
                         <div class="card-header">
                             <h3>Recent Activity</h3>
-                            <button class="btn-secondary">View All</button>
+                            <span class="ledger-label">Latest entries</span>
                         </div>
                         <div class="activity-list">
                             <div class="activity-item">
                                 <div class="activity-avatar">
-                                    <img src="assets/imgs/user1.jpg" alt="User">
+                                    <span class="initial-avatar" aria-hidden="true">SJ</span>
                                 </div>
                                 <div class="activity-content">
                                     <p><strong>Sarah Johnson</strong> completed the Marketing Campaign project</p>
                                     <span class="activity-time">2 hours ago</span>
                                 </div>
                                 <div class="activity-status completed">
-                                    <i class="fas fa-check"></i>
+                                    <i aria-hidden="true" class="fas fa-check"></i>
                                 </div>
                             </div>
                             
                             <div class="activity-item">
                                 <div class="activity-avatar">
-                                    <img src="assets/imgs/user2.jpg" alt="User">
+                                    <span class="initial-avatar" aria-hidden="true">MC</span>
                                 </div>
                                 <div class="activity-content">
                                     <p><strong>Michael Chen</strong> was awarded a Gold Crown</p>
                                     <span class="activity-time">4 hours ago</span>
                                 </div>
                                 <div class="activity-status crown">
-                                    <i class="fas fa-crown"></i>
+                                    <i aria-hidden="true" class="fas fa-crown"></i>
                                 </div>
                             </div>
                             
                             <div class="activity-item">
                                 <div class="activity-avatar">
-                                    <img src="assets/imgs/user3.jpg" alt="User">
+                                    <span class="initial-avatar" aria-hidden="true">ED</span>
                                 </div>
                                 <div class="activity-content">
                                     <p><strong>Emily Davis</strong> joined the Development Team</p>
                                     <span class="activity-time">1 day ago</span>
                                 </div>
                                 <div class="activity-status new">
-                                    <i class="fas fa-plus"></i>
+                                    <i aria-hidden="true" class="fas fa-plus"></i>
                                 </div>
                             </div>
                         </div>
@@ -224,22 +212,22 @@
                             <h3>Quick Actions</h3>
                         </div>
                         <div class="quick-actions">
-                            <button class="action-btn" onclick="openModal('addEmployeeModal')">
-                                <i class="fas fa-user-plus"></i>
+                            <a class="action-btn" href="employees.html#add-employee">
+                                <i aria-hidden="true" class="fas fa-user-plus"></i>
                                 <span>Add Employee</span>
-                            </button>
-                            <button class="action-btn" onclick="openModal('createTaskModal')">
-                                <i class="fas fa-plus-circle"></i>
+                            </a>
+                            <a class="action-btn" href="tasks.html#new-task">
+                                <i aria-hidden="true" class="fas fa-plus-circle"></i>
                                 <span>Create Task</span>
-                            </button>
-                            <button class="action-btn" onclick="openModal('awardCrownModal')">
-                                <i class="fas fa-crown"></i>
+                            </a>
+                            <a class="action-btn" href="employees.html">
+                                <i aria-hidden="true" class="fas fa-crown"></i>
                                 <span>Award Crown</span>
-                            </button>
-                            <button class="action-btn" onclick="window.location.href='analytics.html'">
-                                <i class="fas fa-chart-line"></i>
-                                <span>View Analytics</span>
-                            </button>
+                            </a>
+                            <a class="action-btn" href="calender.html">
+                                <i aria-hidden="true" class="fas fa-chart-line"></i>
+                                <span>Open Calendar</span>
+                            </a>
                         </div>
                     </div>
 
@@ -247,15 +235,11 @@
                     <div class="dashboard-card full-width">
                         <div class="card-header">
                             <h3>Top Performers This Month</h3>
-                            <select class="filter-select">
-                                <option>This Month</option>
-                                <option>Last Month</option>
-                                <option>This Quarter</option>
-                            </select>
+                            <span class="ledger-label">Sample rankings</span>
                         </div>
                         <div class="performers-grid">
                             <div class="performer-card">
-                                <img src="assets/imgs/user1.jpg" alt="Sarah" class="performer-avatar">
+                                <span class="initial-avatar" aria-hidden="true">SJ</span>
                                 <h4>Sarah Johnson</h4>
                                 <p>Marketing Manager</p>
                                 <div class="performance-stats">
@@ -269,14 +253,14 @@
                                     </div>
                                 </div>
                                 <div class="crown-display">
-                                    <i class="fas fa-crown gold"></i>
-                                    <i class="fas fa-crown silver"></i>
-                                    <i class="fas fa-crown bronze"></i>
+                                    <i aria-hidden="true" class="fas fa-crown gold"></i>
+                                    <i aria-hidden="true" class="fas fa-crown silver"></i>
+                                    <i aria-hidden="true" class="fas fa-crown bronze"></i>
                                 </div>
                             </div>
                             
                             <div class="performer-card">
-                                <img src="assets/imgs/user2.jpg" alt="Michael" class="performer-avatar">
+                                <span class="initial-avatar" aria-hidden="true">MC</span>
                                 <h4>Michael Chen</h4>
                                 <p>Senior Developer</p>
                                 <div class="performance-stats">
@@ -290,14 +274,14 @@
                                     </div>
                                 </div>
                                 <div class="crown-display">
-                                    <i class="fas fa-crown gold"></i>
-                                    <i class="fas fa-crown gold"></i>
-                                    <i class="fas fa-crown silver"></i>
+                                    <i aria-hidden="true" class="fas fa-crown gold"></i>
+                                    <i aria-hidden="true" class="fas fa-crown gold"></i>
+                                    <i aria-hidden="true" class="fas fa-crown silver"></i>
                                 </div>
                             </div>
                             
                             <div class="performer-card">
-                                <img src="assets/imgs/user3.jpg" alt="Emily" class="performer-avatar">
+                                <span class="initial-avatar" aria-hidden="true">ED</span>
                                 <h4>Emily Davis</h4>
                                 <p>UX Designer</p>
                                 <div class="performance-stats">
@@ -311,56 +295,14 @@
                                     </div>
                                 </div>
                                 <div class="crown-display">
-                                    <i class="fas fa-crown silver"></i>
-                                    <i class="fas fa-crown bronze"></i>
+                                    <i aria-hidden="true" class="fas fa-crown silver"></i>
+                                    <i aria-hidden="true" class="fas fa-crown bronze"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </main>
-        </div>
-    </div>
-
-    <!-- Modals -->
-    <div id="addEmployeeModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Add New Employee</h3>
-                <button class="modal-close" onclick="closeModal('addEmployeeModal')">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form class="modal-form">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" placeholder="Enter employee name">
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" placeholder="Enter email address">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Position</label>
-                        <input type="text" placeholder="Job title">
-                    </div>
-                    <div class="form-group">
-                        <label>Department</label>
-                        <select>
-                            <option>Select Department</option>
-                            <option>Engineering</option>
-                            <option>Marketing</option>
-                            <option>Sales</option>
-                            <option>HR</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-secondary" onclick="closeModal('addEmployeeModal')">Cancel</button>
-                    <button type="submit" class="btn-primary">Add Employee</button>
-                </div>
-            </form>
         </div>
     </div>
 

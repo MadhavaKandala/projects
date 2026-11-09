@@ -3,42 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Productivity Score - Task Crown</title>
+  <title>Productivity score | Task Crown</title>
   <link rel="stylesheet" href="productivity_score.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../crown.css">
+  <link rel="stylesheet" href="workspace.css">
 </head>
-<body>
-  <nav class="navbar">
-    <div class="navbar-left">
-      <div class="logo">
-        <span class="logo-icon">👑</span>
-        <span class="logo-text">Task Crown</span>
+<body class="personal-workspace">
+  <a class="personal-skip" href="#content">Skip to content</a>
+  <header class="personal-nav">
+    <div class="personal-nav-inner">
+      <div class="personal-nav-top">
+        <a class="personal-brand" href="../../index.html">
+          <span class="personal-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6l4 4 4-6 4 6 4-4-2 11H6L4 6Zm3 13h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span>Task Crown</span>
+        </a>
+        <div class="personal-nav-right">
+          <span class="personal-demo">Sample workspace</span>
+          <a class="personal-switch" href="../login.html">Switch workspace <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
+      <nav class="personal-tabs" aria-label="Personal workspace">
+        <a class="personal-tab" href="personal.html">Overview</a>
+        <a class="personal-tab" href="pending_tasks.html">Pending</a>
+        <a class="personal-tab" href="high_priority.html">Priority</a>
+        <a class="personal-tab" href="completed_this_week.html">Completed</a>
+        <a class="personal-tab" href="productivity_score.html" aria-current="page">Productivity</a>
+        <a class="personal-tab" href="team.html">Team</a>
+      </nav>
     </div>
-    <div class="navbar-center">
-      <a href="personal.html" class="nav-link">Dashboard</a>
-      <a href="pending_tasks.html" class="nav-link">Pending Tasks</a>
-      <a href="high_priority.html" class="nav-link">High Priority</a>
-      <a href="completed_this_week.html" class="nav-link">Completed</a>
-      <a href="productivity_score.html" class="nav-link active">Productivity</a>
-    </div>
-    <div class="navbar-right">
-      <button class="profile-btn">
-        <span class="profile-avatar">👤</span>
-      </button>
-      <button class="logout-btn" onclick="logout()">
-        <span class="logout-icon">🚪</span>
-        <span class="logout-text">Logout</span>
-      </button>
-    </div>
-  </nav>
+  </header>
 
-  <main class="main-content">
+  <main class="main-content" id="content">
     <div class="page-header">
-      <div class="header-icon">📊</div>
       <div class="header-content">
-        <h1>Productivity Score</h1>
-        <p>Track your productivity trends and optimize your workflow.</p>
+        <div class="personal-kicker">05 / Personal workspace</div>
+        <h1>Productivity score</h1>
+        <p>Review the sample score, compare weekly trends, and see where to improve.</p>
       </div>
     </div>
 
@@ -137,7 +138,7 @@
     </div>
 
     <div class="chart-section">
-      <h2>📈 Weekly Trends</h2>
+      <h2>Weekly Trends</h2>
       <div class="chart-container">
         <div class="chart-header">
           <span>Productivity Score Over Time</span>
@@ -223,7 +224,7 @@
     </div>
 
     <div class="detailed-charts-section">
-      <h2>📊 Detailed Metrics Analysis</h2>
+      <h2>Detailed Metrics Analysis</h2>
       <div class="charts-grid">
         <div class="chart-card">
           <h3>Task Completion Rate</h3>
@@ -340,7 +341,7 @@
     </div>
 
     <div class="trend-analysis-section">
-      <h2>📈 Trend Analysis</h2>
+      <h2>Trend Analysis</h2>
       <div class="trend-grid">
         <div class="trend-card positive">
           <div class="trend-icon">📈</div>
@@ -393,7 +394,7 @@
     </div>
 
     <div class="recommendations-section">
-      <h2>💡 Productivity Recommendations</h2>
+      <h2>Productivity Recommendations</h2>
       <div class="recommendations-grid">
         <div class="recommendation-card">
           <div class="rec-icon">🧘</div>
@@ -416,6 +417,7 @@
       </div>
     </div>
   </main>
+  <footer class="personal-footer"><span>Task Crown · Personal</span><span>Sample workspace</span></footer>
 
   <script>
     // Global state for dynamic functionality
@@ -734,23 +736,6 @@
       }, 3000);
     }
 
-    // Logout function
-    function logout() {
-      const confirmLogout = confirm('Are you sure you want to logout?');
-      if (confirmLogout) {
-        // Clear any stored user data
-        localStorage.removeItem('userRole');
-        localStorage.removeItem('userSettings');
-        
-        // Show logout message
-        alert('Logging out...');
-        
-        // Redirect to home page after a short delay
-        setTimeout(() => {
-          window.location.href = '../home.html';
-        }, 1000);
-      }
-    }
   </script>
 
   <style>
